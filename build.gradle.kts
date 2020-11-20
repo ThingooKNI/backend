@@ -1,11 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "2.3.5.RELEASE"
+	id("org.springframework.boot") version "2.4.0"
 	id("io.spring.dependency-management") version "1.0.10.RELEASE"
-	kotlin("jvm") version "1.3.72"
-	kotlin("plugin.spring") version "1.3.72"
-	kotlin("plugin.jpa") version "1.3.72"
+	kotlin("jvm") version "1.4.10"
+	kotlin("plugin.spring") version "1.4.10"
+	kotlin("plugin.jpa") version "1.4.10"
 }
 
 group = "io.kni.thingoo"
@@ -37,8 +37,10 @@ dependencies {
 
 	//persistence
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	runtimeOnly("org.postgresql:postgresql")
+	runtimeOnly("org.postgresql:postgresql:42.2.18")
 	implementation("org.flywaydb:flyway-core:7.2.0")
+	implementation("io.zonky.test:embedded-database-spring-test:1.6.0")
+	implementation("io.zonky.test.postgres:embedded-postgres-binaries-bom:13.1.0")
 }
 
 tasks.withType<Test> {
