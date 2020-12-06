@@ -15,7 +15,7 @@ import javax.persistence.Table
 @Table(name = "roles")
 class Role(
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
 
     @Enumerated(EnumType.STRING)
