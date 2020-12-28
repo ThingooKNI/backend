@@ -1,6 +1,6 @@
 CREATE TABLE roles
 (
-    id serial PRIMARY KEY,
+    id   bigserial PRIMARY KEY,
     name character varying(255) NOT NULL
 );
 
@@ -16,7 +16,7 @@ CREATE TABLE users
 CREATE TABLE user_role
 (
     user_id uuid NOT NULL references users (uuid),
-    role_id   integer NOT NULL references roles (id)
+    role_id   bigint NOT NULL references roles (id)
 );
 
 CREATE INDEX users_uuid ON users (uuid);
