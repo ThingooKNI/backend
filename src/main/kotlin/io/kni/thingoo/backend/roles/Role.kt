@@ -1,6 +1,7 @@
-package io.kni.thingoo.backend.model
+package io.kni.thingoo.backend.roles
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import io.kni.thingoo.backend.users.User
 import javax.persistence.Entity
 import javax.persistence.EnumType
 import javax.persistence.Enumerated

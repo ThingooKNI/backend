@@ -1,5 +1,6 @@
-package io.kni.thingoo.backend.model
+package io.kni.thingoo.backend.users
 
+import io.kni.thingoo.backend.roles.Role
 import java.util.UUID
 import javax.persistence.CascadeType
 import javax.persistence.Column

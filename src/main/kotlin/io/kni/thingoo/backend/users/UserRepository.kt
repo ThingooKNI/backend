@@ -1,6 +1,5 @@
-package io.kni.thingoo.backend.repository
+package io.kni.thingoo.backend.users
 
-import io.kni.thingoo.backend.model.User
 import java.util.UUID
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
