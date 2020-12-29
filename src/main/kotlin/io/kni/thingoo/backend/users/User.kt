@@ -31,7 +31,7 @@ class User(
     var isActive: Boolean,
 
     @Column(nullable = true)
-    var fullName: String,
+    var fullName: String?,
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
     @JoinTable(
