@@ -1,8 +1,8 @@
 package io.kni.thingoo.backend.users
 
+import org.springframework.stereotype.Service
 import java.util.Optional
 import java.util.UUID
-import org.springframework.stereotype.Service
 
 @Service
 class UserService(private val userRepository: UserRepository) {
@@ -20,7 +20,7 @@ class UserService(private val userRepository: UserRepository) {
     }
 
     fun createNew(userCreateDto: UserCreateDto): User {
-        //TODO hash password
+        // TODO hash password
         val hashedPassword = userCreateDto.rawPassword
 
         val newUser = User(
