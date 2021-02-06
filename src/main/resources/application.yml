@@ -1,0 +1,16 @@
+# default profile
+spring:
+  profiles:
+    active: production
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+
+server:
+  port: 8080
+
+security:
+  basic:
+    enabled: false

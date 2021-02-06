@@ -12,17 +12,11 @@ import javax.persistence.Id
 import javax.persistence.ManyToMany
 import javax.persistence.Table
 
-@Entity
-@Table(name = "roles")
 class Role(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
 
-    @Enumerated(EnumType.STRING)
     var name: RoleName,
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "roles")
     @JsonIgnore
     var users: MutableSet<User> = mutableSetOf()
 )
