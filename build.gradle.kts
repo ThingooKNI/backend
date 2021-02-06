@@ -6,7 +6,6 @@ plugins {
     kotlin("jvm") version "1.4.21"
     kotlin("plugin.spring") version "1.4.21"
     kotlin("plugin.jpa") version "1.4.21"
-    id("org.jlleitschuh.gradle.ktlint") version "9.4.1"
 }
 
 group = "io.kni.thingoo"
@@ -24,6 +23,7 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
@@ -38,8 +38,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly("org.postgresql:postgresql:42.2.18")
     implementation("org.flywaydb:flyway-core:7.2.0")
-    implementation("io.zonky.test:embedded-database-spring-test:1.6.0")
-    implementation("io.zonky.test.postgres:embedded-postgres-binaries-bom:13.1.0")
 
     implementation("org.keycloak:keycloak-spring-boot-starter:12.0.2")
     api("org.keycloak.bom:keycloak-adapter-bom:12.0.2@pom")
