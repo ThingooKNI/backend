@@ -41,6 +41,8 @@ dependencies {
 
     implementation("org.keycloak:keycloak-spring-boot-starter:12.0.2")
     api("org.keycloak.bom:keycloak-adapter-bom:12.0.2@pom")
+    implementation("io.zonky.test:embedded-database-spring-test:1.6.0")
+    implementation("io.zonky.test.postgres:embedded-postgres-binaries-bom:13.1.0")
 }
 
 tasks.withType<Test> {

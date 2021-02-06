@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    initialization-mode: always
+
+app:
+  dev:
+    database:
+      port: 30444
+      dir: ./dev-database
