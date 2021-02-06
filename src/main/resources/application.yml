@@ -1,4 +1,3 @@
-# default profile
 spring:
   profiles:
     active: production
@@ -14,3 +13,11 @@ server:
 security:
   basic:
     enabled: false
+
+keycloak:
+  auth-server-url: http://localhost:8081/auth
+  realm: Thingoo
+  resource: thingoo-backend
+  public-client: true
+  principal-attribute: preferred_username
+  use-resource-role-mappings: true
