@@ -55,6 +55,6 @@ internal class SecurityConfig(val keycloakClientRequestFactory: KeycloakClientRe
 
         http.authorizeRequests()
             .anyRequest()
-            .authenticated()
+            .hasRole("user")
     }
 }

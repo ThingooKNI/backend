@@ -32,7 +32,7 @@ class UserController(private val userService: UserService) {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasRole('user')")
     fun getAllUsers(): List<UserRepresentation>? {
 
         return userService.getAll()
