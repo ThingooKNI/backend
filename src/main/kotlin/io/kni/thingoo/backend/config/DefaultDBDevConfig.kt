@@ -10,7 +10,7 @@ import javax.annotation.PreDestroy
 import javax.sql.DataSource
 
 @Component
-@Profile("!production")
+@Profile("test")
 class DefaultDBDevConfig {
 
     @Value("\${app.dev.database.port}")
@@ -22,7 +22,7 @@ class DefaultDBDevConfig {
     private lateinit var pg: EmbeddedPostgres
 
     @Bean
-    @Profile("development")
+    @Profile("test")
     fun defaultDataSource(): DataSource {
         pg = EmbeddedPostgres.builder()
             .setPort(port.toInt())

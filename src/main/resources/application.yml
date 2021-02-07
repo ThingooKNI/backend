@@ -1,0 +1,19 @@
+spring:
+  profiles:
+    active: production
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+
+server:
+  port: 8080
+
+keycloak:
+  auth-server-url: http://keycloak:8080/auth
+  realm: Thingoo
+  resource: thingoo-backend
+  public-client: true
+  principal-attribute: preferred_username
+  use-resource-role-mappings: true
