@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    name: keycloak
+  name: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: keycloak
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        name: keycloak
+  spec:
+    containers:
+      - args:
+          - -b
+          - 0.0.0.0
+          - -Dkeycloak.migration.action=import
+          - -Dkeycloak.migration.provider=singleFile
+          - -Dkeycloak.migration.file=/config/import.json
+          - -Dkeycloak.migration.strategy=IGNORE_EXISTING
+          - -Dkeycloak.migration.usersExportStrategy=SAME_FILE
+        env:
+          - name: DB_ADDR
+            value: keycloak-db
+          - name: DB_DATABASE
+            value: keycloakdb
+          - name: DB_PASSWORD
+            value: password
+          - name: DB_PORT
+            value: "5432"
+          - name: DB_USER
+            value: admin
+          - name: DB_VENDOR
+            value: postgres
+          - name: KEYCLOAK_FRONTEND_URL
+            value: http://localhost:8081/auth
+          - name: KEYCLOAK_PASSWORD
+            value: password
+          - name: KEYCLOAK_USER
+            value: admin
+        image: 'quay.io/keycloak/keycloak:12.0.2'
+        name: keycloak
+        ports:
+          - containerPort: 8080
+        volumeMounts:
+          - mountPath: /config/
+            name: keycloak-config
+    restartPolicy: Always
+    volumes:
+      - name: keycloak-config
+        persistentVolumeClaim:
+          claimName: keycloak-config
