@@ -16,7 +16,8 @@ jobs:
         uses: crazy-max/ghaction-docker-meta@v1
         with:
           images: thingookni/backend
-          tag-sha: true
+          tag-semver: |
+            {{version}}
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
