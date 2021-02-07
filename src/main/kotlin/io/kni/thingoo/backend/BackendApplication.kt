@@ -2,8 +2,10 @@ package io.kni.thingoo.backend
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 
 @SpringBootApplication
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 class BackendApplication
 
 fun main(args: Array<String>) {

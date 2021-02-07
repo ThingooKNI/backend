@@ -2,6 +2,7 @@ package io.kni.thingoo.backend.users
 
 import org.keycloak.KeycloakPrincipal
 import org.keycloak.representations.AccessToken
+import org.keycloak.representations.idm.UserRepresentation
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -19,8 +20,6 @@ class UserController(private val userService: UserService) {
     fun getCurrentUser(): ResponseEntity<AccessToken> {
         val authentication = SecurityContextHolder.getContext().authentication
 
-        println(authentication)
-
         if (authentication.principal is KeycloakPrincipal<*>) {
             val principal = authentication.principal as KeycloakPrincipal<*>
 
@@ -34,11 +33,7 @@ class UserController(private val userService: UserService) {
 
     @GetMapping
     @PreAuthorize("hasRole('admin')")
-    fun getAllUsers(): List<User>? {
-        val authorities =
-            SecurityContextHolder.getContext().authentication.authorities as Collection<*>
-
-        println(authorities)
+    fun getAllUsers(): List<UserRepresentation>? {
 
         return userService.getAll()
     }

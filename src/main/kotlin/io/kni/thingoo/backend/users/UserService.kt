@@ -1,5 +1,6 @@
 package io.kni.thingoo.backend.users
 
+import org.keycloak.representations.idm.UserRepresentation
 import org.springframework.stereotype.Service
 import java.util.Optional
 import java.util.UUID
@@ -7,7 +8,7 @@ import java.util.UUID
 @Service
 class UserService(private val userRepository: UserRepository) {
 
-    fun getAll(): List<User> {
+    fun getAll(): List<UserRepresentation> {
         return userRepository.findAll()
     }
 

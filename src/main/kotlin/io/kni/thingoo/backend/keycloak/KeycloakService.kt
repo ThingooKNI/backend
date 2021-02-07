@@ -26,10 +26,10 @@ class KeycloakService {
     fun getInstance(): Keycloak {
         return KeycloakBuilder.builder()
             .serverUrl(keycloakServerUrl)
-            .realm(keycloakRealm)
+            .realm("master")
             .username(keycloakAdminUsername)
             .password(keycloakAdminPassword)
-            .clientId(keycloakClientId)
+            .clientId("admin-cli")
             .build()
     }
 }
