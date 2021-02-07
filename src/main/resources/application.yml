@@ -17,3 +17,9 @@ keycloak:
   public-client: true
   principal-attribute: preferred_username
   use-resource-role-mappings: true
+
+app:
+  keycloak:
+    admin-user:
+      username: ${KEYCLOAK_USER:admin}
+      password: ${KEYCLOAK_PASSWORD:password}
