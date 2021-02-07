@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController
 class UserController(private val userService: UserService) {
 
     @GetMapping("/me")
-    @PreAuthorize("hasRole('user')")
     fun getCurrentUser(): ResponseEntity<AccessToken> {
         val authentication = SecurityContextHolder.getContext().authentication
 
@@ -32,7 +31,6 @@ class UserController(private val userService: UserService) {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('user')")
     fun getAllUsers(): List<UserRepresentation>? {
 
         return userService.getAll()
