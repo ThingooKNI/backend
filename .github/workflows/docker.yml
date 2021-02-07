@@ -15,8 +15,8 @@ jobs:
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: ghcr.io/thingookni/backend # list of Docker images to use as base name for tags
-          tag-sha: true # add git short SHA as Docker tag
+          images: ghcr.io/thingookni/backend
+          tag-sha: true
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
@@ -41,7 +41,6 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-#          platforms: linux/amd64,linux/arm64,linux/386
           push: true
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
