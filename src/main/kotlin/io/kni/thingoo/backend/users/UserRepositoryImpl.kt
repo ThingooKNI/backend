@@ -18,11 +18,9 @@ class UserRepositoryImpl(private val keycloakService: KeycloakService) : UserRep
     }
 
     override fun findAll(): List<UserRepresentation> {
-        val keycloakInstance = keycloakService.getInstance()
+        val keycloakInstance = keycloakService.getInstance() ?: return emptyList()
 
-        val users = keycloakInstance.realm(keycloakRealm).users().list()
-
-        return users
+        return keycloakInstance.realm(keycloakRealm).users().list()
     }
 
     override fun findById(id: UUID): Optional<User> {

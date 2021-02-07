@@ -9,8 +9,6 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/backend
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
-      - KEYCLOAK_USER=admin
-      - KEYCLOAK_PASSWORD=password
     restart: unless-stopped
     depends_on:
       - postgres
