@@ -9,6 +9,8 @@ spring:
 
 server:
   port: 8080
+  servlet:
+    contextPath: /api
 
 keycloak:
   auth-server-url: http://keycloak:8080/auth

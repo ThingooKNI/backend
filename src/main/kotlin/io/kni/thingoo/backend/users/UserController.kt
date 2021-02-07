@@ -5,7 +5,6 @@ import org.keycloak.representations.AccessToken
 import org.keycloak.representations.idm.UserRepresentation
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController
 class UserController(private val userService: UserService) {
 
     @GetMapping("/me")
-    @PreAuthorize("hasRole('user')")
     fun getCurrentUser(): ResponseEntity<AccessToken> {
         val authentication = SecurityContextHolder.getContext().authentication
 
@@ -32,7 +30,6 @@ class UserController(private val userService: UserService) {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('admin')")
     fun getAllUsers(): List<UserRepresentation>? {
 
         return userService.getAll()
