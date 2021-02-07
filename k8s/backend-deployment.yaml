@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    name: backend
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: backend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        name: backend
+    spec:
+      containers:
+        - env:
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: postgres
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgres:5432/backend
+            - name: SPRING_DATASOURCE_USERNAME
+              value: postgres
+          image: 'thingookni/backend:develop'
+          imagePullPolicy: Always
+          name: backend
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always
