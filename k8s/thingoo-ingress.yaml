@@ -8,10 +8,17 @@ spec:
   rules:
     - http:
         paths:
-          - path: /
+          - path: /api
             pathType: ImplementationSpecific
             backend:
               service:
                 name: backend
                 port:
                   number: 8080
+          - path: /auth
+              pathType: ImplementationSpecific
+              backend:
+                service:
+                  name: keycloak
+                  port:
+                    number: 8081
