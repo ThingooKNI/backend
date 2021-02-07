@@ -30,6 +30,6 @@ class KeycloakService {
             .username(keycloakAdminUsername)
             .password(keycloakAdminPassword)
             .clientId(keycloakClientId)
-            .build();
+            .build()
     }
 }
