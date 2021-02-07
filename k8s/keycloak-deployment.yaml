@@ -49,10 +49,11 @@ spec:
           ports:
             - containerPort: 8080
           volumeMounts:
-            - mountPath: /config/
+            - mountPath: "/config/import.json"
               name: keycloak-config
+              readOnly: true
       restartPolicy: Always
       volumes:
         - name: keycloak-config
-          persistentVolumeClaim:
-            claimName: keycloak-config
+          configMap:
+            name: keycloak-config
