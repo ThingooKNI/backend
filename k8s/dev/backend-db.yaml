@@ -12,18 +12,17 @@ spec:
       storage: 100Mi
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   labels:
     name: postgres
   name: postgres
 spec:
+  serviceName: postgres
   replicas: 1
   selector:
     matchLabels:
       name: postgres
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:
