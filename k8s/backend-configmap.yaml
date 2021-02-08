@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+data:
+  application.yml: |-
+    spring:
+      profiles:
+        active: production
+      jpa:
+        hibernate:
+          ddl-auto: validate
+      flyway:
+        enabled: true
+      datasource:
+        url: 'jdbc:postgresql://postgres:5432/backend'
+        username: postgres
+        password: postgres
+    server:
+      port: 8080
+      servlet:
+        contextPath: /api
+    keycloak:
+      auth-server-url: 'http://keycloak:8080/auth'
+      realm: Thingoo
+      resource: thingoo-backend
+      public-client: true
+      principal-attribute: preferred_username
+      use-resource-role-mappings: true

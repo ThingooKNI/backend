@@ -17,16 +17,21 @@ spec:
         name: backend
     spec:
       containers:
-        - env:
-            - name: SPRING_DATASOURCE_PASSWORD
-              value: postgres
-            - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://postgres:5432/backend
-            - name: SPRING_DATASOURCE_USERNAME
-              value: postgres
-          image: 'thingookni/backend:latest'
+        - image: 'thingookni/backend:latest'
           imagePullPolicy: Always
           name: backend
           ports:
             - containerPort: 8080
+          volumeMounts:
+            - mountPath: "/etc/spring/config"
+              name: backend-config
+              readOnly: true
       restartPolicy: Always
+      volumes:
+        - name: backend-config
+          configMap:
+            name: backend-config
+            items:
+              - key: application.yml
+                path: application.yml
+
