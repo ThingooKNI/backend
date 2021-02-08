@@ -12,18 +12,17 @@ spec:
       storage: 100Mi
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   labels:
     name: keycloak-db
   name: keycloak-db
 spec:
+  serviceName: keycloak-db
   replicas: 1
   selector:
     matchLabels:
       name: keycloak-db
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:
