@@ -2071,7 +2071,7 @@ spec:
             - name: DB_VENDOR
               value: postgres
             - name: KEYCLOAK_FRONTEND_URL
-              value: http://localhost:8081/auth
+              value: https://thingoo.xyz/auth
             - name: KEYCLOAK_PASSWORD
               value: password
             - name: KEYCLOAK_USER
