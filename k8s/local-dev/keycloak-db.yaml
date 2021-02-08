@@ -1,3 +1,16 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    name: keycloak-pgdata
+  name: keycloak-pgdata
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -34,3 +47,17 @@ spec:
         - name: keycloak-pgdata
           persistentVolumeClaim:
             claimName: keycloak-pgdata
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: keycloak-db
+  name: keycloak-db
+spec:
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+  selector:
+    name: keycloak-db
