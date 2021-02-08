@@ -5,18 +5,23 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "traefik"
 spec:
+  tls:
+    - hosts:
+        - "dev.thingoo.xyz"
+      secretName: ingress-tls
   rules:
-    - http:
+    - host: "dev.thingoo.xyz"
+      http:
         paths:
           - path: /api
-            pathType: ImplementationSpecific
+            pathType: Prefix
             backend:
               service:
                 name: backend
                 port:
                   number: 8080
           - path: /auth
-            pathType: ImplementationSpecific
+            pathType: Prefix
             backend:
               service:
                 name: keycloak
