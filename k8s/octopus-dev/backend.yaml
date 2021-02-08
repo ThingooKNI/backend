@@ -47,7 +47,7 @@ spec:
         name: backend
     spec:
       containers:
-        - image: 'thingookni/backend:#{Octopus.Release.Package[ThingooKNI/backend].Version}'
+        - image: 'thingookni/backend:#{Octopus.Action.Package[backend].PackageVersion}'
           imagePullPolicy: Always
           name: backend
           ports:
