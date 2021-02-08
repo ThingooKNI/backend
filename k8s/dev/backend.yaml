@@ -47,7 +47,7 @@ spec:
         name: backend
     spec:
       containers:
-        - image: 'thingookni/backend:latest'
+        - image: 'thingookni/backend:${BACKEND_TAG}'
           imagePullPolicy: Always
           name: backend
           ports:
