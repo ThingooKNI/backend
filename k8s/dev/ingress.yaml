@@ -7,10 +7,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - "dev.thingoo.xyz"
+        - "thingoo.xyz"
       secretName: ingress-tls
   rules:
-    - host: "dev.thingoo.xyz"
+    - host: "thingoo.xyz"
       http:
         paths:
           - path: /api
