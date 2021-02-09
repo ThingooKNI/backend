@@ -680,7 +680,8 @@ data:
           ],
           "redirectUris": [
             "http://localhost:8080/*",
-            "https://thingoo.xyz/*"
+            "https://thingoo.xyz/*",
+            "https://dev.thingoo.xyz/*"
           ],
           "webOrigins": [
             "*"
@@ -2031,4 +2032,5 @@ data:
     }
 kind: ConfigMap
 metadata:
+  creationTimestamp: null
   name: keycloak-config
