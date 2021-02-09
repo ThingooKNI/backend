@@ -5,12 +5,8 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "traefik"
 spec:
-  tls:
-    - hosts:
-        - "thingoo.xyz"
-      secretName: ingress-tls
   rules:
-    - host: "thingoo.xyz"
+    - host: "dev.thingoo.xyz"
       http:
         paths:
           - path: /api
