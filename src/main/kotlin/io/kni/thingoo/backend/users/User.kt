@@ -13,7 +13,7 @@ data class User(
 ) {
 
     companion object {
-        fun fromUserRepresentation (userRepresentation: UserRepresentation): User {
+        fun fromUserRepresentation(userRepresentation: UserRepresentation): User {
             return User(
                 id = UUID.fromString(userRepresentation.id),
                 username = userRepresentation.username,
