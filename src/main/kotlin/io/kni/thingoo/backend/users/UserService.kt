@@ -1,6 +1,5 @@
 package io.kni.thingoo.backend.users
 
-import org.keycloak.representations.idm.UserRepresentation
 import org.springframework.stereotype.Service
 import java.util.Optional
 import java.util.UUID
@@ -8,7 +7,7 @@ import java.util.UUID
 @Service
 class UserService(private val userRepository: UserRepository) {
 
-    fun getAll(): List<UserRepresentation> {
+    fun getAll(): List<User> {
         return userRepository.findAll()
     }
 
@@ -21,20 +20,10 @@ class UserService(private val userRepository: UserRepository) {
     }
 
     fun createNew(userCreateDto: UserCreateDto): User {
-        // TODO hash password
-        val hashedPassword = userCreateDto.rawPassword
-
-        val newUser = User(
-            username = userCreateDto.username,
-            password = hashedPassword,
-            fullName = userCreateDto.fullName,
-            isActive = true
-        )
-
-        return userRepository.save(newUser)
+        TODO("Not yet implemented")
     }
 
     fun updateOne() {
-        throw NotImplementedError()
+        TODO("Not yet implemented")
     }
 }

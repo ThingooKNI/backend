@@ -1,7 +1,6 @@
 package io.kni.thingoo.backend.users
 
 import io.kni.thingoo.backend.keycloak.KeycloakService
-import org.keycloak.representations.idm.UserRepresentation
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.util.Optional
@@ -17,10 +16,11 @@ class UserKeycloakRepository(private val keycloakService: KeycloakService) : Use
         TODO("Not yet implemented")
     }
 
-    override fun findAll(): List<UserRepresentation> {
+    override fun findAll(): List<User> {
         val keycloakInstance = keycloakService.getInstance() ?: return emptyList()
 
-        return keycloakInstance.realm(keycloakRealm).users().list()
+        val users = keycloakInstance.realm(keycloakRealm).users().list()
+        return users.map { User.fromUserRepresentation(it) }
     }
 
     override fun findById(id: UUID): Optional<User> {

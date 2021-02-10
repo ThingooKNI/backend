@@ -2,7 +2,6 @@ package io.kni.thingoo.backend.users
 
 import org.keycloak.KeycloakPrincipal
 import org.keycloak.representations.AccessToken
-import org.keycloak.representations.idm.UserRepresentation
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
@@ -30,8 +29,7 @@ class UserController(private val userService: UserService) {
     }
 
     @GetMapping
-    fun getAllUsers(): List<UserRepresentation>? {
-
+    fun getAllUsers(): List<User>? {
         return userService.getAll()
     }
 }

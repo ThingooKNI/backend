@@ -1,6 +1,5 @@
 package io.kni.thingoo.backend.users
 
-import org.keycloak.representations.idm.UserRepresentation
 import org.springframework.stereotype.Component
 import java.util.Optional
 import java.util.UUID
@@ -10,7 +9,7 @@ interface UserRepository {
 
     fun findByUsername(username: String): Optional<User>
 
-    fun findAll(): List<UserRepresentation>
+    fun findAll(): List<User>
 
     fun findById(id: UUID): Optional<User>
 
