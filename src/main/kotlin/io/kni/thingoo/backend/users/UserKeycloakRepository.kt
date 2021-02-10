@@ -8,7 +8,7 @@ import java.util.Optional
 import java.util.UUID
 
 @Component
-class UserRepositoryImpl(private val keycloakService: KeycloakService) : UserRepository {
+class UserKeycloakRepository(private val keycloakService: KeycloakService) : UserRepository {
 
     @Value("\${keycloak.realm}")
     private lateinit var keycloakRealm: String
