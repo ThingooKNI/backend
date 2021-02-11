@@ -65,6 +65,23 @@ data:
           }
         ],
         "client": {
+          "thingoo-webapp": [
+            {
+              "id": "340f2fdb-af25-49a9-81c2-c59cac47d2e6",
+              "name": "user",
+              "composite": true,
+              "composites": {
+                "client": {
+                  "realm-management": [
+                    "view-users"
+                  ]
+                }
+              },
+              "clientRole": true,
+              "containerId": "fa07e90b-4c2f-467b-b36d-8b776a4f4f44",
+              "attributes": {}
+            }
+          ],
           "realm-management": [
             {
               "id": "bf473af4-e201-4f9c-828e-6a01f6a88a25",
@@ -278,23 +295,6 @@ data:
             }
           ],
           "security-admin-console": [],
-          "thingoo-backend": [
-            {
-              "id": "340f2fdb-af25-49a9-81c2-c59cac47d2e6",
-              "name": "user",
-              "composite": true,
-              "composites": {
-                "client": {
-                  "realm-management": [
-                    "view-users"
-                  ]
-                }
-              },
-              "clientRole": true,
-              "containerId": "fa07e90b-4c2f-467b-b36d-8b776a4f4f44",
-              "attributes": {}
-            }
-          ],
           "admin-cli": [],
           "account-console": [],
           "broker": [
@@ -386,6 +386,16 @@ data:
               "containerId": "bb9543c7-ac48-4203-b194-25818b7300af",
               "attributes": {}
             }
+          ],
+          "thingoo-device": [
+            {
+              "id": "d31aa0cd-3d8d-4710-a387-d61fb159e984",
+              "name": "device",
+              "composite": false,
+              "clientRole": true,
+              "containerId": "5515376f-4d22-47d1-9a0f-a2ca25d550c8",
+              "attributes": {}
+            }
           ]
         }
       },
@@ -431,6 +441,34 @@ data:
       "webAuthnPolicyPasswordlessCreateTimeout": 0,
       "webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister": false,
       "webAuthnPolicyPasswordlessAcceptableAaguids": [],
+      "users": [
+        {
+          "id": "8dfd8bc9-729d-453b-97f0-5b9e2ce93a0c",
+          "createdTimestamp": 1613045378250,
+          "username": "service-account-thingoo-device",
+          "enabled": true,
+          "totp": false,
+          "emailVerified": false,
+          "serviceAccountClientId": "thingoo-device",
+          "disableableCredentialTypes": [],
+          "requiredActions": [],
+          "realmRoles": [
+            "uma_authorization",
+            "offline_access"
+          ],
+          "clientRoles": {
+            "account": [
+              "manage-account",
+              "view-profile"
+            ],
+            "thingoo-device": [
+              "device"
+            ]
+          },
+          "notBefore": 0,
+          "groups": []
+        }
+      ],
       "scopeMappings": [
         {
           "clientScope": "offline_access",
@@ -668,32 +706,26 @@ data:
           "optionalClientScopes": []
         },
         {
-          "id": "fa07e90b-4c2f-467b-b36d-8b776a4f4f44",
-          "clientId": "thingoo-backend",
+          "id": "5515376f-4d22-47d1-9a0f-a2ca25d550c8",
+          "clientId": "thingoo-device",
           "surrogateAuthRequired": false,
           "enabled": true,
           "alwaysDisplayInConsole": false,
           "clientAuthenticatorType": "client-secret",
           "secret": "**********",
           "defaultRoles": [
-            "user"
+            "device"
           ],
-          "redirectUris": [
-            "http://localhost:8080/*",
-            "https://thingoo.xyz/*",
-            "https://dev.thingoo.xyz/*"
-          ],
-          "webOrigins": [
-            "*"
-          ],
+          "redirectUris": [],
+          "webOrigins": [],
           "notBefore": 0,
           "bearerOnly": false,
           "consentRequired": false,
-          "standardFlowEnabled": true,
+          "standardFlowEnabled": false,
           "implicitFlowEnabled": false,
-          "directAccessGrantsEnabled": false,
-          "serviceAccountsEnabled": false,
-          "publicClient": true,
+          "directAccessGrantsEnabled": true,
+          "serviceAccountsEnabled": true,
+          "publicClient": false,
           "frontchannelLogout": false,
           "protocol": "openid-connect",
           "attributes": {
@@ -717,6 +749,158 @@ data:
           "authenticationFlowBindingOverrides": {},
           "fullScopeAllowed": true,
           "nodeReRegistrationTimeout": -1,
+          "protocolMappers": [
+            {
+              "id": "bdc61002-1e80-4602-ba3f-9d5eecc9f712",
+              "name": "Client Host",
+              "protocol": "openid-connect",
+              "protocolMapper": "oidc-usersessionmodel-note-mapper",
+              "consentRequired": false,
+              "config": {
+                "user.session.note": "clientHost",
+                "id.token.claim": "true",
+                "access.token.claim": "true",
+                "claim.name": "clientHost",
+                "jsonType.label": "String"
+              }
+            },
+            {
+              "id": "4d67092e-699d-44a6-95d7-939dc624c574",
+              "name": "Client ID",
+              "protocol": "openid-connect",
+              "protocolMapper": "oidc-usersessionmodel-note-mapper",
+              "consentRequired": false,
+              "config": {
+                "user.session.note": "clientId",
+                "id.token.claim": "true",
+                "access.token.claim": "true",
+                "claim.name": "clientId",
+                "jsonType.label": "String"
+              }
+            },
+            {
+              "id": "edbf5aee-36d7-4f0f-9bf4-70025b47c818",
+              "name": "Client IP Address",
+              "protocol": "openid-connect",
+              "protocolMapper": "oidc-usersessionmodel-note-mapper",
+              "consentRequired": false,
+              "config": {
+                "user.session.note": "clientAddress",
+                "id.token.claim": "true",
+                "access.token.claim": "true",
+                "claim.name": "clientAddress",
+                "jsonType.label": "String"
+              }
+            }
+          ],
+          "defaultClientScopes": [
+            "web-origins",
+            "role_list",
+            "roles",
+            "profile",
+            "email"
+          ],
+          "optionalClientScopes": [
+            "address",
+            "phone",
+            "offline_access",
+            "microprofile-jwt"
+          ]
+        },
+        {
+          "id": "fa07e90b-4c2f-467b-b36d-8b776a4f4f44",
+          "clientId": "thingoo-webapp",
+          "surrogateAuthRequired": false,
+          "enabled": true,
+          "alwaysDisplayInConsole": false,
+          "clientAuthenticatorType": "client-secret",
+          "secret": "**********",
+          "defaultRoles": [
+            "user"
+          ],
+          "redirectUris": [
+            "https://dev.thingoo.xyz/*",
+            "http://localhost:8080/*",
+            "https://thingoo.xyz/*"
+          ],
+          "webOrigins": [
+            "*"
+          ],
+          "notBefore": 0,
+          "bearerOnly": false,
+          "consentRequired": false,
+          "standardFlowEnabled": true,
+          "implicitFlowEnabled": false,
+          "directAccessGrantsEnabled": false,
+          "serviceAccountsEnabled": false,
+          "publicClient": false,
+          "frontchannelLogout": false,
+          "protocol": "openid-connect",
+          "attributes": {
+            "saml.assertion.signature": "false",
+            "saml.force.post.binding": "false",
+            "saml.multivalued.roles": "false",
+            "saml.encrypt": "false",
+            "backchannel.logout.revoke.offline.tokens": "false",
+            "saml.server.signature": "false",
+            "saml.server.signature.keyinfo.ext": "false",
+            "exclude.session.state.from.auth.response": "false",
+            "backchannel.logout.session.required": "true",
+            "client_credentials.use_refresh_token": "false",
+            "saml_force_name_id_format": "false",
+            "saml.client.signature": "false",
+            "tls.client.certificate.bound.access.tokens": "false",
+            "saml.authnstatement": "false",
+            "display.on.consent.screen": "false",
+            "saml.onetimeuse.condition": "false"
+          },
+          "authenticationFlowBindingOverrides": {},
+          "fullScopeAllowed": true,
+          "nodeReRegistrationTimeout": -1,
+          "protocolMappers": [
+            {
+              "id": "a78985a2-aba4-4d16-ba57-694453db9e65",
+              "name": "Client IP Address",
+              "protocol": "openid-connect",
+              "protocolMapper": "oidc-usersessionmodel-note-mapper",
+              "consentRequired": false,
+              "config": {
+                "user.session.note": "clientAddress",
+                "id.token.claim": "true",
+                "access.token.claim": "true",
+                "claim.name": "clientAddress",
+                "jsonType.label": "String"
+              }
+            },
+            {
+              "id": "7e1d9c80-eb9e-462d-9ec0-56785cf30ea8",
+              "name": "Client Host",
+              "protocol": "openid-connect",
+              "protocolMapper": "oidc-usersessionmodel-note-mapper",
+              "consentRequired": false,
+              "config": {
+                "user.session.note": "clientHost",
+                "id.token.claim": "true",
+                "access.token.claim": "true",
+                "claim.name": "clientHost",
+                "jsonType.label": "String"
+              }
+            },
+            {
+              "id": "42544d3e-4cbb-4a6c-938e-b9cec66a3f12",
+              "name": "Client ID",
+              "protocol": "openid-connect",
+              "protocolMapper": "oidc-usersessionmodel-note-mapper",
+              "consentRequired": false,
+              "config": {
+                "user.session.note": "clientId",
+                "id.token.claim": "true",
+                "access.token.claim": "true",
+                "claim.name": "clientId",
+                "jsonType.label": "String"
+              }
+            }
+          ],
           "defaultClientScopes": [
             "web-origins",
             "role_list",

@@ -1,7 +1,6 @@
 package io.kni.thingoo.backend.users
 
 import org.springframework.stereotype.Service
-import java.util.Optional
 import java.util.UUID
 
 @Service
@@ -11,11 +10,11 @@ class UserService(private val userRepository: UserRepository) {
         return userRepository.findAll()
     }
 
-    fun getOneById(id: UUID): Optional<User> {
+    fun getOneById(id: UUID): User {
         return userRepository.findById(id)
     }
 
-    fun getOneByUsername(username: String): Optional<User> {
+    fun getOneByUsername(username: String): User {
         return userRepository.findByUsername(username)
     }
 

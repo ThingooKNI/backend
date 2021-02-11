@@ -1,60 +1,27 @@
 package io.kni.thingoo.backend.config
 
-import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver
-import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents
-import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider
-import org.keycloak.adapters.springsecurity.client.KeycloakClientRequestFactory
-import org.keycloak.adapters.springsecurity.client.KeycloakRestTemplate
-import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.config.ConfigurableBeanFactory
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.ComponentScan
-import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.Scope
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper
-import org.springframework.security.core.session.SessionRegistryImpl
-import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy
-import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 
-@Configuration
 @EnableWebSecurity
-@ComponentScan(basePackageClasses = [KeycloakSecurityComponents::class])
-internal class SecurityConfig(val keycloakClientRequestFactory: KeycloakClientRequestFactory) :
-    KeycloakWebSecurityConfigurerAdapter() {
+class SecurityConfig : WebSecurityConfigurerAdapter() {
 
-    @Autowired
-    fun configureGlobal(auth: AuthenticationManagerBuilder) {
-        val keycloakAuthenticationProvider: KeycloakAuthenticationProvider =
-            keycloakAuthenticationProvider()
-        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(SimpleAuthorityMapper())
-        auth.authenticationProvider(keycloakAuthenticationProvider)
-    }
+    @Value("\${app.keycloak.webapp-client-id}")
+    lateinit var webappClientId: String
 
-    @Bean
-    fun keycloakConfigResolver(): KeycloakSpringBootConfigResolver {
-        return KeycloakSpringBootConfigResolver()
-    }
-
-    @Bean
-    override fun sessionAuthenticationStrategy(): SessionAuthenticationStrategy {
-        return RegisterSessionAuthenticationStrategy(SessionRegistryImpl())
-    }
-
-    @Bean
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    fun keycloakRestTemplate(): KeycloakRestTemplate? {
-        return KeycloakRestTemplate(keycloakClientRequestFactory)
-    }
+    @Value("\${app.keycloak.device-client-id}")
+    lateinit var deviceClientId: String
 
     override fun configure(http: HttpSecurity) {
-        super.configure(http)
-
-        http.authorizeRequests()
-            .anyRequest()
-            .hasRole("user")
+        http.cors()
+            .and()
+            .authorizeRequests()
+            .anyRequest().hasRole("user")
+            .and()
+            .oauth2ResourceServer()
+            .jwt()
+            .jwtAuthenticationConverter(CustomJwtAuthenticationConverter(webappClientId, deviceClientId))
     }
 }
