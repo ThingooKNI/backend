@@ -3,7 +3,6 @@ package io.kni.thingoo.backend.users
 import org.keycloak.admin.client.Keycloak
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
-import java.util.Optional
 import java.util.UUID
 
 @Component
