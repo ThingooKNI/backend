@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service
 @Service
 class KeycloakService {
 
-    @Value("\${keycloak.auth-server-url}")
+    @Value("\${app.keycloak.auth-server-url}")
     private lateinit var keycloakServerUrl: String
 
-    @Value("\${keycloak.realm}")
+    @Value("\${app.keycloak.realm}")
     private lateinit var keycloakRealm: String
 
     fun getInstance(): Keycloak? {

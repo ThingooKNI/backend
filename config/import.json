@@ -62,6 +62,23 @@
       }
     ],
     "client": {
+      "thingoo-webapp": [
+        {
+          "id": "340f2fdb-af25-49a9-81c2-c59cac47d2e6",
+          "name": "user",
+          "composite": true,
+          "composites": {
+            "client": {
+              "realm-management": [
+                "view-users"
+              ]
+            }
+          },
+          "clientRole": true,
+          "containerId": "fa07e90b-4c2f-467b-b36d-8b776a4f4f44",
+          "attributes": {}
+        }
+      ],
       "realm-management": [
         {
           "id": "bf473af4-e201-4f9c-828e-6a01f6a88a25",
@@ -275,23 +292,6 @@
         }
       ],
       "security-admin-console": [],
-      "thingoo-backend": [
-        {
-          "id": "340f2fdb-af25-49a9-81c2-c59cac47d2e6",
-          "name": "user",
-          "composite": true,
-          "composites": {
-            "client": {
-              "realm-management": [
-                "view-users"
-              ]
-            }
-          },
-          "clientRole": true,
-          "containerId": "fa07e90b-4c2f-467b-b36d-8b776a4f4f44",
-          "attributes": {}
-        }
-      ],
       "admin-cli": [],
       "account-console": [],
       "broker": [
@@ -666,7 +666,7 @@
     },
     {
       "id": "fa07e90b-4c2f-467b-b36d-8b776a4f4f44",
-      "clientId": "thingoo-backend",
+      "clientId": "thingoo-webapp",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
@@ -676,9 +676,9 @@
         "user"
       ],
       "redirectUris": [
+        "https://dev.thingoo.xyz/*",
         "http://localhost:8080/*",
-        "https://thingoo.xyz/*",
-        "https://dev.thingoo.xyz/*"
+        "https://thingoo.xyz/*"
       ],
       "webOrigins": [
         "*"
@@ -690,7 +690,7 @@
       "implicitFlowEnabled": false,
       "directAccessGrantsEnabled": false,
       "serviceAccountsEnabled": false,
-      "publicClient": true,
+      "publicClient": false,
       "frontchannelLogout": false,
       "protocol": "openid-connect",
       "attributes": {
@@ -714,6 +714,50 @@
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": true,
       "nodeReRegistrationTimeout": -1,
+      "protocolMappers": [
+        {
+          "id": "a78985a2-aba4-4d16-ba57-694453db9e65",
+          "name": "Client IP Address",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientAddress",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientAddress",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "7e1d9c80-eb9e-462d-9ec0-56785cf30ea8",
+          "name": "Client Host",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientHost",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientHost",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "id": "42544d3e-4cbb-4a6c-938e-b9cec66a3f12",
+          "name": "Client ID",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usersessionmodel-note-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.session.note": "clientId",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "clientId",
+            "jsonType.label": "String"
+          }
+        }
+      ],
       "defaultClientScopes": [
         "web-origins",
         "role_list",

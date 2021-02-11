@@ -9,7 +9,7 @@ import java.util.UUID
 @Component
 class UserKeycloakRepository(private val keycloakService: KeycloakService) : UserRepository {
 
-    @Value("\${keycloak.realm}")
+    @Value("\${app.keycloak.realm}")
     private lateinit var keycloakRealm: String
 
     override fun findByUsername(username: String): Optional<User> {
