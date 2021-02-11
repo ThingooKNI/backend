@@ -3,10 +3,11 @@ package io.kni.thingoo.backend.keycloak
 import org.keycloak.admin.client.Keycloak
 import org.keycloak.admin.client.KeycloakBuilder
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.stereotype.Service
+import org.springframework.context.annotation.Bean
+import org.springframework.stereotype.Component
 
-@Service
-class KeycloakService {
+@Component
+class KeycloakAdminClientConfig {
 
     @Value("\${app.keycloak.auth-server-url}")
     private lateinit var keycloakServerUrl: String
@@ -17,7 +18,8 @@ class KeycloakService {
     @Value("\${app.keycloak.admin-password}")
     private lateinit var adminPassword: String
 
-    fun getInstance(): Keycloak? {
+    @Bean
+    fun keycloak(): Keycloak? {
         return KeycloakBuilder.builder()
             .serverUrl(keycloakServerUrl)
             .realm("master")
