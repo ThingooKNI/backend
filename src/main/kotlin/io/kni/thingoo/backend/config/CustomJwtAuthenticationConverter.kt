@@ -32,6 +32,7 @@ class CustomJwtAuthenticationConverter(private val webappClientId: String, priva
     }
 
     companion object {
+        @Suppress("UNCHECKED_CAST")
         private fun extractResourceRoles(jwt: Jwt, resourceId: String): Collection<GrantedAuthority> {
             val resourceAccess: Map<String, Any> = jwt.getClaim("resource_access")
             val resource: Map<String, Any> = resourceAccess[resourceId] as Map<String, Any>? ?: return emptyList()
