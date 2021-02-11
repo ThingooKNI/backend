@@ -22,5 +22,7 @@ app:
   keycloak:
     auth-server-url: http://keycloak:8080/auth
     realm: Thingoo
+    admin-username: admin
+    admin-password: password
     webapp-client-id: thingoo-webapp
     device-client-id: thingoo-device

@@ -1,10 +1,8 @@
 package io.kni.thingoo.backend.keycloak
 
-import org.keycloak.KeycloakPrincipal
 import org.keycloak.admin.client.Keycloak
 import org.keycloak.admin.client.KeycloakBuilder
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service
 
 @Service
@@ -13,24 +11,19 @@ class KeycloakService {
     @Value("\${app.keycloak.auth-server-url}")
     private lateinit var keycloakServerUrl: String
 
-    @Value("\${app.keycloak.realm}")
-    private lateinit var keycloakRealm: String
+    @Value("\${app.keycloak.admin-username}")
+    private lateinit var adminUsername: String
+
+    @Value("\${app.keycloak.admin-password}")
+    private lateinit var adminPassword: String
 
     fun getInstance(): Keycloak? {
-        val authentication = SecurityContextHolder.getContext().authentication
-
-        if (authentication.principal is KeycloakPrincipal<*>) {
-            val principal = authentication.principal as KeycloakPrincipal<*>
-
-            val keycloakSecurityContext = principal.keycloakSecurityContext
-
-            return KeycloakBuilder.builder()
-                .serverUrl(keycloakServerUrl)
-                .realm(keycloakRealm)
-                .authorization(keycloakSecurityContext.tokenString)
-                .build()
-        }
-
-        return null
+        return KeycloakBuilder.builder()
+            .serverUrl(keycloakServerUrl)
+            .realm("master")
+            .clientId("admin-cli")
+            .username(adminUsername)
+            .password(adminPassword)
+            .build()
     }
 }

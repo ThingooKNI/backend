@@ -12,12 +12,6 @@ class UserController(private val userService: UserService) {
 
     @GetMapping("/me")
     fun getCurrentUser(): ResponseEntity<String> {
-        val authentication = SecurityContextHolder.getContext().authentication
-
-        println(authentication)
-        println(authentication.principal)
-        println(authentication.authorities)
-
         //TODO Get current user from keycloak?
 
         return ResponseEntity.ok("")
@@ -25,13 +19,6 @@ class UserController(private val userService: UserService) {
 
     @GetMapping
     fun getAllUsers(): List<User>? {
-        val authentication = SecurityContextHolder.getContext().authentication
-
-        println(authentication)
-        println(authentication.principal)
-        println(authentication.authorities)
-
-
         return userService.getAll()
     }
 }
