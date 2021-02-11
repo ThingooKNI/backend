@@ -16,18 +16,25 @@ data:
         url: 'jdbc:postgresql://postgres:5432/backend'
         username: postgres
         password: postgres
+      security:
+        oauth2:
+          resourceserver:
+            jwt:
+              issuer-uri: https://dev.thingoo.xyz/auth/realms/Thingoo
+              jwk-set-uri: http://keycloak:8080/auth/realms/Thingoo/protocol/openid-connect/certs
     server:
       port: 8080
       servlet:
         contextPath: /api
-    keycloak:
-      auth-server-url: 'http://keycloak:8080/auth'
-      realm: Thingoo
-      resource: thingoo-webapp
-      public-client: true
-      principal-attribute: preferred_username
-      use-resource-role-mappings: true
-      bearer-only: true
+    app:
+      keycloak:
+        auth-server-url: http://keycloak:8080/auth
+        realm: Thingoo
+        admin-username: admin
+        admin-password: password
+        webapp-client-id: thingoo-webapp
+        device-client-id: thingoo-device
+
 ---
 apiVersion: apps/v1
 kind: Deployment
