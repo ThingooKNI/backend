@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.web.bind.annotation.RestController
 import springfox.documentation.builders.AuthorizationCodeGrantBuilder
 import springfox.documentation.builders.OAuthBuilder
-import springfox.documentation.builders.OperationBuilder
 import springfox.documentation.builders.PathSelectors
 import springfox.documentation.builders.RequestHandlerSelectors
 import springfox.documentation.service.ApiInfo
@@ -18,8 +17,6 @@ import springfox.documentation.service.SecurityScheme
 import springfox.documentation.service.TokenEndpoint
 import springfox.documentation.service.TokenRequestEndpoint
 import springfox.documentation.spi.DocumentationType
-import springfox.documentation.spi.service.contexts.OperationContext
-import springfox.documentation.spi.service.contexts.OperationModelContextsBuilder
 import springfox.documentation.spi.service.contexts.SecurityContext
 import springfox.documentation.spring.web.plugins.Docket
 import springfox.documentation.swagger.web.SecurityConfiguration
@@ -72,8 +69,12 @@ class SpringFoxConfig {
 
     private fun securityScheme(): SecurityScheme {
         val grantType: GrantType = AuthorizationCodeGrantBuilder()
-            .tokenEndpoint { TokenEndpoint("$authServerUrl/realms/Thingoo/protocol/openid-connect/token",
-                "oauthtoken") }
+            .tokenEndpoint {
+                TokenEndpoint(
+                    "$authServerUrl/realms/Thingoo/protocol/openid-connect/token",
+                    "oauthtoken"
+                )
+            }
             .tokenRequestEndpoint {
                 TokenRequestEndpoint(
                     "$authServerUrl/realms/Thingoo/protocol/openid-connect/auth", webappClientId, webappClientSecret
