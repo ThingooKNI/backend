@@ -42,6 +42,10 @@ dependencies {
     implementation("org.keycloak:keycloak-admin-client:12.0.2")
     implementation("io.zonky.test:embedded-database-spring-test:1.6.0")
     implementation("io.zonky.test.postgres:embedded-postgres-binaries-bom:13.1.0")
+
+    implementation("io.springfox:springfox-boot-starter:3.0.0")
+    implementation("io.springfox:springfox-swagger-ui:3.0.0")
+
 }
 
 tasks.withType<Test> {
