@@ -21,6 +21,7 @@ import springfox.documentation.spi.service.contexts.SecurityContext
 import springfox.documentation.spring.web.plugins.Docket
 import springfox.documentation.swagger.web.SecurityConfiguration
 import springfox.documentation.swagger.web.SecurityConfigurationBuilder
+import java.security.Principal
 
 @Configuration
 class SpringFoxConfig {
@@ -37,6 +38,7 @@ class SpringFoxConfig {
     @Bean
     fun api(): Docket {
         return Docket(DocumentationType.SWAGGER_2)
+            .ignoredParameterTypes(Principal::class.java)
             .select()
             .apis(RequestHandlerSelectors.withClassAnnotation(RestController::class.java))
             .paths(PathSelectors.any())
@@ -69,17 +71,17 @@ class SpringFoxConfig {
 
     private fun securityScheme(): SecurityScheme {
         val grantType: GrantType = AuthorizationCodeGrantBuilder()
-            .tokenEndpoint {
+            .tokenEndpoint(
                 TokenEndpoint(
                     "$authServerUrl/realms/Thingoo/protocol/openid-connect/token",
                     "oauthtoken"
                 )
-            }
-            .tokenRequestEndpoint {
+            )
+            .tokenRequestEndpoint(
                 TokenRequestEndpoint(
                     "$authServerUrl/realms/Thingoo/protocol/openid-connect/auth", webappClientId, webappClientSecret
                 )
-            }
+            )
             .build()
         return OAuthBuilder().name("spring_oauth")
             .grantTypes(listOf(grantType))
