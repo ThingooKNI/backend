@@ -19,6 +19,7 @@ server:
     contextPath: /api
 
 app:
+  cors-origins: http://localhost:4200, https://dev.thingoo.xyz, https://thingoo.xyz
   keycloak:
     auth-server-url: http://keycloak:8080/auth
     realm: Thingoo
