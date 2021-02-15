@@ -16,9 +16,12 @@ class CorsConfiguration {
     fun corsConfigurer(): WebMvcConfigurer {
         return object : WebMvcConfigurer {
             override fun addCorsMappings(registry: CorsRegistry) {
-                registry.addMapping("/**").allowedMethods("GET", "POST", "PUT", "DELETE")
+                registry
+                    .addMapping("/**")
+                    .allowedMethods("GET", "POST", "PUT", "DELETE")
                     .allowedOrigins(*corsAllowedOrigins.toTypedArray())
                     .allowedHeaders("*")
+                    .allowCredentials(true)
             }
         }
     }
