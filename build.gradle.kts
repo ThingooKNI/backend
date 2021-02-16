@@ -33,6 +33,7 @@ dependencies {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
     testImplementation("org.springframework.security:spring-security-test")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
 
     // persistence
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
