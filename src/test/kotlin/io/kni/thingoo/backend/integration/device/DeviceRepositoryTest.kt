@@ -8,6 +8,7 @@ import io.kni.thingoo.backend.entities.EntityType
 import io.kni.thingoo.backend.entities.UnitType
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -21,6 +22,12 @@ class DeviceRepositoryTest {
 
     @Autowired
     private lateinit var entityRepository: EntityRepository
+
+    @AfterEach
+    fun clear() {
+        deviceRepository.deleteAll()
+        entityRepository.deleteAll()
+    }
 
     @Test
     fun saveDeviceWithEntity() {
@@ -46,6 +53,5 @@ class DeviceRepositoryTest {
         assertThat(savedDevice.isPresent).isTrue
         assertThat(savedDevice.get().id).isNotEqualTo(0)
         assertThat(savedDevice.get().entities).hasSize(1)
-        assertThat(savedDevice.get().entities.first().id).isEqualTo(1)
     }
 }

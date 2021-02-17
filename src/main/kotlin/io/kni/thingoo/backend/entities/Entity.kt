@@ -1,6 +1,5 @@
 package io.kni.thingoo.backend.entities
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import io.kni.thingoo.backend.devices.Device
 import java.io.Serializable
 import javax.persistence.Column

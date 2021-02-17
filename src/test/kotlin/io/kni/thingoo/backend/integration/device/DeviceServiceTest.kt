@@ -11,6 +11,7 @@ import io.kni.thingoo.backend.entities.UnitType
 import io.kni.thingoo.backend.entities.exceptions.ExistingEntityKeyException
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
@@ -28,6 +29,12 @@ class DeviceServiceTest {
 
     @Autowired
     private lateinit var deviceService: DeviceService
+
+    @AfterEach
+    fun clear() {
+        deviceRepository.deleteAll()
+        entityRepository.deleteAll()
+    }
 
     @Test
     fun `given new device, when registering new device with invalid mac, then will throw InvalidMACAddressException`() {
