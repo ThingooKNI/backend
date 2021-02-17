@@ -208,7 +208,7 @@ class DeviceServiceTest {
         // then
         val updatedDevice = deviceRepository.findByDeviceID(newDevice.deviceID).get()
         assertThat(updatedDevice.entities).hasSize(2)
-        assertThat(updatedDevice.entities).isEqualTo(existingEntities)
+        assertThat(updatedDevice.entities).hasSameElementsAs(existingEntities)
         assertThat(updatedDevice.displayName).isEqualTo(newDevice.displayName)
     }
 

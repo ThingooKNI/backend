@@ -2,7 +2,7 @@ package io.kni.thingoo.backend.devices
 
 import io.kni.thingoo.backend.devices.exceptions.ExistingDeviceIDException
 import io.kni.thingoo.backend.devices.exceptions.InvalidMACAddressException
-import io.kni.thingoo.backend.entities.Entity
+import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.RegisterEntityDto
 import io.kni.thingoo.backend.entities.exceptions.ExistingEntityKeyException
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,10 +12,16 @@ import java.util.regex.Pattern
 
 @Service
 class DeviceServiceImpl : DeviceService {
+
     @Autowired
     private lateinit var deviceRepository: DeviceRepository
 
+    @Autowired
+    private lateinit var entityRepository: EntityRepository
+
     override fun registerDevice(registerDeviceDto: RegisterDeviceDto): Device {
+        // TODO validate whether this macAddress has at most 1 device (mac cannot have 2 devices), add test
+
         validateMacAddress(registerDeviceDto.macAddress)
 
         validateEntities(registerDeviceDto.entities)
@@ -57,18 +63,49 @@ class DeviceServiceImpl : DeviceService {
     }
 
     private fun registerNewDevice(registerDeviceDto: RegisterDeviceDto): Device {
-        val device = registerDeviceDto.toDevice()
-        device.entities.forEach { it.device = device }
-        println(device)
-        return deviceRepository.save(device)
+        var device = registerDeviceDto.toDevice()
+        device = deviceRepository.save(device)
+
+        val entities = device.entities
+        entities.forEach { it.device = device }
+
+        entityRepository.saveAll(entities)
+        return device
     }
 
     private fun registerExistingDevice(existingDevice: Device, registerDeviceDto: RegisterDeviceDto): Device {
         if (existingDevice.macAddress != registerDeviceDto.macAddress) {
             throw ExistingDeviceIDException("There is already a device registered with this deviceID.")
         }
-        // If existing device, overwrite entities and device info
 
-        TODO()
+        // TODO REFACTOR
+        val existingEntities = entityRepository.findByDeviceId(existingDevice.id)
+
+        registerDeviceDto.entities.forEach { entity ->
+            val oldEntity = existingEntities.find { it.key == entity.key }
+            if (oldEntity != null) {
+                val updatedEntity = entity.toEntity()
+                updatedEntity.id = oldEntity.id
+                updatedEntity.device = existingDevice
+                entityRepository.save(updatedEntity)
+            } else {
+                val newEntity = entity.toEntity()
+                newEntity.device = existingDevice
+                entityRepository.save(newEntity)
+            }
+        }
+
+        existingEntities.forEach { entity ->
+            if (registerDeviceDto.entities.none { it.key == entity.key }) {
+                entityRepository.delete(entity)
+            }
+        }
+
+        // update device data
+        // Should it be generic? We have only displayName to edit for now but this subset of fields may grow in the future
+        existingDevice.displayName = registerDeviceDto.displayName
+
+        existingDevice.entities = emptyList() // to prevent cascading PERSIST of old entities
+        return deviceRepository.save(existingDevice)
     }
 }

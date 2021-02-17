@@ -49,7 +49,35 @@ class Entity(
     }
 
     override fun toString(): String {
-        return "Entity(id=$id, key='$key', displayName=$displayName, type=$type, unitType=$unitType," +
+        return "Entity(id=$id, key='$key', displayName='$displayName', type=$type, unitType=$unitType," +
             " unitDisplayName='$unitDisplayName')"
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as io.kni.thingoo.backend.entities.Entity
+
+        if (id != other.id) return false
+        if (key != other.key) return false
+        if (displayName != other.displayName) return false
+        if (type != other.type) return false
+        if (unitType != other.unitType) return false
+        if (unitDisplayName != other.unitDisplayName) return false
+        if (device != other.device) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = id
+        result = 31 * result + key.hashCode()
+        result = 31 * result + (displayName?.hashCode() ?: 0)
+        result = 31 * result + type.hashCode()
+        result = 31 * result + unitType.hashCode()
+        result = 31 * result + unitDisplayName.hashCode()
+        result = 31 * result + (device?.hashCode() ?: 0)
+        return result
     }
 }
