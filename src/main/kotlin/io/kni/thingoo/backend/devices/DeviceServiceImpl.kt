@@ -1,8 +1,10 @@
 package io.kni.thingoo.backend.devices
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Service
 import java.util.Optional
 
+@Service
 class DeviceServiceImpl : DeviceService {
     @Autowired
     private lateinit var deviceRepository: DeviceRepository

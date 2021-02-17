@@ -35,7 +35,7 @@ fun createTestRegisterDeviceDto(
     id: String = "test",
     mac: String = randomMACAddress(),
     name: String = "Test device",
-    entities: Set<Entity> = emptySet()
+    entities: Set<RegisterEntityDto> = emptySet()
 ): RegisterDeviceDto {
     return RegisterDeviceDto(
         deviceID = id,
