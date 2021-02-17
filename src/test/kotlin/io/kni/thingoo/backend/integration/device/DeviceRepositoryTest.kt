@@ -11,6 +11,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.annotation.DirtiesContext
 
 @SpringBootTest
 @AutoConfigureEmbeddedDatabase
@@ -44,7 +45,7 @@ class DeviceRepositoryTest {
 
         val savedDevice = deviceRepository.findById(device.id)
         assertThat(savedDevice.isPresent).isTrue
-        assertThat(savedDevice.get().id).isEqualTo(1)
+        assertThat(savedDevice.get().id).isNotEqualTo(0)
         assertThat(savedDevice.get().entities).hasSize(1)
         assertThat(savedDevice.get().entities.first().id).isEqualTo(1)
     }
