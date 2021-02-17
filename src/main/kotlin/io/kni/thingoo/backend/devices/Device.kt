@@ -18,10 +18,10 @@ class Device(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Int = 0,
 
-    @Column(name = "device_id", nullable = false)
+    @Column(name = "device_id", nullable = false, unique = true)
     var deviceID: String,
 
-    @Column(name = "mac_address", nullable = false)
+    @Column(name = "mac_address", nullable = false, unique = true)
     var macAddress: String,
 
     @Column(name = "display_name", nullable = true)

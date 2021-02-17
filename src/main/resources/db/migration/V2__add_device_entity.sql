@@ -4,9 +4,9 @@ CREATE TYPE unit_type AS ENUM ('INTEGER', 'DECIMAL', 'STRING', 'BOOLEAN');
 
 CREATE TABLE devices(
     id SERIAL PRIMARY KEY,
-    device_id TEXT NOT NULL,
+    device_id TEXT NOT NULL UNIQUE,
     display_name TEXT,
-    mac_address TEXT NOT NULL
+    mac_address TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE entities(
