@@ -37,3 +37,4 @@ out/
 .vscode/
 
 dev-database/
+swagger.json
