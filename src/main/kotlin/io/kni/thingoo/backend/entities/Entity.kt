@@ -43,6 +43,12 @@ class Entity(
     // @JsonIgnore
     var device: Device? = null
 ) : Serializable {
+    fun toRegisterEntityDto(): RegisterEntityDto {
+        return RegisterEntityDto(
+            key, displayName, type, unitType, unitDisplayName
+        )
+    }
+
     override fun toString(): String {
         return "Entity(id=$id, key='$key', displayName=$displayName, type=$type, unitType=$unitType," +
             " unitDisplayName='$unitDisplayName')"

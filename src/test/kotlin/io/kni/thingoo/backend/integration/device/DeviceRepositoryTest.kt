@@ -29,7 +29,7 @@ class DeviceRepositoryTest {
         deviceRepository.save(device)
         assertThat(device.id).isNotEqualTo(0)
 
-        val entities = setOf(
+        val entities = listOf(
             Entity(
                 key = "temp",
                 displayName = "Temperature",

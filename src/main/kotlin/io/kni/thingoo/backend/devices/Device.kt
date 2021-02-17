@@ -28,8 +28,14 @@ class Device(
     var displayName: String?,
 
     @OneToMany(mappedBy = "device", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
-    var entities: Set<Entity> = emptySet()
+    var entities: List<Entity> = emptyList()
 ) : Serializable {
+    fun toRegisterDeviceDto(): RegisterDeviceDto {
+        return RegisterDeviceDto(
+            deviceID, macAddress, displayName, entities.map { it.toRegisterEntityDto() }
+        )
+    }
+
     override fun toString(): String {
         return "Device(id=$id, deviceID='$deviceID', macAddress='$macAddress', displayName=$displayName," +
             " entities=$entities)"
