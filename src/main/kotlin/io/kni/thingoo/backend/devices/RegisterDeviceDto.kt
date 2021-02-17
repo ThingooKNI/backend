@@ -14,7 +14,7 @@ data class RegisterDeviceDto(
             deviceID,
             macAddress,
             displayName,
-            entities = entities.map { it.toEntity() }
+            entities = entities.map { it.toEntity() }.toMutableList()
         )
     }
 }

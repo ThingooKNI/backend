@@ -1,7 +1,9 @@
 package io.kni.thingoo.backend.devices
 
 import io.kni.thingoo.backend.devices.exceptions.ExistingDeviceIDException
+import io.kni.thingoo.backend.devices.exceptions.ExistingMACAddressException
 import io.kni.thingoo.backend.devices.exceptions.InvalidMACAddressException
+import io.kni.thingoo.backend.entities.Entity
 import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.RegisterEntityDto
 import io.kni.thingoo.backend.entities.exceptions.ExistingEntityKeyException
@@ -20,7 +22,7 @@ class DeviceServiceImpl : DeviceService {
     private lateinit var entityRepository: EntityRepository
 
     override fun registerDevice(registerDeviceDto: RegisterDeviceDto): Device {
-        // TODO validate whether this macAddress has at most 1 device (mac cannot have 2 devices), add test
+        validateMacAddressDuplication(registerDeviceDto.macAddress, registerDeviceDto.deviceID)
 
         validateMacAddress(registerDeviceDto.macAddress)
 
@@ -56,6 +58,13 @@ class DeviceServiceImpl : DeviceService {
         }
     }
 
+    private fun validateMacAddressDuplication(macAddress: String, deviceID: String) {
+        val device = deviceRepository.findByMacAddress(macAddress)
+        if (device.isPresent && device.get().deviceID != deviceID) {
+            throw ExistingMACAddressException("There is already a device registered with this macAddress")
+        }
+    }
+
     private fun isValidMacAddress(mac: String): Boolean {
         val pattern = Pattern.compile("^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$")
         val matcher = pattern.matcher(mac)
@@ -74,38 +83,62 @@ class DeviceServiceImpl : DeviceService {
     }
 
     private fun registerExistingDevice(existingDevice: Device, registerDeviceDto: RegisterDeviceDto): Device {
+        validateDeviceIdCollision(existingDevice, registerDeviceDto)
+
+        val existingEntities = entityRepository.findByDeviceId(existingDevice.id)
+
+        updateNewAndExistingEntities(registerDeviceDto, existingDevice, existingEntities)
+        deleteOldEntities(existingEntities, registerDeviceDto)
+        updateDevice(existingDevice, registerDeviceDto)
+
+        existingDevice.entities = emptyList() // to prevent saving old entities
+        return deviceRepository.save(existingDevice)
+    }
+
+    private fun validateDeviceIdCollision(existingDevice: Device, registerDeviceDto: RegisterDeviceDto) {
         if (existingDevice.macAddress != registerDeviceDto.macAddress) {
             throw ExistingDeviceIDException("There is already a device registered with this deviceID.")
         }
+    }
 
-        // TODO REFACTOR
-        val existingEntities = entityRepository.findByDeviceId(existingDevice.id)
+    private fun updateExistingEntity(entity: RegisterEntityDto, oldEntity: Entity, existingDevice: Device) {
+        val updatedEntity = entity.toEntity()
+        updatedEntity.id = oldEntity.id
+        updatedEntity.device = existingDevice
+        entityRepository.save(updatedEntity)
+    }
 
+    private fun createNewEntity(entity: RegisterEntityDto, existingDevice: Device) {
+        val newEntity = entity.toEntity()
+        newEntity.device = existingDevice
+        entityRepository.save(newEntity)
+    }
+
+    private fun updateNewAndExistingEntities(
+        registerDeviceDto: RegisterDeviceDto,
+        existingDevice: Device,
+        existingEntities: List<Entity>
+    ) {
         registerDeviceDto.entities.forEach { entity ->
             val oldEntity = existingEntities.find { it.key == entity.key }
             if (oldEntity != null) {
-                val updatedEntity = entity.toEntity()
-                updatedEntity.id = oldEntity.id
-                updatedEntity.device = existingDevice
-                entityRepository.save(updatedEntity)
+                updateExistingEntity(entity, oldEntity, existingDevice)
             } else {
-                val newEntity = entity.toEntity()
-                newEntity.device = existingDevice
-                entityRepository.save(newEntity)
+                createNewEntity(entity, existingDevice)
             }
         }
+    }
 
+    private fun deleteOldEntities(existingEntities: List<Entity>, registerDeviceDto: RegisterDeviceDto) {
         existingEntities.forEach { entity ->
             if (registerDeviceDto.entities.none { it.key == entity.key }) {
                 entityRepository.delete(entity)
             }
         }
+    }
 
-        // update device data
+    private fun updateDevice(existingDevice: Device, registerDeviceDto: RegisterDeviceDto) {
         // Should it be generic? We have only displayName to edit for now but this subset of fields may grow in the future
         existingDevice.displayName = registerDeviceDto.displayName
-
-        existingDevice.entities = emptyList() // to prevent cascading PERSIST of old entities
-        return deviceRepository.save(existingDevice)
     }
 }

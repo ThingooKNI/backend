@@ -4,6 +4,7 @@ package io.kni.thingoo.backend.integration.device
 import io.kni.thingoo.backend.devices.DeviceRepository
 import io.kni.thingoo.backend.devices.DeviceService
 import io.kni.thingoo.backend.devices.exceptions.ExistingDeviceIDException
+import io.kni.thingoo.backend.devices.exceptions.ExistingMACAddressException
 import io.kni.thingoo.backend.devices.exceptions.InvalidMACAddressException
 import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.EntityType
@@ -208,7 +209,6 @@ class DeviceServiceTest {
         // then
         val updatedDevice = deviceRepository.findByDeviceID(newDevice.deviceID).get()
         assertThat(updatedDevice.entities).hasSize(2)
-        assertThat(updatedDevice.entities).hasSameElementsAs(existingEntities)
         assertThat(updatedDevice.displayName).isEqualTo(newDevice.displayName)
     }
 
@@ -257,5 +257,18 @@ class DeviceServiceTest {
         // then
         val updatedDevice = deviceRepository.findByDeviceID(newDevice.deviceID).get()
         assertThat(updatedDevice.entities).hasSize(1)
+    }
+
+    @Test
+    fun `given existing device, when registering new device with same macAddress and different deviceID, then will throw ExistingMACAddressException`() {
+        // given
+        val existingDevice = createTestDevice(id = "device1", mac = "00:A0:C9:14:C8:29")
+        deviceRepository.save(existingDevice)
+
+        // when
+        val newDevice = createTestRegisterDeviceDto(id = "device2", mac = "00:A0:C9:14:C8:29")
+
+        // then
+        assertThrows<ExistingMACAddressException> { deviceService.registerDevice(newDevice) }
     }
 }

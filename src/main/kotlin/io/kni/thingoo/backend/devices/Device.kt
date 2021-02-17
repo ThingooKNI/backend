@@ -28,7 +28,7 @@ class Device(
     var displayName: String?,
 
     @OneToMany(mappedBy = "device", fetch = FetchType.EAGER, orphanRemoval = true)
-    var entities: List<Entity> = emptyList()
+    var entities: List<Entity> = mutableListOf()
 ) : Serializable {
     fun toRegisterDeviceDto(): RegisterDeviceDto {
         return RegisterDeviceDto(
