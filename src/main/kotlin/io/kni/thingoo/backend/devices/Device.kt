@@ -2,7 +2,6 @@ package io.kni.thingoo.backend.devices
 
 import io.kni.thingoo.backend.entities.Entity
 import java.io.Serializable
-import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
