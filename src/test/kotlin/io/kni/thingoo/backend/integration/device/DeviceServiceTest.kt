@@ -3,11 +3,12 @@ package io.kni.thingoo.backend.integration.device
 
 import io.kni.thingoo.backend.devices.DeviceRepository
 import io.kni.thingoo.backend.devices.DeviceService
-import io.kni.thingoo.backend.devices.ExistingDeviceIDException
+import io.kni.thingoo.backend.devices.exceptions.ExistingDeviceIDException
+import io.kni.thingoo.backend.devices.exceptions.InvalidMACAddressException
 import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.EntityType
-import io.kni.thingoo.backend.entities.ExistingEntityKeyException
 import io.kni.thingoo.backend.entities.UnitType
+import io.kni.thingoo.backend.entities.exceptions.ExistingEntityKeyException
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -27,6 +28,17 @@ class DeviceServiceTest {
 
     @Autowired
     private lateinit var deviceService: DeviceService
+
+    @Test
+    fun `given new device, when registering new device with invalid mac, then will throw InvalidMACAddressException`() {
+        // given
+        val newDevice = createTestRegisterDeviceDto(mac = "test")
+
+        // when
+
+        // then
+        assertThrows<InvalidMACAddressException> { deviceService.registerDevice(newDevice) }
+    }
 
     @Test
     fun `given new device, when registering new device, then will register new device with entities`() {
