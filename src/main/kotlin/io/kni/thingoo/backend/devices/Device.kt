@@ -31,6 +31,7 @@ class Device(
     var entities: Set<Entity> = emptySet()
 ) : Serializable {
     override fun toString(): String {
-        return "Device(id=$id, deviceID='$deviceID', macAddress='$macAddress', displayName=$displayName, entities=$entities)"
+        return "Device(id=$id, deviceID='$deviceID', macAddress='$macAddress', displayName=$displayName," +
+            " entities=$entities)"
     }
 }

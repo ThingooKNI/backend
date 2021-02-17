@@ -1,6 +1,5 @@
 package io.kni.thingoo.backend.entities
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import io.kni.thingoo.backend.devices.Device
 import java.io.Serializable
 import javax.persistence.Column
@@ -45,6 +44,7 @@ class Entity(
     var device: Device? = null
 ) : Serializable {
     override fun toString(): String {
-        return "Entity(id=$id, key='$key', displayName=$displayName, type=$type, unitType=$unitType, unitDisplayName='$unitDisplayName')"
+        return "Entity(id=$id, key='$key', displayName=$displayName, type=$type, unitType=$unitType," +
+            " unitDisplayName='$unitDisplayName')"
     }
 }
