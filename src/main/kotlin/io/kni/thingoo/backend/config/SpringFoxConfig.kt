@@ -54,7 +54,7 @@ class SpringFoxConfig {
             "",
             "0.0.8",
             null,
-            Contact("Bartłomiej Rasztabiga", "https://github.com/BartlomiejRasztabiga", "contact@rasztabiga.me"),
+            Contact("Bartlomiej Rasztabiga", "https://github.com/BartlomiejRasztabiga", "contact@rasztabiga.me"),
             null, null, emptyList()
         )
     }
