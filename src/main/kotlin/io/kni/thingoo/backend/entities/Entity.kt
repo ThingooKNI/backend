@@ -8,7 +8,6 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.EnumType
 import javax.persistence.Enumerated
-import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
@@ -40,8 +39,8 @@ class Entity(
     @Column(name = "unit_display_name", nullable = false)
     var unitDisplayName: String,
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "device_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "device_id")
     var device: Device? = null
 ) : Serializable {
     fun toRegisterEntityDto(): RegisterEntityDto {

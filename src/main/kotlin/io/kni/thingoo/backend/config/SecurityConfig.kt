@@ -1,6 +1,7 @@
 package io.kni.thingoo.backend.config
 
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -21,6 +22,7 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
             .antMatchers("/v2/api-docs").permitAll()
             .antMatchers("/swagger-ui/**").permitAll()
             .antMatchers("/swagger-resources/**").permitAll()
+            .antMatchers(HttpMethod.POST, "/devices/**").hasRole("device")
             .anyRequest().hasRole("user")
             .and()
             .oauth2ResourceServer()

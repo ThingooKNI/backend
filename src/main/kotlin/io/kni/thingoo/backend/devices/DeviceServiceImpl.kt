@@ -87,33 +87,18 @@ class DeviceServiceImpl(
     private fun registerExistingDevice(existingDevice: Device, registerDeviceDto: RegisterDeviceDto) {
         validateDeviceIdCollision(existingDevice, registerDeviceDto)
 
+        updateDevice(existingDevice, registerDeviceDto)
+
         val existingEntities = entityRepository.findByDeviceId(existingDevice.id)
 
         updateNewAndExistingEntities(registerDeviceDto, existingDevice, existingEntities)
-        deleteOldEntities(existingEntities, registerDeviceDto)
-        updateDevice(existingDevice, registerDeviceDto)
-
-        existingDevice.entities = emptyList() // to prevent saving old entities
-        deviceRepository.save(existingDevice)
+        deleteOldEntities(existingEntities, registerDeviceDto, existingDevice)
     }
 
     private fun validateDeviceIdCollision(existingDevice: Device, registerDeviceDto: RegisterDeviceDto) {
         if (existingDevice.macAddress != registerDeviceDto.macAddress) {
             throw ExistingDeviceIDException("There is already a device registered with this deviceID.")
         }
-    }
-
-    private fun updateExistingEntity(entity: RegisterEntityDto, oldEntity: Entity, existingDevice: Device) {
-        val updatedEntity = entity.toEntity()
-        updatedEntity.id = oldEntity.id
-        updatedEntity.device = existingDevice
-        entityRepository.save(updatedEntity)
-    }
-
-    private fun createNewEntity(entity: RegisterEntityDto, existingDevice: Device) {
-        val newEntity = entity.toEntity()
-        newEntity.device = existingDevice
-        entityRepository.save(newEntity)
     }
 
     private fun updateNewAndExistingEntities(
@@ -131,9 +116,23 @@ class DeviceServiceImpl(
         }
     }
 
-    private fun deleteOldEntities(existingEntities: List<Entity>, registerDeviceDto: RegisterDeviceDto) {
+    private fun updateExistingEntity(entity: RegisterEntityDto, oldEntity: Entity, existingDevice: Device) {
+        val updatedEntity = entity.toEntity()
+        updatedEntity.id = oldEntity.id
+        updatedEntity.device = existingDevice
+        entityRepository.save(updatedEntity)
+    }
+
+    private fun createNewEntity(entity: RegisterEntityDto, existingDevice: Device) {
+        val newEntity = entity.toEntity()
+        existingDevice.addEntity(newEntity)
+        entityRepository.save(newEntity)
+    }
+
+    private fun deleteOldEntities(existingEntities: List<Entity>, registerDeviceDto: RegisterDeviceDto, existingDevice: Device) {
         existingEntities.forEach { entity ->
             if (registerDeviceDto.entities.none { it.key == entity.key }) {
+                existingDevice.deleteEntity(entity)
                 entityRepository.delete(entity)
             }
         }
@@ -142,5 +141,6 @@ class DeviceServiceImpl(
     private fun updateDevice(existingDevice: Device, registerDeviceDto: RegisterDeviceDto) {
         // Should it be generic? We have only displayName to edit for now but this subset of fields may grow in the future
         existingDevice.displayName = registerDeviceDto.displayName
+        deviceRepository.save(existingDevice)
     }
 }

@@ -29,7 +29,7 @@ class Device(
     var displayName: String?,
 
     @OneToMany(mappedBy = "device", fetch = FetchType.EAGER, orphanRemoval = true)
-    var entities: List<Entity> = mutableListOf()
+    var entities: MutableList<Entity> = mutableListOf()
 ) : Serializable {
     fun toRegisterDeviceDto(): RegisterDeviceDto {
         return RegisterDeviceDto(
@@ -41,6 +41,16 @@ class Device(
         return DeviceDto(
             id, deviceID, macAddress, displayName, entities.map { it.toDto() }
         )
+    }
+
+    fun addEntity(entity: Entity) {
+        entity.device = this
+        this.entities.add(entity)
+    }
+
+    fun deleteEntity(entity: Entity) {
+        this.entities.remove(entity)
+        entity.device = null
     }
 
     override fun toString(): String {
