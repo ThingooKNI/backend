@@ -16,6 +16,11 @@
 ./scripts/reload-dev.sh
 ```
 
+## Watching application logs:
+```shell
+docker logs backend -f 
+```
+
 ## Stopping the app
 ```shell
 ./scripts/stop-dev.sh
