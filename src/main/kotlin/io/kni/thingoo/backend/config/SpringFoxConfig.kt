@@ -32,9 +32,6 @@ class SpringFoxConfig {
     @Value("\${app.keycloak.webapp-client-id}")
     lateinit var webappClientId: String
 
-    @Value("\${app.keycloak.webapp-client-secret}")
-    lateinit var webappClientSecret: String
-
     @Bean
     fun api(): Docket {
         return Docket(DocumentationType.SWAGGER_2)
@@ -63,7 +60,6 @@ class SpringFoxConfig {
     fun security(): SecurityConfiguration {
         return SecurityConfigurationBuilder.builder()
             .clientId(webappClientId)
-            .clientSecret(webappClientSecret)
             .scopeSeparator(" ")
             .useBasicAuthenticationWithAccessCodeGrant(false)
             .build()
@@ -79,7 +75,7 @@ class SpringFoxConfig {
             )
             .tokenRequestEndpoint(
                 TokenRequestEndpoint(
-                    "$authServerUrl/realms/Thingoo/protocol/openid-connect/auth", webappClientId, webappClientSecret
+                    "$authServerUrl/realms/Thingoo/protocol/openid-connect/auth", webappClientId, null
                 )
             )
             .build()

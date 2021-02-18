@@ -834,7 +834,8 @@
         "http://localhost:4200/*"
       ],
       "webOrigins": [
-        "*"
+        "https://dev.thingoo.xyz/*",
+        "http://localhost:4200/*"
       ],
       "notBefore": 0,
       "bearerOnly": false,
@@ -843,7 +844,7 @@
       "implicitFlowEnabled": false,
       "directAccessGrantsEnabled": false,
       "serviceAccountsEnabled": false,
-      "publicClient": false,
+      "publicClient": true,
       "frontchannelLogout": false,
       "protocol": "openid-connect",
       "attributes": {

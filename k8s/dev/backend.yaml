@@ -34,7 +34,6 @@ data:
         admin-username: admin
         admin-password: password
         webapp-client-id: thingoo-webapp
-        webapp-client-secret: 237f8386-f5cb-4dfa-9a93-667368558344
         device-client-id: thingoo-device
         external-auth-server-url: https://dev.thingoo.xyz/auth
 
