@@ -18,3 +18,5 @@ CREATE TABLE entities(
     unit_type TEXT NOT NULL,
     device_id INT REFERENCES devices (id) NOT NULL
 );
+
+CREATE INDEX idx_entities_key ON entities(key);
