@@ -30,12 +30,14 @@ class DeviceServiceImpl : DeviceService {
 
         val existingDeviceOptional = deviceRepository.findByDeviceID(registerDeviceDto.deviceID)
 
-        return if (existingDeviceOptional.isPresent) {
+        if (existingDeviceOptional.isPresent) {
             val existingDevice = existingDeviceOptional.get()
             registerExistingDevice(existingDevice, registerDeviceDto)
         } else {
             registerNewDevice(registerDeviceDto)
         }
+
+        return deviceRepository.findByDeviceID(registerDeviceDto.deviceID).get()
     }
 
     override fun getAll(): List<Device> {
@@ -71,7 +73,7 @@ class DeviceServiceImpl : DeviceService {
         return matcher.find()
     }
 
-    private fun registerNewDevice(registerDeviceDto: RegisterDeviceDto): Device {
+    private fun registerNewDevice(registerDeviceDto: RegisterDeviceDto) {
         var device = registerDeviceDto.toDevice()
         device = deviceRepository.save(device)
 
@@ -79,10 +81,9 @@ class DeviceServiceImpl : DeviceService {
         entities.forEach { it.device = device }
 
         entityRepository.saveAll(entities)
-        return device
     }
 
-    private fun registerExistingDevice(existingDevice: Device, registerDeviceDto: RegisterDeviceDto): Device {
+    private fun registerExistingDevice(existingDevice: Device, registerDeviceDto: RegisterDeviceDto) {
         validateDeviceIdCollision(existingDevice, registerDeviceDto)
 
         val existingEntities = entityRepository.findByDeviceId(existingDevice.id)
@@ -92,7 +93,7 @@ class DeviceServiceImpl : DeviceService {
         updateDevice(existingDevice, registerDeviceDto)
 
         existingDevice.entities = emptyList() // to prevent saving old entities
-        return deviceRepository.save(existingDevice)
+        deviceRepository.save(existingDevice)
     }
 
     private fun validateDeviceIdCollision(existingDevice: Device, registerDeviceDto: RegisterDeviceDto) {
