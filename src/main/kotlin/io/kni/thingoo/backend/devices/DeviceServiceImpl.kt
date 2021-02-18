@@ -10,18 +10,14 @@ import io.kni.thingoo.backend.entities.Entity
 import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.dto.RegisterEntityDto
 import io.kni.thingoo.backend.entities.exceptions.ExistingEntityKeyException
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.regex.Pattern
 
 @Service
-class DeviceServiceImpl : DeviceService {
-
-    @Autowired
-    private lateinit var deviceRepository: DeviceRepository
-
-    @Autowired
-    private lateinit var entityRepository: EntityRepository
+class DeviceServiceImpl(
+    private val deviceRepository: DeviceRepository,
+    private val entityRepository: EntityRepository
+) : DeviceService {
 
     override fun registerDevice(registerDeviceDto: RegisterDeviceDto): DeviceDto {
         validateMacAddressDuplication(registerDeviceDto.macAddress, registerDeviceDto.deviceID)
@@ -50,7 +46,7 @@ class DeviceServiceImpl : DeviceService {
         val deviceOptional = deviceRepository.findById(id)
         return deviceOptional
             .map { it.toDto() }
-            .orElseThrow { DeviceNotFoundException("Device with id=${id} not found") }
+            .orElseThrow { DeviceNotFoundException("Device with id=$id not found") }
     }
 
     private fun validateEntities(entities: List<RegisterEntityDto>) {
