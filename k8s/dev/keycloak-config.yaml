@@ -833,7 +833,8 @@ data:
           "redirectUris": [
             "https://dev.thingoo.xyz/*",
             "http://localhost:8080/*",
-            "https://thingoo.xyz/*"
+            "https://thingoo.xyz/*",
+            "http://localhost:4200/*"
           ],
           "webOrigins": [
             "*"
