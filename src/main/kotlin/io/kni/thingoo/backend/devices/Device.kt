@@ -1,5 +1,7 @@
 package io.kni.thingoo.backend.devices
 
+import io.kni.thingoo.backend.devices.dto.DeviceDto
+import io.kni.thingoo.backend.devices.dto.RegisterDeviceDto
 import io.kni.thingoo.backend.entities.Entity
 import java.io.Serializable
 import javax.persistence.Column
@@ -32,6 +34,12 @@ class Device(
     fun toRegisterDeviceDto(): RegisterDeviceDto {
         return RegisterDeviceDto(
             deviceID, macAddress, displayName, entities.map { it.toRegisterEntityDto() }
+        )
+    }
+
+    fun toDto(): DeviceDto {
+        return DeviceDto(
+            id, deviceID, macAddress, displayName, entities.map { it.toDto() }
         )
     }
 

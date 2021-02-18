@@ -1,4 +1,8 @@
-package io.kni.thingoo.backend.entities
+package io.kni.thingoo.backend.entities.dto
+
+import io.kni.thingoo.backend.entities.Entity
+import io.kni.thingoo.backend.entities.EntityType
+import io.kni.thingoo.backend.entities.UnitType
 
 data class RegisterEntityDto(
     var key: String,

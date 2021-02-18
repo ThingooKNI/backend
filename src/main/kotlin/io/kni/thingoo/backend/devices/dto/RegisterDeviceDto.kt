@@ -1,6 +1,7 @@
-package io.kni.thingoo.backend.devices
+package io.kni.thingoo.backend.devices.dto
 
-import io.kni.thingoo.backend.entities.RegisterEntityDto
+import io.kni.thingoo.backend.devices.Device
+import io.kni.thingoo.backend.entities.dto.RegisterEntityDto
 
 data class RegisterDeviceDto(
     var deviceID: String,

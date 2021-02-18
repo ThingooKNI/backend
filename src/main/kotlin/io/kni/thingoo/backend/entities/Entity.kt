@@ -1,6 +1,8 @@
 package io.kni.thingoo.backend.entities
 
 import io.kni.thingoo.backend.devices.Device
+import io.kni.thingoo.backend.entities.dto.EntityDto
+import io.kni.thingoo.backend.entities.dto.RegisterEntityDto
 import java.io.Serializable
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -45,6 +47,12 @@ class Entity(
     fun toRegisterEntityDto(): RegisterEntityDto {
         return RegisterEntityDto(
             key, displayName, type, unitType, unitDisplayName
+        )
+    }
+
+    fun toDto(): EntityDto {
+        return EntityDto(
+            id, key, displayName, type, unitType, unitDisplayName
         )
     }
 

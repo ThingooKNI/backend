@@ -1,15 +1,17 @@
 package io.kni.thingoo.backend.devices
 
+import io.kni.thingoo.backend.devices.dto.DeviceDto
+import io.kni.thingoo.backend.devices.dto.RegisterDeviceDto
+import io.kni.thingoo.backend.devices.exceptions.DeviceNotFoundException
 import io.kni.thingoo.backend.devices.exceptions.ExistingDeviceIDException
 import io.kni.thingoo.backend.devices.exceptions.ExistingMACAddressException
 import io.kni.thingoo.backend.devices.exceptions.InvalidMACAddressException
 import io.kni.thingoo.backend.entities.Entity
 import io.kni.thingoo.backend.entities.EntityRepository
-import io.kni.thingoo.backend.entities.RegisterEntityDto
+import io.kni.thingoo.backend.entities.dto.RegisterEntityDto
 import io.kni.thingoo.backend.entities.exceptions.ExistingEntityKeyException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.Optional
 import java.util.regex.Pattern
 
 @Service
@@ -21,7 +23,7 @@ class DeviceServiceImpl : DeviceService {
     @Autowired
     private lateinit var entityRepository: EntityRepository
 
-    override fun registerDevice(registerDeviceDto: RegisterDeviceDto): Device {
+    override fun registerDevice(registerDeviceDto: RegisterDeviceDto): DeviceDto {
         validateMacAddressDuplication(registerDeviceDto.macAddress, registerDeviceDto.deviceID)
 
         validateMacAddress(registerDeviceDto.macAddress)
@@ -37,15 +39,18 @@ class DeviceServiceImpl : DeviceService {
             registerNewDevice(registerDeviceDto)
         }
 
-        return deviceRepository.findByDeviceID(registerDeviceDto.deviceID).get()
+        return deviceRepository.findByDeviceID(registerDeviceDto.deviceID).get().toDto()
     }
 
-    override fun getAll(): List<Device> {
-        return deviceRepository.findAll().toList()
+    override fun getAll(): List<DeviceDto> {
+        return deviceRepository.findAll().toList().map { it.toDto() }
     }
 
-    override fun getById(id: Int): Optional<Device> {
-        return deviceRepository.findById(id)
+    override fun getById(id: Int): DeviceDto {
+        val deviceOptional = deviceRepository.findById(id)
+        return deviceOptional
+            .map { it.toDto() }
+            .orElseThrow { DeviceNotFoundException("Device with id=${id} not found") }
     }
 
     private fun validateEntities(entities: List<RegisterEntityDto>) {
