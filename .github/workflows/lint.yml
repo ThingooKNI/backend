@@ -20,3 +20,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FILTER_REGEX_INCLUDE: .*src/.*
           FILTER_REGEX_EXCLUDE: .*src/.*.sql
+          VALIDATE_JSCPD: false
