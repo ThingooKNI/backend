@@ -47,7 +47,7 @@ jobs:
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
       - name: Install envsubst
-        run: sudo apt-get install ettext-base
+        run: sudo apt-get install gettext-base
       - name: Deploy to Kubernetes cluster
         uses: stefanprodan/kube-tools@v1
         env:
