@@ -52,7 +52,8 @@ jobs:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
           command: |
-            echo "$KUBE_CONFIG_DATA" | base64 -d > $HOME/.kube/config
+            echo "$KUBE_CONFIG_DATA" | base64 -d > /tmp/config
+            export KUBECONFIG=/tmp/config
             kubectl apply --namespace thingoo -f k8s/dev/keycloak-db.yaml
             kubectl apply --namespace thingoo -f k8s/dev/keycloak-config.yaml
             kubectl apply --namespace thingoo -f k8s/dev/keycloak.yaml
