@@ -48,9 +48,11 @@ jobs:
           labels: ${{ steps.docker_meta.outputs.labels }}
       - name: Deploy to Kubernetes cluster
         uses: stefanprodan/kube-tools@v1
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
           command: |
-            echo ${{ secrets.KUBE_CONFIG_DATA }} | base64 -d > $HOME/.kube/config
+            echo "$KUBE_CONFIG_DATA" | base64 -d > $HOME/.kube/config
             kubectl apply --namespace thingoo -f k8s/dev/keycloak-db.yaml
             kubectl apply --namespace thingoo -f k8s/dev/keycloak-config.yaml
             kubectl apply --namespace thingoo -f k8s/dev/keycloak.yaml
