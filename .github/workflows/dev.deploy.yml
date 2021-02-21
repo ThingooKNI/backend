@@ -1,0 +1,60 @@
+name: Build, Docker, k8s
+
+on:
+  push:
+    tags:  [ '*.*.*' ]
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle
+        run: ./gradlew build
+      - name: Docker meta
+        id: docker_meta
+        uses: crazy-max/ghaction-docker-meta@v1
+        with:
+          images: |
+            thingookni/backend
+            ghcr.io/thingookni/backend
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Login to GHCR
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.GHCR_USERNAME }}
+          password: ${{ secrets.GHCR_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
+      - name: Deploy to Kubernetes cluster
+        uses: stefanprodan/kube-tools@v1
+        with:
+          command: |
+            echo ${{ secrets.KUBE_CONFIG_DATA }} | base64 -d > $HOME/.kube/config
+            kubectl apply --namespace thingoo -f k8s/dev/keycloak-db.yaml
+            kubectl apply --namespace thingoo -f k8s/dev/keycloak-config.yaml
+            kubectl apply --namespace thingoo -f k8s/dev/keycloak.yaml
+            kubectl apply --namespace thingoo -f k8s/dev/backend-db.yaml
+            envsubst < k8s/dev/backend.yaml | kubectl apply --namespace thingoo -f -
+            kubectl apply --namespace thingoo -f k8s/dev/ingress.yaml
+
