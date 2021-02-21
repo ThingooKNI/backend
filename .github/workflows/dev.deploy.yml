@@ -48,6 +48,8 @@ jobs:
           labels: ${{ steps.docker_meta.outputs.labels }}
       - name: Install envsubst
         run: sudo apt-get install gettext-base
+      - name: envsubst backend version
+        run: envsubst < k8s/dev/backend.yaml > k8s/dev/backend-envsubst.yaml
       - name: Deploy to Kubernetes cluster
         uses: stefanprodan/kube-tools@v1
         env:
@@ -60,6 +62,6 @@ jobs:
             kubectl apply --namespace thingoo -f k8s/dev/keycloak-config.yaml
             kubectl apply --namespace thingoo -f k8s/dev/keycloak.yaml
             kubectl apply --namespace thingoo -f k8s/dev/backend-db.yaml
-            envsubst < k8s/dev/backend.yaml | kubectl apply --namespace thingoo -f -
+            kubectl apply --namespace thingoo -f k8s/dev/backend-envsubst.yaml
             kubectl apply --namespace thingoo -f k8s/dev/ingress.yaml
 
