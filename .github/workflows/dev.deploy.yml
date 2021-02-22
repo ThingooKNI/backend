@@ -53,9 +53,8 @@ jobs:
       - name: Install envsubst
         run: sudo apt-get install gettext-base
       - name: envsubst backend version
-        env:
-          BACKEND_TAG: ${{ steps.docker_meta.outputs.tags[0] }}
         run: |
+          export BACKEND_TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
           envsubst < k8s/dev/backend.yaml > k8s/dev/backend-envsubst.yaml
       - name: Deploy to Kubernetes cluster
         uses: stefanprodan/kube-tools@v1
