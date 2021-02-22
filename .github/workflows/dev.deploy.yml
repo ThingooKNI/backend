@@ -25,6 +25,9 @@ jobs:
           images: |
             thingookni/backend
             ghcr.io/thingookni/backend
+          tag-semver: |
+            {{version}}
+            {{major}}.{{minor}}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
@@ -50,7 +53,10 @@ jobs:
       - name: Install envsubst
         run: sudo apt-get install gettext-base
       - name: envsubst backend version
-        run: envsubst < k8s/dev/backend.yaml > k8s/dev/backend-envsubst.yaml
+        env:
+          BACKEND_TAG: ${{ steps.docker_meta.outputs.tags[0] }}
+        run: |
+          envsubst < k8s/dev/backend.yaml > k8s/dev/backend-envsubst.yaml
       - name: Deploy to Kubernetes cluster
         uses: stefanprodan/kube-tools@v1
         env:
