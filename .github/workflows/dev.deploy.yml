@@ -56,6 +56,7 @@ jobs:
     name: Deploy to dev k8s cluster
     environment:
       name: development
+      url: https://dev.thingoo.xyz/api
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
