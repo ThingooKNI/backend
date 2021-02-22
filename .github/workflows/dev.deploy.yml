@@ -50,6 +50,14 @@ jobs:
           context: .
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
+
+  development:
+    needs: docker
+    name: Deploy to dev k8s cluster
+    environment:
+      name: development
+    runs-on: ubuntu-latest
+    steps:
       - name: Install envsubst
         run: sudo apt-get install gettext-base
       - uses: olegtarasov/get-tag@v2.1
@@ -72,4 +80,3 @@ jobs:
             kubectl apply --namespace thingoo -f k8s/dev/backend-db.yaml
             kubectl apply --namespace thingoo -f k8s/dev/backend-envsubst.yaml
             kubectl apply --namespace thingoo -f k8s/dev/ingress.yaml
-
