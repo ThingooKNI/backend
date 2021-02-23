@@ -3,16 +3,19 @@ package io.kni.thingoo.backend.entities
 import io.kni.thingoo.backend.devices.Device
 import io.kni.thingoo.backend.entities.dto.EntityDto
 import io.kni.thingoo.backend.entities.dto.RegisterEntityDto
+import io.kni.thingoo.backend.readings.Reading
 import java.io.Serializable
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.EnumType
 import javax.persistence.Enumerated
+import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
+import javax.persistence.OneToMany
 import javax.persistence.Table
 
 @Entity
@@ -41,7 +44,10 @@ class Entity(
 
     @ManyToOne
     @JoinColumn(name = "device_id")
-    var device: Device? = null
+    var device: Device? = null,
+
+    @OneToMany(mappedBy = "entity", fetch = FetchType.LAZY, orphanRemoval = true)
+    var readings: MutableList<Reading> = mutableListOf()
 ) : Serializable {
     fun toRegisterEntityDto(): RegisterEntityDto {
         return RegisterEntityDto(
@@ -56,8 +62,7 @@ class Entity(
     }
 
     override fun toString(): String {
-        return "Entity(id=$id, key='$key', displayName='$displayName', type=$type, unitType=$unitType," +
-            " unitDisplayName='$unitDisplayName')"
+        return "Entity(id=$id, key='$key', displayName=$displayName, type=$type, unitType=$unitType, unitDisplayName='$unitDisplayName', device=$device)"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -73,6 +78,7 @@ class Entity(
         if (unitType != other.unitType) return false
         if (unitDisplayName != other.unitDisplayName) return false
         if (device != other.device) return false
+        if (readings != other.readings) return false
 
         return true
     }
@@ -85,6 +91,7 @@ class Entity(
         result = 31 * result + unitType.hashCode()
         result = 31 * result + unitDisplayName.hashCode()
         result = 31 * result + (device?.hashCode() ?: 0)
+        result = 31 * result + readings.hashCode()
         return result
     }
 }
