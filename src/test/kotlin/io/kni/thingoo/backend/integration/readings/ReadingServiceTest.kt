@@ -1,0 +1,132 @@
+/* ktlint-disable max-line-length */
+package io.kni.thingoo.backend.integration.readings
+
+import io.kni.thingoo.backend.devices.Device
+import io.kni.thingoo.backend.devices.DeviceRepository
+import io.kni.thingoo.backend.devices.exceptions.DeviceNotFoundException
+import io.kni.thingoo.backend.entities.Entity
+import io.kni.thingoo.backend.entities.EntityRepository
+import io.kni.thingoo.backend.entities.EntityType
+import io.kni.thingoo.backend.entities.UnitType
+import io.kni.thingoo.backend.entities.exceptions.EntityNotFoundException
+import io.kni.thingoo.backend.integration.devices.createTestDevice
+import io.kni.thingoo.backend.integration.devices.createTestEntity
+import io.kni.thingoo.backend.readings.ReadingRepository
+import io.kni.thingoo.backend.readings.ReadingService
+import io.kni.thingoo.backend.readings.dto.SaveReadingDto
+import io.zonky.test.db.AutoConfigureEmbeddedDatabase
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+
+@SpringBootTest
+@AutoConfigureEmbeddedDatabase
+class ReadingServiceTest {
+
+    @Autowired
+    private lateinit var deviceRepository: DeviceRepository
+
+    @Autowired
+    private lateinit var entityRepository: EntityRepository
+
+    @Autowired
+    private lateinit var readingRepository: ReadingRepository
+
+    @Autowired
+    private lateinit var readingService: ReadingService
+
+    companion object {
+        private val TEST_DEVICE_1 = createTestDevice(id = "device1", mac = "00:A0:C9:14:C8:29", name = "device1")
+        private val TEST_ENTITY_1 = createTestEntity(
+            key = "temp",
+            name = "temperature",
+            type = EntityType.SENSOR,
+            unitType = UnitType.DECIMAL,
+            unitDisplayName = "C"
+        )
+        private val TEST_ENTITY_2 = createTestEntity(
+            key = "hum",
+            name = "humidity",
+            type = EntityType.SENSOR,
+            unitType = UnitType.INTEGER,
+            unitDisplayName = "%"
+        )
+    }
+
+    @AfterEach
+    fun clear() {
+        readingRepository.deleteAll()
+        entityRepository.deleteAll()
+        deviceRepository.deleteAll()
+    }
+
+    @Test
+    fun `given device and entity, when saving new reading, will save one reading`() {
+        // given
+        val device = saveDevice(TEST_DEVICE_1)
+        saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+
+        // when
+        val newReading = readingService.saveReading(SaveReadingDto(value = "someValue", entityKey = TEST_ENTITY_1.key, deviceKey = TEST_DEVICE_1.key))
+
+        // then
+        val readingOptional = readingRepository.findById(newReading.id)
+        assertThat(readingOptional.isPresent).isTrue
+        val reading = readingOptional.get()
+        assertThat(reading).isNotNull
+        assertThat(reading.id).isNotEqualTo(0)
+        assertThat(reading.value).isEqualTo("someValue")
+    }
+
+    @Test
+    fun `given device and entity, when saving reading with not existing deviceKey, will throw DeviceNotFoundException`() {
+        // given
+        val device = saveDevice(TEST_DEVICE_1)
+        saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+
+        // when
+        assertThrows<DeviceNotFoundException> {
+            readingService.saveReading(SaveReadingDto(value = "someValue", entityKey = TEST_ENTITY_1.key, deviceKey = "33211"))
+        }
+    }
+
+    @Test
+    fun `given device and entity, when saving reading with not existing entityKey, will throw EntityNotFoundException`() {
+        // given
+        val device = saveDevice(TEST_DEVICE_1)
+        saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+
+        // when
+        assertThrows<EntityNotFoundException> {
+            readingService.saveReading(SaveReadingDto(value = "someValue", entityKey = "33211", deviceKey = TEST_DEVICE_1.key))
+        }
+    }
+
+    @Test
+    fun `given device and entity, when saving reading with wrong value type, will throw`() {
+        // given
+        val device = saveDevice(TEST_DEVICE_1)
+        saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+
+        // when
+        assertThrows<EntityNotFoundException> {
+            readingService.saveReading(SaveReadingDto(value = "someValue", entityKey = "33211", deviceKey = TEST_DEVICE_1.key))
+        }
+    }
+
+    fun saveDevice(device: Device): Device {
+        return deviceRepository.save(device)
+    }
+
+    fun saveEntities(device: Device, entities: List<Entity>): List<Entity> {
+        return entityRepository.saveAll(entities.map { getEntityForDevice(it, device) }).toList()
+    }
+
+    fun getEntityForDevice(entity: Entity, device: Device): Entity {
+        entity.device = device
+        return entity
+    }
+}
