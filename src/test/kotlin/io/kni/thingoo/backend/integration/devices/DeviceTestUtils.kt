@@ -10,7 +10,7 @@ import java.util.Random
 import kotlin.experimental.and
 
 fun createTestDevice(id: String = "test", mac: String = randomMACAddress(), name: String = "Test device"): Device {
-    return Device(deviceID = id, macAddress = mac, displayName = name)
+    return Device(key = id, macAddress = mac, displayName = name)
 }
 
 fun createTestEntity(
@@ -38,7 +38,7 @@ fun createTestRegisterDeviceDto(
     entities: List<RegisterEntityDto> = emptyList()
 ): RegisterDeviceDto {
     return RegisterDeviceDto(
-        deviceID = id,
+        key = id,
         macAddress = mac,
         displayName = name,
         entities = entities

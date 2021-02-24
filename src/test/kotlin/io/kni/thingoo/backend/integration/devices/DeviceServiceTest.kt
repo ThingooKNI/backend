@@ -3,7 +3,7 @@ package io.kni.thingoo.backend.integration.devices
 
 import io.kni.thingoo.backend.devices.DeviceRepository
 import io.kni.thingoo.backend.devices.DeviceService
-import io.kni.thingoo.backend.devices.exceptions.ExistingDeviceIDException
+import io.kni.thingoo.backend.devices.exceptions.ExistingDeviceKeyException
 import io.kni.thingoo.backend.devices.exceptions.ExistingMACAddressException
 import io.kni.thingoo.backend.devices.exceptions.InvalidMACAddressException
 import io.kni.thingoo.backend.entities.EntityRepository
@@ -61,7 +61,7 @@ class DeviceServiceTest {
         deviceService.registerDevice(newDevice)
 
         // then
-        val createdDeviceOptional = deviceRepository.findByDeviceID(newDevice.deviceID)
+        val createdDeviceOptional = deviceRepository.findByKey(newDevice.key)
         assertThat(createdDeviceOptional.isPresent).isTrue
         val createdDevice = createdDeviceOptional.get()
         assertThat(createdDevice.id).isNotEqualTo(0)
@@ -69,7 +69,7 @@ class DeviceServiceTest {
     }
 
     @Test
-    fun `given existing device, when registering new device with same deviceID and same mac address, then will register one`() {
+    fun `given existing device, when registering new device with same key and same mac address, then will register one`() {
         // given
         val existingDevice = createTestDevice(id = "device1", mac = "00:A0:C9:14:C8:29")
         deviceRepository.save(existingDevice)
@@ -79,12 +79,12 @@ class DeviceServiceTest {
         deviceService.registerDevice(newDevice)
 
         // then
-        val createdDeviceOptional = deviceRepository.findByDeviceID(newDevice.deviceID)
+        val createdDeviceOptional = deviceRepository.findByKey(newDevice.key)
         assertThat(createdDeviceOptional.isPresent).isTrue
     }
 
     @Test
-    fun `given existing device, when registering new device with same deviceID and different mac address, then will throw ExistingDeviceIDException`() {
+    fun `given existing device, when registering new device with same key and different mac address, then will throw ExistingDeviceKeyException`() {
         // given
         val existingDevice = createTestDevice(id = "device1", mac = "00:A0:C9:14:C8:29")
         deviceRepository.save(existingDevice)
@@ -93,7 +93,7 @@ class DeviceServiceTest {
         val newDevice = createTestRegisterDeviceDto(id = "device1", mac = "00:A5:D3:26:C2:37")
 
         // then
-        assertThrows<ExistingDeviceIDException> { deviceService.registerDevice(newDevice) }
+        assertThrows<ExistingDeviceKeyException> { deviceService.registerDevice(newDevice) }
     }
 
     @Test
@@ -168,7 +168,7 @@ class DeviceServiceTest {
         deviceService.registerDevice(newDevice)
 
         // then
-        val updatedDevice = deviceRepository.findByDeviceID(newDevice.deviceID).get()
+        val updatedDevice = deviceRepository.findByKey(newDevice.key).get()
         assertThat(updatedDevice.entities).hasSize(3)
         assertThat(updatedDevice.entities.any { it.unitDisplayName == "F" })
     }
@@ -207,7 +207,7 @@ class DeviceServiceTest {
         deviceService.registerDevice(newDevice)
 
         // then
-        val updatedDevice = deviceRepository.findByDeviceID(newDevice.deviceID).get()
+        val updatedDevice = deviceRepository.findByKey(newDevice.key).get()
         assertThat(updatedDevice.entities).hasSize(2)
         assertThat(updatedDevice.displayName).isEqualTo(newDevice.displayName)
     }
@@ -255,12 +255,12 @@ class DeviceServiceTest {
         deviceService.registerDevice(newDevice)
 
         // then
-        val updatedDevice = deviceRepository.findByDeviceID(newDevice.deviceID).get()
+        val updatedDevice = deviceRepository.findByKey(newDevice.key).get()
         assertThat(updatedDevice.entities).hasSize(1)
     }
 
     @Test
-    fun `given existing device, when registering new device with same macAddress and different deviceID, then will throw ExistingMACAddressException`() {
+    fun `given existing device, when registering new device with same macAddress and different key, then will throw ExistingMACAddressException`() {
         // given
         val existingDevice = createTestDevice(id = "device1", mac = "00:A0:C9:14:C8:29")
         deviceRepository.save(existingDevice)

@@ -15,7 +15,7 @@ class ReadingServiceImpl : ReadingService {
         TODO("Not yet implemented")
     }
 
-    override fun getReadings(deviceId: String, entityKey: String): List<ReadingDto> {
+    override fun getReadings(deviceKey: String, entityKey: String): List<ReadingDto> {
         TODO("Not yet implemented")
     }
 }

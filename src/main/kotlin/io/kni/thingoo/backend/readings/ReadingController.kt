@@ -20,9 +20,9 @@ class ReadingController(
         return ResponseEntity.ok(readingService.getReadings(entityId))
     }
 
-    @GetMapping(params = ["device_id", "entity_key"])
-    fun getReadings(@RequestParam("device_id") deviceId: String, @RequestParam("entity_key") entityKey: String): ResponseEntity<List<ReadingDto>> {
-        return ResponseEntity.ok(readingService.getReadings(deviceId, entityKey))
+    @GetMapping(params = ["device_key", "entity_key"])
+    fun getReadings(@RequestParam("device_key") deviceKey: String, @RequestParam("entity_key") entityKey: String): ResponseEntity<List<ReadingDto>> {
+        return ResponseEntity.ok(readingService.getReadings(deviceKey, entityKey))
     }
 
     @PostMapping
