@@ -1,5 +1,5 @@
 /* ktlint-disable max-line-length */
-package io.kni.thingoo.backend.integration.device
+package io.kni.thingoo.backend.integration.devices
 
 import io.kni.thingoo.backend.devices.DeviceRepository
 import io.kni.thingoo.backend.devices.DeviceService

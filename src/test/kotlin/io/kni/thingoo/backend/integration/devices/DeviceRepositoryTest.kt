@@ -1,4 +1,4 @@
-package io.kni.thingoo.backend.integration.device
+package io.kni.thingoo.backend.integration.devices
 
 import io.kni.thingoo.backend.devices.Device
 import io.kni.thingoo.backend.devices.DeviceRepository
