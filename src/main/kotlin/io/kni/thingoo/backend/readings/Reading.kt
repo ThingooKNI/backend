@@ -23,7 +23,7 @@ class Reading(
 
     @Column(name = "timestamp", nullable = false, updatable = false)
     @CreationTimestamp
-    var timestamp: LocalDateTime,
+    var timestamp: LocalDateTime? = null,
 
     @ManyToOne
     @JoinColumn(name = "entity_id")
