@@ -14,6 +14,7 @@ import io.kni.thingoo.backend.integration.devices.createTestEntity
 import io.kni.thingoo.backend.readings.ReadingRepository
 import io.kni.thingoo.backend.readings.ReadingService
 import io.kni.thingoo.backend.readings.dto.SaveReadingDto
+import io.kni.thingoo.backend.readings.exceptions.ReadingUnitTypeMismatchException
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
@@ -54,6 +55,20 @@ class ReadingServiceTest {
             unitType = UnitType.INTEGER,
             unitDisplayName = "%"
         )
+        private val TEST_ENTITY_3 = createTestEntity(
+            key = "status",
+            name = "status",
+            type = EntityType.SENSOR,
+            unitType = UnitType.STRING,
+            unitDisplayName = ""
+        )
+        private val TEST_ENTITY_4 = createTestEntity(
+            key = "on",
+            name = "on/off",
+            type = EntityType.SENSOR,
+            unitType = UnitType.BOOLEAN,
+            unitDisplayName = ""
+        )
     }
 
     @AfterEach
@@ -70,7 +85,7 @@ class ReadingServiceTest {
         saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
 
         // when
-        val newReading = readingService.saveReading(SaveReadingDto(value = "someValue", entityKey = TEST_ENTITY_1.key, deviceKey = TEST_DEVICE_1.key))
+        val newReading = readingService.saveReading(SaveReadingDto(value = "10.5", entityKey = TEST_ENTITY_1.key, deviceKey = TEST_DEVICE_1.key))
 
         // then
         val readingOptional = readingRepository.findById(newReading.id)
@@ -106,14 +121,46 @@ class ReadingServiceTest {
     }
 
     @Test
-    fun `given device and entity, when saving reading with wrong value type, will throw`() {
+    fun `given device and entity, when saving reading with wrong value type, will throw ReadingUnitTypeMismatchException`() {
         // given
         val device = saveDevice(TEST_DEVICE_1)
-        saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+        saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2, TEST_ENTITY_3, TEST_ENTITY_4))
 
         // when
-        assertThrows<EntityNotFoundException> {
-            readingService.saveReading(SaveReadingDto(value = "someValue", entityKey = "33211", deviceKey = TEST_DEVICE_1.key))
+        assertThrows<ReadingUnitTypeMismatchException> {
+            readingService.saveReading(SaveReadingDto(value = "true", entityKey = TEST_ENTITY_1.key, deviceKey = TEST_DEVICE_1.key))
+        }
+
+        assertThrows<ReadingUnitTypeMismatchException> {
+            readingService.saveReading(SaveReadingDto(value = "wrong value", entityKey = TEST_ENTITY_1.key, deviceKey = TEST_DEVICE_1.key))
+        }
+
+        assertThrows<ReadingUnitTypeMismatchException> {
+            readingService.saveReading(SaveReadingDto(value = "55", entityKey = TEST_ENTITY_1.key, deviceKey = TEST_DEVICE_1.key))
+        }
+
+        assertThrows<ReadingUnitTypeMismatchException> {
+            readingService.saveReading(SaveReadingDto(value = "false", entityKey = TEST_ENTITY_2.key, deviceKey = TEST_DEVICE_1.key))
+        }
+
+        assertThrows<ReadingUnitTypeMismatchException> {
+            readingService.saveReading(SaveReadingDto(value = "wrong value", entityKey = TEST_ENTITY_2.key, deviceKey = TEST_DEVICE_1.key))
+        }
+
+        assertThrows<ReadingUnitTypeMismatchException> {
+            readingService.saveReading(SaveReadingDto(value = "55.49", entityKey = TEST_ENTITY_2.key, deviceKey = TEST_DEVICE_1.key))
+        }
+
+        assertThrows<ReadingUnitTypeMismatchException> {
+            readingService.saveReading(SaveReadingDto(value = "55.49", entityKey = TEST_ENTITY_4.key, deviceKey = TEST_DEVICE_1.key))
+        }
+
+        assertThrows<ReadingUnitTypeMismatchException> {
+            readingService.saveReading(SaveReadingDto(value = "55", entityKey = TEST_ENTITY_4.key, deviceKey = TEST_DEVICE_1.key))
+        }
+
+        assertThrows<ReadingUnitTypeMismatchException> {
+            readingService.saveReading(SaveReadingDto(value = "wrong value", entityKey = TEST_ENTITY_4.key, deviceKey = TEST_DEVICE_1.key))
         }
     }
 
