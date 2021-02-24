@@ -49,7 +49,7 @@ class SpringFoxConfig {
         return ApiInfo(
             "Thingoo REST API",
             "",
-            "0.0.8",
+            "0.0.13",
             null,
             Contact("Bartlomiej Rasztabiga", "https://github.com/BartlomiejRasztabiga", "contact@rasztabiga.me"),
             null, null, emptyList()
