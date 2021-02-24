@@ -28,7 +28,7 @@ class Device(
     @Column(name = "display_name", nullable = true)
     var displayName: String?,
 
-    @OneToMany(mappedBy = "device", fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "device", fetch = FetchType.LAZY, orphanRemoval = true)
     var entities: MutableList<Entity> = mutableListOf()
 ) : Serializable {
     fun toRegisterDeviceDto(): RegisterDeviceDto {
@@ -54,8 +54,7 @@ class Device(
     }
 
     override fun toString(): String {
-        return "Device(id=$id, key='$key', macAddress='$macAddress', displayName='$displayName'," +
-            " entities=$entities)"
+        return "Device(id=$id, key='$key', macAddress='$macAddress', displayName='$displayName')"
     }
 
     override fun equals(other: Any?): Boolean {

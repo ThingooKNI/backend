@@ -1,6 +1,7 @@
 package io.kni.thingoo.backend.readings
 
 import io.kni.thingoo.backend.entities.Entity
+import io.kni.thingoo.backend.readings.dto.ReadingDto
 import org.hibernate.annotations.CreationTimestamp
 import java.time.LocalDateTime
 import javax.persistence.Column
@@ -29,6 +30,12 @@ class Reading(
     @JoinColumn(name = "entity_id")
     var entity: Entity? = null,
 ) {
+    fun toDto(): ReadingDto {
+        return ReadingDto(
+            id, value, timestamp!!
+        )
+    }
+
     override fun toString(): String {
         return "Reading(id=$id, value='$value', timestamp=$timestamp, entity=$entity)"
     }

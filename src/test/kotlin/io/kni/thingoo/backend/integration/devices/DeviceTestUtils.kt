@@ -9,8 +9,8 @@ import io.kni.thingoo.backend.entities.dto.RegisterEntityDto
 import java.util.Random
 import kotlin.experimental.and
 
-fun createTestDevice(id: String = "test", mac: String = randomMACAddress(), name: String = "Test device"): Device {
-    return Device(key = id, macAddress = mac, displayName = name)
+fun createTestDevice(key: String = "test", mac: String = randomMACAddress(), name: String = "Test device"): Device {
+    return Device(key = key, macAddress = mac, displayName = name)
 }
 
 fun createTestEntity(

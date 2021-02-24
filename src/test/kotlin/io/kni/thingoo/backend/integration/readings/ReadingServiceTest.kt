@@ -11,6 +11,7 @@ import io.kni.thingoo.backend.entities.UnitType
 import io.kni.thingoo.backend.entities.exceptions.EntityNotFoundException
 import io.kni.thingoo.backend.integration.devices.createTestDevice
 import io.kni.thingoo.backend.integration.devices.createTestEntity
+import io.kni.thingoo.backend.readings.Reading
 import io.kni.thingoo.backend.readings.ReadingRepository
 import io.kni.thingoo.backend.readings.ReadingService
 import io.kni.thingoo.backend.readings.dto.SaveReadingDto
@@ -40,7 +41,8 @@ class ReadingServiceTest {
     private lateinit var readingService: ReadingService
 
     companion object {
-        private val TEST_DEVICE_1 = createTestDevice(id = "device1", mac = "00:A0:C9:14:C8:29", name = "device1")
+        private val TEST_DEVICE_1 = createTestDevice(key = "device1", mac = "00:A0:C9:14:C8:29", name = "device1")
+        private val TEST_DEVICE_2 = createTestDevice(key = "device2", mac = "00:A0:C9:14:C8:28", name = "device2")
         private val TEST_ENTITY_1 = createTestEntity(
             key = "temp",
             name = "temperature",
@@ -162,6 +164,36 @@ class ReadingServiceTest {
         assertThrows<ReadingUnitTypeMismatchException> {
             readingService.saveReading(SaveReadingDto(value = "wrong value", entityKey = TEST_ENTITY_4.key, deviceKey = TEST_DEVICE_1.key))
         }
+    }
+
+    @Test
+    fun `given multiple devices, when querying readings by entityID, will return appropriate readings`() {
+        // given
+        val device = saveDevice(TEST_DEVICE_1)
+        val entities = saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+
+        val device2 = saveDevice(TEST_DEVICE_2)
+        val entities2 = saveEntities(device2, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+
+        readingRepository.save(Reading(value = "55.49", entity = entities[0]))
+        readingRepository.save(Reading(value = "55.51", entity = entities[0]))
+        readingRepository.save(Reading(value = "11", entity = entities2[1]))
+
+        // Both entities have reference to the same device, wrong!
+
+        println(readingRepository.findAll())
+
+        // when
+        val readings = readingService.getReadings(entities[0].id)
+        val readings1 = readingService.getReadings(entities[1].id)
+        val readings2 = readingService.getReadings(entities2[0].id)
+        val readings3 = readingService.getReadings(entities2[1].id)
+
+        // then
+        assertThat(readings).hasSize(2)
+        assertThat(readings1).hasSize(0)
+        assertThat(readings2).hasSize(0)
+        assertThat(readings3).hasSize(1)
     }
 
     fun saveDevice(device: Device): Device {

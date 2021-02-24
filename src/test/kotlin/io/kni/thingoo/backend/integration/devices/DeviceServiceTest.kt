@@ -71,7 +71,7 @@ class DeviceServiceTest {
     @Test
     fun `given existing device, when registering new device with same key and same mac address, then will register one`() {
         // given
-        val existingDevice = createTestDevice(id = "device1", mac = "00:A0:C9:14:C8:29")
+        val existingDevice = createTestDevice(key = "device1", mac = "00:A0:C9:14:C8:29")
         deviceRepository.save(existingDevice)
 
         // when
@@ -86,7 +86,7 @@ class DeviceServiceTest {
     @Test
     fun `given existing device, when registering new device with same key and different mac address, then will throw ExistingDeviceKeyException`() {
         // given
-        val existingDevice = createTestDevice(id = "device1", mac = "00:A0:C9:14:C8:29")
+        val existingDevice = createTestDevice(key = "device1", mac = "00:A0:C9:14:C8:29")
         deviceRepository.save(existingDevice)
 
         // when
@@ -114,7 +114,7 @@ class DeviceServiceTest {
     @Test
     fun `given existing device, when registering same device and different entities, then will update entities`() {
         // given
-        var existingDevice = createTestDevice(id = "device1", mac = "00:A0:C9:14:C8:29", name = "device1")
+        var existingDevice = createTestDevice(key = "device1", mac = "00:A0:C9:14:C8:29", name = "device1")
         existingDevice = deviceRepository.save(existingDevice)
 
         val existingEntities = listOf(
@@ -176,7 +176,7 @@ class DeviceServiceTest {
     @Test
     fun `given existing device, when registering different device and same entities, then will update device`() {
         // given
-        var existingDevice = createTestDevice(id = "device1", mac = "00:A0:C9:14:C8:29", name = "device1")
+        var existingDevice = createTestDevice(key = "device1", mac = "00:A0:C9:14:C8:29", name = "device1")
         existingDevice = deviceRepository.save(existingDevice)
 
         val existingEntities = listOf(
@@ -215,7 +215,7 @@ class DeviceServiceTest {
     @Test
     fun `given existing device, when registering same device with entity deleted, then will delete entity`() {
         // given
-        var existingDevice = createTestDevice(id = "device1", mac = "00:A0:C9:14:C8:29", name = "device1")
+        var existingDevice = createTestDevice(key = "device1", mac = "00:A0:C9:14:C8:29", name = "device1")
         existingDevice = deviceRepository.save(existingDevice)
 
         val existingEntities = listOf(
@@ -262,7 +262,7 @@ class DeviceServiceTest {
     @Test
     fun `given existing device, when registering new device with same macAddress and different key, then will throw ExistingMACAddressException`() {
         // given
-        val existingDevice = createTestDevice(id = "device1", mac = "00:A0:C9:14:C8:29")
+        val existingDevice = createTestDevice(key = "device1", mac = "00:A0:C9:14:C8:29")
         deviceRepository.save(existingDevice)
 
         // when
