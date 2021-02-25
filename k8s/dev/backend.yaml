@@ -20,7 +20,6 @@ data:
         oauth2:
           resourceserver:
             jwt:
-              issuer-uri: https://dev.thingoo.xyz/auth/realms/Thingoo
               jwk-set-uri: http://keycloak:8080/auth/realms/Thingoo/protocol/openid-connect/certs
     server:
       port: 8080
