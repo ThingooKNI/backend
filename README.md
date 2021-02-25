@@ -32,12 +32,12 @@ docker logs backend -f
 ```
 
 ## Project documentation
-[https://www.notion.so/Thingoo-24b12d89c3d644c8ba88c1c8ac29c38d]()
+<https://www.notion.so/Thingoo-24b12d89c3d644c8ba88c1c8ac29c38d>
 
 ## Deployment
 Backend is deployed on Kubernetes cluster and is accessible through following URLs:
-- REST API: [https://dev.thingoo.xyz/api/]()
-- Auth server (keycloak): [https://dev.thingoo.xyz/auth/]()
+- REST API: <https://dev.thingoo.xyz/api/>
+- Auth server (keycloak): <https://dev.thingoo.xyz/auth/>
 
 Default credentials for Keycloak's admin console:
 
@@ -48,7 +48,7 @@ password: password
 ## Postman Collection
 For easier client's implementation, we provide Postman collection with all endpoints provided by the API:
 
-[https://app.getpostman.com/join-team?invite_code=e7a9f0d3527e5f429ee64eaf84d723dc]()
+<https://app.getpostman.com/join-team?invite_code=e7a9f0d3527e5f429ee64eaf84d723dc>
 
 ## OpenAPI Specification (Swagger)
-[https://app.swaggerhub.com/apis/Thingoo/thingoo-rest_api]()
+<https://app.swaggerhub.com/apis/Thingoo/thingoo-rest_api>
