@@ -6,7 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 class SecurityConfig : WebSecurityConfigurerAdapter() {
 
     @Value("\${app.keycloak.webapp-client-id}")
