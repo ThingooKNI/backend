@@ -20,6 +20,7 @@ import io.zonky.test.db.AutoConfigureEmbeddedDatabase
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -164,6 +165,10 @@ class ReadingServiceTest {
         assertThrows<ReadingUnitTypeMismatchException> {
             readingService.saveReading(SaveReadingDto(value = "wrong value", entityKey = TEST_ENTITY_4.key, deviceKey = TEST_DEVICE_1.key))
         }
+
+        assertDoesNotThrow {
+            readingService.saveReading(SaveReadingDto(value = "proper value", entityKey = TEST_ENTITY_3.key, deviceKey = TEST_DEVICE_1.key))
+        }
     }
 
     @Test
@@ -184,6 +189,32 @@ class ReadingServiceTest {
         val readings1 = readingService.getReadings(entities[1].id)
         val readings2 = readingService.getReadings(entities2[0].id)
         val readings3 = readingService.getReadings(entities2[1].id)
+
+        // then
+        assertThat(readings).hasSize(2)
+        assertThat(readings1).hasSize(0)
+        assertThat(readings2).hasSize(0)
+        assertThat(readings3).hasSize(1)
+    }
+
+    @Test
+    fun `given multiple devices, when querying readings by deviceKey and entityKey, will return appropriate readings`() {
+        // given
+        val device = saveDevice(TEST_DEVICE_1)
+        val entities = saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+
+        val device2 = saveDevice(TEST_DEVICE_2)
+        val entities2 = saveEntities(device2, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+
+        readingRepository.save(Reading(value = "55.49", entity = entities[0]))
+        readingRepository.save(Reading(value = "55.51", entity = entities[0]))
+        readingRepository.save(Reading(value = "11", entity = entities2[1]))
+
+        // when
+        val readings = readingService.getReadings(TEST_DEVICE_1.key, TEST_ENTITY_1.key)
+        val readings1 = readingService.getReadings(TEST_DEVICE_1.key, TEST_ENTITY_2.key)
+        val readings2 = readingService.getReadings(TEST_DEVICE_2.key, TEST_ENTITY_1.key)
+        val readings3 = readingService.getReadings(TEST_DEVICE_2.key, TEST_ENTITY_2.key)
 
         // then
         assertThat(readings).hasSize(2)
