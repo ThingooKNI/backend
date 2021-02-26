@@ -3,6 +3,7 @@ package io.kni.thingoo.backend.integration.devices
 
 import io.kni.thingoo.backend.devices.DeviceRepository
 import io.kni.thingoo.backend.devices.DeviceService
+import io.kni.thingoo.backend.devices.exceptions.DeviceNotFoundException
 import io.kni.thingoo.backend.devices.exceptions.ExistingDeviceKeyException
 import io.kni.thingoo.backend.devices.exceptions.ExistingMACAddressException
 import io.kni.thingoo.backend.devices.exceptions.InvalidMACAddressException
@@ -270,5 +271,41 @@ class DeviceServiceTest {
 
         // then
         assertThrows<ExistingMACAddressException> { deviceService.registerDevice(newDevice) }
+    }
+
+    @Test
+    fun `given new device, when getting all devices, then will be one device`() {
+        // given
+        val newDevice = createTestDevice()
+        deviceRepository.save(newDevice)
+
+        // when
+        val devices = deviceService.getAll()
+
+        // then
+        assertThat(devices).hasSize(1)
+    }
+
+    @Test
+    fun `given new device, when getting device by id, then will return one`() {
+        // given
+        val newDevice = createTestDevice()
+        val savedDevice = deviceRepository.save(newDevice)
+
+        // when
+        val device = deviceService.getById(savedDevice.id)
+
+        // then
+        assertThat(device).isNotNull
+    }
+
+    @Test
+    fun `given no device, when getting device by id, then will throw DeviceNotFoundException`() {
+        // given
+
+        // when
+        assertThrows<DeviceNotFoundException> { deviceService.getById(999) }
+
+        // then
     }
 }
