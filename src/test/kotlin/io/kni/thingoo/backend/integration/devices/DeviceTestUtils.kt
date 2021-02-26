@@ -1,4 +1,4 @@
-package io.kni.thingoo.backend.integration.device
+package io.kni.thingoo.backend.integration.devices
 
 import io.kni.thingoo.backend.devices.Device
 import io.kni.thingoo.backend.devices.dto.RegisterDeviceDto
@@ -9,8 +9,8 @@ import io.kni.thingoo.backend.entities.dto.RegisterEntityDto
 import java.util.Random
 import kotlin.experimental.and
 
-fun createTestDevice(id: String = "test", mac: String = randomMACAddress(), name: String = "Test device"): Device {
-    return Device(deviceID = id, macAddress = mac, displayName = name)
+fun createTestDevice(key: String = "test", mac: String = randomMACAddress(), name: String = "Test device"): Device {
+    return Device(key = key, macAddress = mac, displayName = name)
 }
 
 fun createTestEntity(
@@ -38,7 +38,7 @@ fun createTestRegisterDeviceDto(
     entities: List<RegisterEntityDto> = emptyList()
 ): RegisterDeviceDto {
     return RegisterDeviceDto(
-        deviceID = id,
+        key = id,
         macAddress = mac,
         displayName = name,
         entities = entities

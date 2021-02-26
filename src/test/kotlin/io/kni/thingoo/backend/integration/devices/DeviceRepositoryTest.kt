@@ -1,4 +1,4 @@
-package io.kni.thingoo.backend.integration.device
+package io.kni.thingoo.backend.integration.devices
 
 import io.kni.thingoo.backend.devices.Device
 import io.kni.thingoo.backend.devices.DeviceRepository
@@ -31,7 +31,7 @@ class DeviceRepositoryTest {
 
     @Test
     fun saveDeviceWithEntity() {
-        val device = Device(deviceID = "test", macAddress = "00:0a:95:9d:68:16", displayName = "Test device")
+        val device = Device(key = "test", macAddress = "00:0a:95:9d:68:16", displayName = "Test device")
 
         deviceRepository.save(device)
         assertThat(device.id).isNotEqualTo(0)

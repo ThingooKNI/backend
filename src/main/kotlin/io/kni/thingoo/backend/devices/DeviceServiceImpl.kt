@@ -3,7 +3,7 @@ package io.kni.thingoo.backend.devices
 import io.kni.thingoo.backend.devices.dto.DeviceDto
 import io.kni.thingoo.backend.devices.dto.RegisterDeviceDto
 import io.kni.thingoo.backend.devices.exceptions.DeviceNotFoundException
-import io.kni.thingoo.backend.devices.exceptions.ExistingDeviceIDException
+import io.kni.thingoo.backend.devices.exceptions.ExistingDeviceKeyException
 import io.kni.thingoo.backend.devices.exceptions.ExistingMACAddressException
 import io.kni.thingoo.backend.devices.exceptions.InvalidMACAddressException
 import io.kni.thingoo.backend.entities.Entity
@@ -20,13 +20,13 @@ class DeviceServiceImpl(
 ) : DeviceService {
 
     override fun registerDevice(registerDeviceDto: RegisterDeviceDto): DeviceDto {
-        validateMacAddressDuplication(registerDeviceDto.macAddress, registerDeviceDto.deviceID)
+        validateMacAddressDuplication(registerDeviceDto.macAddress, registerDeviceDto.key)
 
         validateMacAddress(registerDeviceDto.macAddress)
 
         validateEntities(registerDeviceDto.entities)
 
-        val existingDeviceOptional = deviceRepository.findByDeviceID(registerDeviceDto.deviceID)
+        val existingDeviceOptional = deviceRepository.findByKey(registerDeviceDto.key)
 
         if (existingDeviceOptional.isPresent) {
             val existingDevice = existingDeviceOptional.get()
@@ -35,18 +35,27 @@ class DeviceServiceImpl(
             registerNewDevice(registerDeviceDto)
         }
 
-        return deviceRepository.findByDeviceID(registerDeviceDto.deviceID).get().toDto()
+        return deviceRepository.findByKey(registerDeviceDto.key).get().toDto()
     }
 
-    override fun getAll(): List<DeviceDto> {
+    override fun getDevices(): List<DeviceDto> {
         return deviceRepository.findAll().toList().map { it.toDto() }
     }
 
-    override fun getById(id: Int): DeviceDto {
+    override fun getDevice(id: Int): DeviceDto {
         val deviceOptional = deviceRepository.findById(id)
         return deviceOptional
             .map { it.toDto() }
             .orElseThrow { DeviceNotFoundException("Device with id=$id not found") }
+    }
+
+    override fun deleteDevice(id: Int) {
+        val device = deviceRepository.findById(id)
+        if (device.isEmpty) {
+            throw DeviceNotFoundException("Device with id=$id not found")
+        }
+
+        deviceRepository.deleteById(id)
     }
 
     private fun validateEntities(entities: List<RegisterEntityDto>) {
@@ -61,9 +70,9 @@ class DeviceServiceImpl(
         }
     }
 
-    private fun validateMacAddressDuplication(macAddress: String, deviceID: String) {
+    private fun validateMacAddressDuplication(macAddress: String, key: String) {
         val device = deviceRepository.findByMacAddress(macAddress)
-        if (device.isPresent && device.get().deviceID != deviceID) {
+        if (device.isPresent && device.get().key != key) {
             throw ExistingMACAddressException("There is already a device registered with this macAddress")
         }
     }
@@ -85,7 +94,7 @@ class DeviceServiceImpl(
     }
 
     private fun registerExistingDevice(existingDevice: Device, registerDeviceDto: RegisterDeviceDto) {
-        validateDeviceIdCollision(existingDevice, registerDeviceDto)
+        validateDeviceKeyCollision(existingDevice, registerDeviceDto)
 
         updateDevice(existingDevice, registerDeviceDto)
 
@@ -95,9 +104,9 @@ class DeviceServiceImpl(
         deleteOldEntities(existingEntities, registerDeviceDto, existingDevice)
     }
 
-    private fun validateDeviceIdCollision(existingDevice: Device, registerDeviceDto: RegisterDeviceDto) {
+    private fun validateDeviceKeyCollision(existingDevice: Device, registerDeviceDto: RegisterDeviceDto) {
         if (existingDevice.macAddress != registerDeviceDto.macAddress) {
-            throw ExistingDeviceIDException("There is already a device registered with this deviceID.")
+            throw ExistingDeviceKeyException("There is already a device registered with this key.")
         }
     }
 
