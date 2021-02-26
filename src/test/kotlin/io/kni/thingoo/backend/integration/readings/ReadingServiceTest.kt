@@ -95,7 +95,7 @@ class ReadingServiceTest {
         val reading = readingOptional.get()
         assertThat(reading).isNotNull
         assertThat(reading.id).isNotEqualTo(0)
-        assertThat(reading.value).isEqualTo("someValue")
+        assertThat(reading.value).isEqualTo("10.5")
     }
 
     @Test
