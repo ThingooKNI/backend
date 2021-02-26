@@ -179,10 +179,6 @@ class ReadingServiceTest {
         readingRepository.save(Reading(value = "55.51", entity = entities[0]))
         readingRepository.save(Reading(value = "11", entity = entities2[1]))
 
-        // Both entities have reference to the same device, wrong!
-
-        println(readingRepository.findAll())
-
         // when
         val readings = readingService.getReadings(entities[0].id)
         val readings1 = readingService.getReadings(entities[1].id)
@@ -205,7 +201,7 @@ class ReadingServiceTest {
     }
 
     fun getEntityForDevice(entity: Entity, device: Device): Entity {
-        entity.device = device
-        return entity
+        // copy entity object to prevent mutating reference
+        return Entity(entity.id, entity.key, entity.displayName, entity.type, entity.unitType, entity.unitDisplayName, device)
     }
 }
