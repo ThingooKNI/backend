@@ -28,7 +28,7 @@ class Device(
     @Column(name = "display_name", nullable = true)
     var displayName: String?,
 
-    @OneToMany(mappedBy = "device", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "device", fetch = FetchType.EAGER, orphanRemoval = true)
     var entities: MutableList<Entity> = mutableListOf()
 ) : Serializable {
     fun toRegisterDeviceDto(): RegisterDeviceDto {
