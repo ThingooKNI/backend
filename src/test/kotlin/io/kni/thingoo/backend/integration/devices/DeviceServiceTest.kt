@@ -280,7 +280,7 @@ class DeviceServiceTest {
         deviceRepository.save(newDevice)
 
         // when
-        val devices = deviceService.getAll()
+        val devices = deviceService.getDevices()
 
         // then
         assertThat(devices).hasSize(1)
@@ -293,7 +293,7 @@ class DeviceServiceTest {
         val savedDevice = deviceRepository.save(newDevice)
 
         // when
-        val device = deviceService.getById(savedDevice.id)
+        val device = deviceService.getDevice(savedDevice.id)
 
         // then
         assertThat(device).isNotNull
@@ -304,8 +304,21 @@ class DeviceServiceTest {
         // given
 
         // when
-        assertThrows<DeviceNotFoundException> { deviceService.getById(999) }
+        assertThrows<DeviceNotFoundException> { deviceService.getDevice(999) }
 
         // then
+    }
+
+    @Test
+    fun `given existing device, when deleteing device by id, then will delete one`() {
+        // given
+        val newDevice = createTestDevice()
+        val savedDevice = deviceRepository.save(newDevice)
+
+        // when
+        deviceService.deleteDevice(savedDevice.id)
+
+        // then
+        assertThat(deviceRepository.findAll()).isEmpty()
     }
 }

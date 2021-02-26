@@ -7,7 +7,9 @@ interface DeviceService {
 
     fun registerDevice(registerDeviceDto: RegisterDeviceDto): DeviceDto
 
-    fun getAll(): List<DeviceDto>
+    fun getDevices(): List<DeviceDto>
 
-    fun getById(id: Int): DeviceDto
+    fun getDevice(id: Int): DeviceDto
+
+    fun deleteDevice(id: Int)
 }

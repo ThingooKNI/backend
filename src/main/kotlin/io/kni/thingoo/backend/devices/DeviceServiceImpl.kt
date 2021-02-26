@@ -38,15 +38,24 @@ class DeviceServiceImpl(
         return deviceRepository.findByKey(registerDeviceDto.key).get().toDto()
     }
 
-    override fun getAll(): List<DeviceDto> {
+    override fun getDevices(): List<DeviceDto> {
         return deviceRepository.findAll().toList().map { it.toDto() }
     }
 
-    override fun getById(id: Int): DeviceDto {
+    override fun getDevice(id: Int): DeviceDto {
         val deviceOptional = deviceRepository.findById(id)
         return deviceOptional
             .map { it.toDto() }
             .orElseThrow { DeviceNotFoundException("Device with id=$id not found") }
+    }
+
+    override fun deleteDevice(id: Int) {
+        val device = deviceRepository.findById(id)
+        if (device.isEmpty) {
+            throw DeviceNotFoundException("Device with id=$id not found")
+        }
+
+        deviceRepository.deleteById(id)
     }
 
     private fun validateEntities(entities: List<RegisterEntityDto>) {
