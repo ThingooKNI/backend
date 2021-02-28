@@ -43,6 +43,7 @@ class SpringFoxConfig {
             .securitySchemes(listOf(securityScheme()))
             .securityContexts(listOf(securityContext()))
             .apiInfo(apiInfo())
+            .enableUrlTemplating(true)
     }
 
     private fun apiInfo(): ApiInfo {
