@@ -1,3 +1,6 @@
 package io.kni.thingoo.backend.entities.exceptions
 
-class EntityNotFoundException(msg: String) : Exception(msg)
+import io.kni.thingoo.backend.exceptions.RestException
+import org.springframework.http.HttpStatus
+
+class EntityNotFoundException(msg: String) : RestException(msg, HttpStatus.NOT_FOUND)
