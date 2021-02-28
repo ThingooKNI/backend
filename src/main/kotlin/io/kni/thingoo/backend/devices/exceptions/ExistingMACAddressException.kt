@@ -1,3 +1,6 @@
 package io.kni.thingoo.backend.devices.exceptions
 
-class ExistingMACAddressException(msg: String) : Exception(msg)
+import io.kni.thingoo.backend.exceptions.RestException
+import org.springframework.http.HttpStatus
+
+class ExistingMACAddressException(msg: String) : RestException(msg, HttpStatus.CONFLICT)

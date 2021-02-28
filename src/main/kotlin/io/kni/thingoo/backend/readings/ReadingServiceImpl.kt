@@ -2,14 +2,12 @@ package io.kni.thingoo.backend.readings
 
 import io.kni.thingoo.backend.devices.Device
 import io.kni.thingoo.backend.devices.DeviceRepository
-import io.kni.thingoo.backend.devices.exceptions.DeviceNotFoundException
 import io.kni.thingoo.backend.entities.Entity
 import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.UnitType
-import io.kni.thingoo.backend.entities.exceptions.EntityNotFoundException
+import io.kni.thingoo.backend.exceptions.ApiErrorCode
 import io.kni.thingoo.backend.readings.dto.ReadingDto
 import io.kni.thingoo.backend.readings.dto.SaveReadingDto
-import io.kni.thingoo.backend.readings.exceptions.ReadingUnitTypeMismatchException
 import org.springframework.stereotype.Service
 
 @Service
@@ -45,17 +43,17 @@ class ReadingServiceImpl(
 
     private fun tryGetRelatedDevice(reading: SaveReadingDto): Device {
         val relatedDeviceOptional = deviceRepository.findByKey(reading.deviceKey)
-        return relatedDeviceOptional.orElseThrow { DeviceNotFoundException("Device with given key doesn't exist") }
+        return relatedDeviceOptional.orElseThrow { ApiErrorCode.DEVICES_005.throwException() }
     }
 
     private fun tryGetRelatedEntity(reading: SaveReadingDto): Entity {
         val relatedEntityOptional = entityRepository.findByKeyAndDeviceKey(reading.entityKey, reading.deviceKey)
-        return relatedEntityOptional.orElseThrow { EntityNotFoundException("Entity with given key and deviceKey doesn't exist") }
+        return relatedEntityOptional.orElseThrow { ApiErrorCode.ENTITIES_002.throwException() }
     }
 
     private fun validateReadingValue(reading: SaveReadingDto, valueType: UnitType) {
         if (!valueType.getReadingValueValidator().isValid(reading.value)) {
-            throw ReadingUnitTypeMismatchException("${reading.value} is not correct value of $valueType type")
+            ApiErrorCode.READINGS_001.throwException()
         }
     }
 }

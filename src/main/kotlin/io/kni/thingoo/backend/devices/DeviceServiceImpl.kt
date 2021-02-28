@@ -2,14 +2,10 @@ package io.kni.thingoo.backend.devices
 
 import io.kni.thingoo.backend.devices.dto.DeviceDto
 import io.kni.thingoo.backend.devices.dto.RegisterDeviceDto
-import io.kni.thingoo.backend.devices.exceptions.DeviceNotFoundException
-import io.kni.thingoo.backend.devices.exceptions.ExistingDeviceKeyException
-import io.kni.thingoo.backend.devices.exceptions.ExistingMACAddressException
-import io.kni.thingoo.backend.devices.exceptions.InvalidMACAddressException
 import io.kni.thingoo.backend.entities.Entity
 import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.dto.RegisterEntityDto
-import io.kni.thingoo.backend.entities.exceptions.ExistingEntityKeyException
+import io.kni.thingoo.backend.exceptions.ApiErrorCode
 import org.springframework.stereotype.Service
 import java.util.regex.Pattern
 
@@ -46,13 +42,15 @@ class DeviceServiceImpl(
         val deviceOptional = deviceRepository.findById(id)
         return deviceOptional
             .map { it.toDto() }
-            .orElseThrow { DeviceNotFoundException("Device with id=$id not found") }
+            .orElseThrow {
+                ApiErrorCode.DEVICES_001.throwException()
+            }
     }
 
     override fun deleteDevice(id: Int) {
         val device = deviceRepository.findById(id)
         if (device.isEmpty) {
-            throw DeviceNotFoundException("Device with id=$id not found")
+            ApiErrorCode.DEVICES_001.throwException()
         }
 
         deviceRepository.deleteById(id)
@@ -60,20 +58,20 @@ class DeviceServiceImpl(
 
     private fun validateEntities(entities: List<RegisterEntityDto>) {
         if (entities.distinctBy { it.key }.size != entities.size) {
-            throw ExistingEntityKeyException("Duplicated Entity key value")
+            ApiErrorCode.ENTITIES_001.throwException()
         }
     }
 
     private fun validateMacAddress(mac: String) {
         if (!isValidMacAddress(mac)) {
-            throw InvalidMACAddressException("Invalid mac address: $mac")
+            ApiErrorCode.DEVICES_002.throwException()
         }
     }
 
     private fun validateMacAddressDuplication(macAddress: String, key: String) {
         val device = deviceRepository.findByMacAddress(macAddress)
         if (device.isPresent && device.get().key != key) {
-            throw ExistingMACAddressException("There is already a device registered with this macAddress")
+            ApiErrorCode.DEVICES_003.throwException()
         }
     }
 
@@ -106,7 +104,7 @@ class DeviceServiceImpl(
 
     private fun validateDeviceKeyCollision(existingDevice: Device, registerDeviceDto: RegisterDeviceDto) {
         if (existingDevice.macAddress != registerDeviceDto.macAddress) {
-            throw ExistingDeviceKeyException("There is already a device registered with this key.")
+            ApiErrorCode.DEVICES_004.throwException()
         }
     }
 
