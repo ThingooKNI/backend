@@ -4,7 +4,6 @@ import io.kni.thingoo.backend.devices.dto.DeviceDto
 import io.kni.thingoo.backend.devices.dto.RegisterDeviceDto
 import io.kni.thingoo.backend.entities.Entity
 import io.kni.thingoo.backend.entities.EntityRepository
-import io.kni.thingoo.backend.entities.dto.EntityDto
 import io.kni.thingoo.backend.entities.dto.RegisterEntityDto
 import io.kni.thingoo.backend.exceptions.ApiErrorCode
 import org.springframework.stereotype.Service
