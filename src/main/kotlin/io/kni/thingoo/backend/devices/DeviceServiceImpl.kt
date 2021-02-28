@@ -43,14 +43,14 @@ class DeviceServiceImpl(
         return deviceOptional
             .map { it.toDto() }
             .orElseThrow {
-                ApiErrorCode.DEVICES_0001.throwException()
+                ApiErrorCode.DEVICES_001.throwException()
             }
     }
 
     override fun deleteDevice(id: Int) {
         val device = deviceRepository.findById(id)
         if (device.isEmpty) {
-            ApiErrorCode.DEVICES_0001.throwException()
+            ApiErrorCode.DEVICES_001.throwException()
         }
 
         deviceRepository.deleteById(id)
@@ -58,20 +58,20 @@ class DeviceServiceImpl(
 
     private fun validateEntities(entities: List<RegisterEntityDto>) {
         if (entities.distinctBy { it.key }.size != entities.size) {
-            ApiErrorCode.ENTITIES_0001.throwException()
+            ApiErrorCode.ENTITIES_001.throwException()
         }
     }
 
     private fun validateMacAddress(mac: String) {
         if (!isValidMacAddress(mac)) {
-            ApiErrorCode.DEVICES_0002.throwException()
+            ApiErrorCode.DEVICES_002.throwException()
         }
     }
 
     private fun validateMacAddressDuplication(macAddress: String, key: String) {
         val device = deviceRepository.findByMacAddress(macAddress)
         if (device.isPresent && device.get().key != key) {
-            ApiErrorCode.DEVICES_0003.throwException()
+            ApiErrorCode.DEVICES_003.throwException()
         }
     }
 
@@ -104,7 +104,7 @@ class DeviceServiceImpl(
 
     private fun validateDeviceKeyCollision(existingDevice: Device, registerDeviceDto: RegisterDeviceDto) {
         if (existingDevice.macAddress != registerDeviceDto.macAddress) {
-            ApiErrorCode.DEVICES_0004.throwException()
+            ApiErrorCode.DEVICES_004.throwException()
         }
     }
 

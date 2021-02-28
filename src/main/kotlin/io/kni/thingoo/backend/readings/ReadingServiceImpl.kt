@@ -43,17 +43,17 @@ class ReadingServiceImpl(
 
     private fun tryGetRelatedDevice(reading: SaveReadingDto): Device {
         val relatedDeviceOptional = deviceRepository.findByKey(reading.deviceKey)
-        return relatedDeviceOptional.orElseThrow { ApiErrorCode.DEVICES_0005.throwException() }
+        return relatedDeviceOptional.orElseThrow { ApiErrorCode.DEVICES_005.throwException() }
     }
 
     private fun tryGetRelatedEntity(reading: SaveReadingDto): Entity {
         val relatedEntityOptional = entityRepository.findByKeyAndDeviceKey(reading.entityKey, reading.deviceKey)
-        return relatedEntityOptional.orElseThrow { ApiErrorCode.ENTITIES_0002.throwException() }
+        return relatedEntityOptional.orElseThrow { ApiErrorCode.ENTITIES_002.throwException() }
     }
 
     private fun validateReadingValue(reading: SaveReadingDto, valueType: UnitType) {
         if (!valueType.getReadingValueValidator().isValid(reading.value)) {
-            ApiErrorCode.READINGS_0001.throwException()
+            ApiErrorCode.READINGS_001.throwException()
         }
     }
 }

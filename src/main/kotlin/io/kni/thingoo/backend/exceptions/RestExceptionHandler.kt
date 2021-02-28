@@ -49,31 +49,31 @@ class RestExceptionHandler :
                 ApiError(ex)
             }
             is AccessDeniedException -> {
-                ApiError(HttpStatus.FORBIDDEN, "Access denied", ApiErrorCode.AUTH_0000)
+                ApiError(HttpStatus.FORBIDDEN, "Access denied", ApiErrorCode.AUTH_000)
             }
             is HttpRequestMethodNotSupportedException -> {
-                ApiError(HttpStatus.METHOD_NOT_ALLOWED, "Method not allowed", ApiErrorCode.API_0000)
+                ApiError(HttpStatus.METHOD_NOT_ALLOWED, "Method not allowed", ApiErrorCode.API_000)
             }
             is HttpMediaTypeNotSupportedException -> {
-                ApiError(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "Unsupported media type", ApiErrorCode.API_0000)
+                ApiError(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "Unsupported media type", ApiErrorCode.API_000)
             }
             is HttpMediaTypeNotAcceptableException -> {
-                ApiError(HttpStatus.NOT_ACCEPTABLE, "Media type not acceptable", ApiErrorCode.API_0000)
+                ApiError(HttpStatus.NOT_ACCEPTABLE, "Media type not acceptable", ApiErrorCode.API_000)
             }
             is MissingPathVariableException -> {
-                ApiError(HttpStatus.INTERNAL_SERVER_ERROR, "Missing path variable", ApiErrorCode.API_0000)
+                ApiError(HttpStatus.INTERNAL_SERVER_ERROR, "Missing path variable", ApiErrorCode.API_000)
             }
             is MissingServletRequestParameterException -> {
-                ApiError(HttpStatus.BAD_REQUEST, "Missing request parameter", ApiErrorCode.API_0000)
+                ApiError(HttpStatus.BAD_REQUEST, "Missing request parameter", ApiErrorCode.API_000)
             }
             is ServletRequestBindingException -> {
-                ApiError(HttpStatus.BAD_REQUEST, "Invalid request", ApiErrorCode.API_0000)
+                ApiError(HttpStatus.BAD_REQUEST, "Invalid request", ApiErrorCode.API_000)
             }
             is TypeMismatchException -> {
-                ApiError(HttpStatus.BAD_REQUEST, "Invalid request", ApiErrorCode.API_0000)
+                ApiError(HttpStatus.BAD_REQUEST, "Invalid request", ApiErrorCode.API_000)
             }
             is HttpMessageNotReadableException -> {
-                ApiError(HttpStatus.BAD_REQUEST, "Invalid request", ApiErrorCode.API_0000)
+                ApiError(HttpStatus.BAD_REQUEST, "Invalid request", ApiErrorCode.API_000)
             }
             is MethodArgumentNotValidException -> {
                 var additionalMessage = ""
@@ -81,32 +81,32 @@ class RestExceptionHandler :
                     val errors = ex.bindingResult.allErrors.joinToString(", ") { it.defaultMessage ?: "" }
                     additionalMessage = ": $errors"
                 }
-                ApiError(HttpStatus.BAD_REQUEST, "Invalid request$additionalMessage", ApiErrorCode.API_0000)
+                ApiError(HttpStatus.BAD_REQUEST, "Invalid request$additionalMessage", ApiErrorCode.API_000)
             }
             is MissingServletRequestPartException -> {
-                ApiError(HttpStatus.BAD_REQUEST, "Invalid request", ApiErrorCode.API_0000)
+                ApiError(HttpStatus.BAD_REQUEST, "Invalid request", ApiErrorCode.API_000)
             }
             is BindException -> {
-                ApiError(HttpStatus.BAD_REQUEST, "Invalid request", ApiErrorCode.API_0000)
+                ApiError(HttpStatus.BAD_REQUEST, "Invalid request", ApiErrorCode.API_000)
             }
             is NoHandlerFoundException -> {
-                ApiError(HttpStatus.NOT_FOUND, "Not found", ApiErrorCode.API_0000)
+                ApiError(HttpStatus.NOT_FOUND, "Not found", ApiErrorCode.API_000)
             }
             is AsyncRequestTimeoutException -> {
-                ApiError(HttpStatus.SERVICE_UNAVAILABLE, "Request timeout", ApiErrorCode.API_0000)
+                ApiError(HttpStatus.SERVICE_UNAVAILABLE, "Request timeout", ApiErrorCode.API_000)
             }
             is InsufficientAuthenticationException -> {
                 ApiError(
                     HttpStatus.UNAUTHORIZED,
                     "Full authentication is required to access this resource",
-                    ApiErrorCode.AUTH_0000
+                    ApiErrorCode.AUTH_000
                 )
             }
             is BadCredentialsException -> {
-                ApiError(HttpStatus.BAD_REQUEST, "Invalid credentials", ApiErrorCode.AUTH_0000)
+                ApiError(HttpStatus.BAD_REQUEST, "Invalid credentials", ApiErrorCode.AUTH_000)
             }
             is HttpClientErrorException.BadRequest -> {
-                ApiError(HttpStatus.BAD_REQUEST, ex.statusText, ApiErrorCode.API_0000)
+                ApiError(HttpStatus.BAD_REQUEST, ex.statusText, ApiErrorCode.API_000)
             }
             else -> {
                 var cause = ex.cause

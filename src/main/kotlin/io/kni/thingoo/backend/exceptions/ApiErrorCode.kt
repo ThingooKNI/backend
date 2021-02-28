@@ -10,19 +10,19 @@ import io.kni.thingoo.backend.readings.exceptions.ReadingUnitTypeMismatchExcepti
 import org.springframework.http.HttpStatus
 
 enum class ApiErrorCode(private val exception: RestException) : ErrorCode {
-    API_0000(RestException("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR)),
-    AUTH_0000(RestException("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR)),
+    API_000(RestException("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR)),
+    AUTH_000(RestException("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR)),
 
-    DEVICES_0001(DeviceNotFoundException("Device with given id not found")),
-    DEVICES_0002(InvalidMACAddressException("Invalid device mac address")),
-    DEVICES_0003(ExistingMACAddressException("There is already a device registered with this macAddress")),
-    DEVICES_0004(ExistingDeviceKeyException("There is already a device registered with this key")),
-    DEVICES_0005(DeviceNotFoundException("Device with given key doesn't exist")),
+    DEVICES_001(DeviceNotFoundException("Device with given id not found")),
+    DEVICES_002(InvalidMACAddressException("Invalid device mac address")),
+    DEVICES_003(ExistingMACAddressException("There is already a device registered with this macAddress")),
+    DEVICES_004(ExistingDeviceKeyException("There is already a device registered with this key")),
+    DEVICES_005(DeviceNotFoundException("Device with given key doesn't exist")),
 
-    ENTITIES_0001(ExistingEntityKeyException("Duplicated Entity key value")),
-    ENTITIES_0002(EntityNotFoundException("Entity with given key and deviceKey doesn't exist")),
+    ENTITIES_001(ExistingEntityKeyException("Duplicated Entity key value")),
+    ENTITIES_002(EntityNotFoundException("Entity with given key and deviceKey doesn't exist")),
 
-    READINGS_0001(ReadingUnitTypeMismatchException("Reading value is not correct value of entity's unit type"))
+    READINGS_001(ReadingUnitTypeMismatchException("Reading value is not correct value of entity's unit type"))
     ;
 
     init {
