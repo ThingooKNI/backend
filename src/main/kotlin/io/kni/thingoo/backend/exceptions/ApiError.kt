@@ -1,6 +1,5 @@
 package io.kni.thingoo.backend.exceptions
 
-import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.http.HttpStatus
 import java.time.LocalDateTime
