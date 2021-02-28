@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 class ReadingController(
     private val readingService: ReadingService
 ) {
-    @GetMapping(params = ["device_key", "entity_key"])
+    @GetMapping
     fun getReadings(@RequestParam("device_key") deviceKey: String, @RequestParam("entity_key") entityKey: String): ResponseEntity<List<ReadingDto>> {
         return ResponseEntity.ok(readingService.getReadings(deviceKey = deviceKey, entityKey = entityKey))
     }

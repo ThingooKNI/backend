@@ -32,6 +32,9 @@ class SpringFoxConfig {
     @Value("\${app.keycloak.webapp-client-id}")
     lateinit var webappClientId: String
 
+    @Value("\${SWAGGER_VERSION:#{null}}")
+    var swaggerVersion: String? = null
+
     @Bean
     fun api(): Docket {
         return Docket(DocumentationType.SWAGGER_2)
@@ -49,7 +52,7 @@ class SpringFoxConfig {
         return ApiInfo(
             "Thingoo REST API",
             "",
-            "0.0.15",
+            swaggerVersion,
             null,
             Contact("Bartlomiej Rasztabiga", "https://github.com/BartlomiejRasztabiga", "contact@rasztabiga.me"),
             null, null, emptyList()
