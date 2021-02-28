@@ -30,7 +30,7 @@ jobs:
           author_email: contact@rasztabiga.me
           message: 'Update Swagger docs and bump API version'
       - name: Push new swagger docs to SwaggerHub
-        uses: smartbear/swaggerhub-cli@0.2.15
+        uses: smartbear/swaggerhub-cli@pr_demo
         env:
           SWAGGERHUB_API_KEY: ${{ secrets.SWAGGERHUB_API_KEY }}
         with:
