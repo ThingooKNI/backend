@@ -21,6 +21,7 @@ enum class ApiErrorCode(private val exception: RestException) : ErrorCode {
 
     ENTITIES_001(ExistingEntityKeyException("Duplicated Entity key value")),
     ENTITIES_002(EntityNotFoundException("Entity with given key and deviceKey doesn't exist")),
+    ENTITIES_003(EntityNotFoundException("Entity with given id not found")),
 
     READINGS_001(ReadingUnitTypeMismatchException("Reading value is not correct value of entity's unit type"))
     ;

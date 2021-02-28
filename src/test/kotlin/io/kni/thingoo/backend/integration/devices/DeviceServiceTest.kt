@@ -320,5 +320,6 @@ class DeviceServiceTest {
 
         // then
         assertThat(deviceRepository.findAll()).isEmpty()
+        assertThat(entityRepository.findByDeviceId(savedDevice.id)).isEmpty()
     }
 }

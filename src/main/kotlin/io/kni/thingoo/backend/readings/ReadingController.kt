@@ -15,14 +15,9 @@ import org.springframework.web.bind.annotation.RestController
 class ReadingController(
     private val readingService: ReadingService
 ) {
-    @GetMapping(params = ["entity_id"])
-    fun getReadings(@RequestParam("entity_id") entityId: Int): ResponseEntity<List<ReadingDto>> {
-        return ResponseEntity.ok(readingService.getReadings(entityId))
-    }
-
     @GetMapping(params = ["device_key", "entity_key"])
     fun getReadings(@RequestParam("device_key") deviceKey: String, @RequestParam("entity_key") entityKey: String): ResponseEntity<List<ReadingDto>> {
-        return ResponseEntity.ok(readingService.getReadings(deviceKey, entityKey))
+        return ResponseEntity.ok(readingService.getReadings(deviceKey = deviceKey, entityKey = entityKey))
     }
 
     @PostMapping
