@@ -29,12 +29,16 @@ jobs:
           author_name: Bartłomiej Rasztabiga
           author_email: contact@rasztabiga.me
           message: 'Update Swagger docs and bump API version'
+      - name: Setup node to use swaggerhub-cli
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Install swaggerhub-cli
+        run: npm i -g swaggerhub-cli
       - name: Push new swagger docs to SwaggerHub
-        uses: smartbear/swaggerhub-cli@pr_demo
         env:
           SWAGGERHUB_API_KEY: ${{ secrets.SWAGGERHUB_API_KEY }}
-        with:
-          args: api:create BartlomiejRasztabiga/thingoo-rest_api -f ./swagger.json --publish --setdefault --visibility=public
+        run: swaggerhub api:create BartlomiejRasztabiga/thingoo-rest_api -f ./swagger.json --publish --setdefault --visibility=public
       - name: Docker meta
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
