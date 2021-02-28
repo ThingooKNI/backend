@@ -9,7 +9,6 @@ class ApiError(
     val status: HttpStatus,
     val message: String?,
     val code: String?,
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     val timestamp: LocalDateTime = LocalDateTime.now(),
     @JsonIgnore
     val internalErrorCode: ErrorCode?
