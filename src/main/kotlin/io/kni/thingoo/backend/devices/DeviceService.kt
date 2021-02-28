@@ -2,6 +2,7 @@ package io.kni.thingoo.backend.devices
 
 import io.kni.thingoo.backend.devices.dto.DeviceDto
 import io.kni.thingoo.backend.devices.dto.RegisterDeviceDto
+import io.kni.thingoo.backend.entities.dto.EntityDto
 
 interface DeviceService {
 
