@@ -58,6 +58,9 @@ spec:
     spec:
       containers:
         - image: 'thingookni/backend:${BACKEND_TAG}'
+          env:
+            - name: SWAGGER_VERSION
+              value: ${BACKEND_TAG}
           imagePullPolicy: Always
           name: backend
           ports:
