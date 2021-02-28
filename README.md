@@ -1,6 +1,7 @@
 # Thingoo backend (REST API + auth server)
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1fb45148a6bb40adb925f48609c37194)](https://app.codacy.com/gh/ThingooKNI/backend?utm_source=github.com&utm_medium=referral&utm_content=ThingooKNI/backend&utm_campaign=Badge_Grade_Settings)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/e384bf6d86ec44e794c78e2d8923ecd7)](https://www.codacy.com/gh/ThingooKNI/backend/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ThingooKNI/backend&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/e384bf6d86ec44e794c78e2d8923ecd7)](https://www.codacy.com/gh/ThingooKNI/backend/dashboard?utm_source=github.com&utm_medium=referral&utm_content=ThingooKNI/backend&utm_campaign=Badge_Coverage)
 
 ## Requirements:
 - Docker
