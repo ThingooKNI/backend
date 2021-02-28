@@ -22,13 +22,6 @@ jobs:
         env:
           SWAGGER_VERSION: ${{ steps.tagName.outputs.tag }}
         run: ./gradlew build
-      - uses: EndBug/add-and-commit@v7
-        name: Commit generated swagger docs
-        with:
-          add: 'swagger.json'
-          author_name: Bartłomiej Rasztabiga
-          author_email: contact@rasztabiga.me
-          message: 'Update Swagger docs and bump API version'
       - name: Setup node to use swaggerhub-cli
         uses: actions/setup-node@v2
         with:

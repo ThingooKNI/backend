@@ -36,10 +36,3 @@ jobs:
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           coverage-reports: build/jacoco.xml
-      - uses: EndBug/add-and-commit@v7
-        name: Commit generated swagger docs
-        with:
-          add: 'swagger.json'
-          author_name: Bartłomiej Rasztabiga
-          author_email: contact@rasztabiga.me
-          message: 'Update Swagger docs'
