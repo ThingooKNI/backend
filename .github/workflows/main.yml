@@ -31,6 +31,11 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build
+      - name: Run codacy-coverage-reporter
+        uses: codacy/codacy-coverage-reporter-action@0.2.0
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: build/jacoco.xml
       - uses: EndBug/add-and-commit@v7
         name: Commit generated swagger docs
         with:

@@ -6,11 +6,16 @@ plugins {
     kotlin("jvm") version "1.4.30"
     kotlin("plugin.spring") version "1.4.30"
     kotlin("plugin.jpa") version "1.4.30"
+    jacoco
 }
 
 group = "io.kni.thingoo"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
+
+jacoco {
+    toolVersion = "0.8.6"
+}
 
 tasks.bootJar {
     archiveFileName.set("thingoo-backend.jar")
@@ -58,5 +63,16 @@ tasks.withType<KotlinCompile> {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "11"
         useIR = true
+    }
+}
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
+}
+tasks.jacocoTestReport {
+    dependsOn(tasks.test) // tests are required to run before generating the report
+    reports {
+        xml.isEnabled = true
+        xml.destination = file("${buildDir}/jacoco.xml")
     }
 }
