@@ -16,8 +16,25 @@ jobs:
           java-version: 11
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+      - uses: olegtarasov/get-tag@v2.1
+        id: tagName
       - name: Build with Gradle
+        env:
+          SWAGGER_VERSION: ${{ steps.tagName.outputs.tag }}
         run: ./gradlew build
+      - uses: EndBug/add-and-commit@v7
+        name: Commit generated swagger docs
+        with:
+          add: 'swagger.json'
+          author_name: Bartłomiej Rasztabiga
+          author_email: contact@rasztabiga.me
+          message: 'Update Swagger docs and bump API version'
+      - name: Push new swagger docs to SwaggerHub
+        uses: smartbear/swaggerhub-cli@0.1.15
+        env:
+          SWAGGERHUB_API_KEY: ${{ secrets.SWAGGERHUB_API_KEY }}
+        with:
+          args: api:create BartlomiejRasztabiga/thingoo-rest_api -f ./swagger.json --publish --setdefault --visibility=public
       - name: Docker meta
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1

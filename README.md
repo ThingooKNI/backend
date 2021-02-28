@@ -54,4 +54,4 @@ For easier client's implementation, we provide Postman collection with all endpo
 <https://app.getpostman.com/join-team?invite_code=e7a9f0d3527e5f429ee64eaf84d723dc>
 
 ## OpenAPI Specification (Swagger)
-<https://app.swaggerhub.com/apis/Thingoo/thingoo-rest_api>
+<https://app.swaggerhub.com/apis/BartlomiejRasztabiga/thingoo-rest_api/>
