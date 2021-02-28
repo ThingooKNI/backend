@@ -46,6 +46,7 @@ class SpringFoxConfig {
             .securitySchemes(listOf(securityScheme()))
             .securityContexts(listOf(securityContext()))
             .apiInfo(apiInfo())
+            .host("https://dev.thingoo.xyz/api/")
     }
 
     private fun apiInfo(): ApiInfo {
