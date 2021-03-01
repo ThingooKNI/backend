@@ -52,6 +52,10 @@ dependencies {
     implementation("io.springfox:springfox-boot-starter:3.0.0")
     implementation("io.springfox:springfox-swagger-ui:3.0.0")
 
+    implementation("io.sentry:sentry-spring-boot-starter:4.2.0")
+    implementation("io.sentry:sentry-logback:4.2.0")
+
+
 }
 
 tasks.withType<Test> {
