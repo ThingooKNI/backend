@@ -1,11 +1,14 @@
 package io.kni.thingoo.backend.config
 
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Profile
 import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 
+@Profile("!dev")
 @EnableWebSecurity
 class SecurityConfig : WebSecurityConfigurerAdapter() {
 
@@ -28,5 +31,13 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
             .oauth2ResourceServer()
             .jwt()
             .jwtAuthenticationConverter(CustomJwtAuthenticationConverter(webappClientId, deviceClientId))
+    }
+}
+
+@Profile("dev")
+@EnableWebSecurity
+class NoSecurityConfig : WebSecurityConfigurerAdapter() {
+    override fun configure(web: WebSecurity) {
+        web.ignoring().antMatchers("/**")
     }
 }
