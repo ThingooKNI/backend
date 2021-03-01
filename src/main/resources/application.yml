@@ -28,3 +28,8 @@ app:
     webapp-client-id: thingoo-webapp
     device-client-id: thingoo-device
     external-auth-server-url: https://dev.thingoo.xyz/auth
+
+sentry:
+  dsn: https://2fe6ff860cdd4d06b4a2bd020fc42685@o538693.ingest.sentry.io/5657092
+  enable-tracing: true
+  traces-sample-rate: 1.0
