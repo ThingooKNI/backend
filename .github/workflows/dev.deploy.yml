@@ -79,6 +79,15 @@ jobs:
       - name: Extract git tag name
         uses: olegtarasov/get-tag@v2.1
         id: tagName
+      - name: Create Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: production
+          version: ${{ github.ref }}
       - name: envsubst backend version
         run: |
           export BACKEND_TAG=$GIT_TAG_NAME
