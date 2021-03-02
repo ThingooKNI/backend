@@ -9,25 +9,30 @@
 - JDK 11+
 - *ktlint (for formatting, optional)*
 
-## Running app for development
+## Running Thingoo backend alone:
+You can run Thingoo backend standalone, with Spring Security disabled, by just running regular Spring Boot application with "dev" profile active.
+
+## Running Thingoo backend with all dependencies (auth server etc.):
+### Running app for development
 ```shell
 ./scripts/start-dev.sh
 ```
 
-## Applying code changes:
+### Applying code changes:
 ```shell
 ./scripts/reload-dev.sh
 ```
 
-## Watching application logs:
+### Watching application logs:
 ```shell
 docker logs backend -f 
 ```
 
-## Stopping the app
+### Stopping the app
 ```shell
 ./scripts/stop-dev.sh
 ```
+
 
 ## Format code with ktlint
 ```shell
