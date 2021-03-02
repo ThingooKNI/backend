@@ -41,6 +41,18 @@ class ReadingServiceImpl(
         return readingRepository.findByEntityKeyAndEntityDeviceKey(entityKey, deviceKey).toList().map { it.toDto() }
     }
 
+    override fun getLatestReading(entityId: Int): ReadingDto {
+        return readingRepository.findFirstByEntityIdOrderByTimestampDesc(entityId).map { it.toDto() }.orElseThrow {
+            ApiErrorCode.READINGS_002.throwException()
+        }
+    }
+
+    override fun getLatestReading(deviceKey: String, entityKey: String): ReadingDto {
+        return readingRepository.findFirstByEntityKeyAndEntityDeviceKeyOrderByTimestampDesc(entityKey, deviceKey).map { it.toDto() }.orElseThrow {
+            ApiErrorCode.READINGS_002.throwException()
+        }
+    }
+
     private fun tryGetRelatedDevice(reading: SaveReadingDto): Device {
         val relatedDeviceOptional = deviceRepository.findByKey(reading.deviceKey)
         return relatedDeviceOptional.orElseThrow { ApiErrorCode.DEVICES_005.throwException() }

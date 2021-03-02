@@ -20,6 +20,11 @@ class ReadingController(
         return ResponseEntity.ok(readingService.getReadings(deviceKey = deviceKey, entityKey = entityKey))
     }
 
+    @GetMapping("/latest")
+    fun getLatestReading(@RequestParam("device_key") deviceKey: String, @RequestParam("entity_key") entityKey: String): ResponseEntity<ReadingDto> {
+        return ResponseEntity.ok(readingService.getLatestReading(deviceKey = deviceKey, entityKey = entityKey))
+    }
+
     @PostMapping
     fun saveReading(@RequestBody saveReadingDto: SaveReadingDto): ResponseEntity<ReadingDto> {
         return ResponseEntity.ok(readingService.saveReading(saveReadingDto))

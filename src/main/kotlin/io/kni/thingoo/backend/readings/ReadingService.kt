@@ -10,4 +10,8 @@ interface ReadingService {
     fun getReadings(entityId: Int): List<ReadingDto>
 
     fun getReadings(deviceKey: String, entityKey: String): List<ReadingDto>
+
+    fun getLatestReading(entityId: Int): ReadingDto
+
+    fun getLatestReading(deviceKey: String, entityKey: String): ReadingDto
 }
