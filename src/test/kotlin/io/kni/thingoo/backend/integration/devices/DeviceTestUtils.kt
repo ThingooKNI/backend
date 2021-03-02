@@ -34,13 +34,11 @@ fun createTestEntity(
 fun createTestRegisterDeviceDto(
     id: String = "test",
     mac: String = randomMACAddress(),
-    name: String? = "Test device",
     entities: List<RegisterEntityDto> = emptyList()
 ): RegisterDeviceDto {
     return RegisterDeviceDto(
         key = id,
         macAddress = mac,
-        displayName = name,
         entities = entities
     )
 }

@@ -33,7 +33,7 @@ class Device(
 ) : Serializable {
     fun toRegisterDeviceDto(): RegisterDeviceDto {
         return RegisterDeviceDto(
-            key, macAddress, displayName, entities.map { it.toRegisterEntityDto() }
+            key, macAddress, entities.map { it.toRegisterEntityDto() }
         )
     }
 

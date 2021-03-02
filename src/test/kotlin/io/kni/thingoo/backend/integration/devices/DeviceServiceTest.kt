@@ -203,14 +203,13 @@ class DeviceServiceTest {
 
         // when
         val newDevice = existingDevice.toRegisterDeviceDto()
-        newDevice.displayName = "test device"
 
         deviceService.registerDevice(newDevice)
 
         // then
         val updatedDevice = deviceRepository.findByKey(newDevice.key).get()
         assertThat(updatedDevice.entities).hasSize(2)
-        assertThat(updatedDevice.displayName).isEqualTo(newDevice.displayName)
+        assertThat(updatedDevice.displayName).isEqualTo("device1")
     }
 
     @Test
