@@ -45,14 +45,12 @@ fun createTestRegisterDeviceDto(
 
 fun createTestRegisterEntityDto(
     key: String = "temp",
-    name: String = "Temperature",
     type: EntityType = EntityType.SENSOR,
     unitType: UnitType = UnitType.DECIMAL,
     unitDisplayName: String = "C"
 ): RegisterEntityDto {
     return RegisterEntityDto(
         key = key,
-        displayName = name,
         type = type,
         unitType = unitType,
         unitDisplayName = unitDisplayName

@@ -51,7 +51,7 @@ class Entity(
 ) : Serializable {
     fun toRegisterEntityDto(): RegisterEntityDto {
         return RegisterEntityDto(
-            key, displayName, type, unitType, unitDisplayName
+            key, type, unitType, unitDisplayName
         )
     }
 

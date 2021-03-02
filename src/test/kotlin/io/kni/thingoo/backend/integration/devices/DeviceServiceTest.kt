@@ -144,21 +144,18 @@ class DeviceServiceTest {
         val newEntities = listOf(
             createTestRegisterEntityDto(
                 key = "temp",
-                name = "temperature",
                 type = EntityType.SENSOR,
                 unitType = UnitType.DECIMAL,
                 unitDisplayName = "F"
             ),
             createTestRegisterEntityDto(
                 key = "hum",
-                name = "humidity",
                 type = EntityType.SENSOR,
                 unitType = UnitType.INTEGER,
                 unitDisplayName = "%"
             ),
             createTestRegisterEntityDto(
                 key = "online",
-                name = "online",
                 type = EntityType.SENSOR,
                 unitType = UnitType.BOOLEAN,
                 unitDisplayName = ""
@@ -244,7 +241,6 @@ class DeviceServiceTest {
         val newEntities = listOf(
             createTestRegisterEntityDto(
                 key = "temp",
-                name = "temperature",
                 type = EntityType.SENSOR,
                 unitType = UnitType.DECIMAL,
                 unitDisplayName = "C",
