@@ -15,6 +15,7 @@ import io.kni.thingoo.backend.readings.Reading
 import io.kni.thingoo.backend.readings.ReadingRepository
 import io.kni.thingoo.backend.readings.ReadingService
 import io.kni.thingoo.backend.readings.dto.SaveReadingDto
+import io.kni.thingoo.backend.readings.exceptions.NoReadingsException
 import io.kni.thingoo.backend.readings.exceptions.ReadingUnitTypeMismatchException
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase
 import org.assertj.core.api.Assertions.assertThat
@@ -221,6 +222,68 @@ class ReadingServiceTest {
         assertThat(readings1).hasSize(0)
         assertThat(readings2).hasSize(0)
         assertThat(readings3).hasSize(1)
+    }
+
+    @Test
+    fun `given device with entities, when querying latest reading by deviceKey and entityKey, will return appropriate reading`() {
+        // given
+        val device = saveDevice(TEST_DEVICE_1)
+        val entities = saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+
+        readingRepository.save(Reading(value = "55.49", entity = entities[0]))
+        readingRepository.save(Reading(value = "55.50", entity = entities[0]))
+        readingRepository.save(Reading(value = "55.51", entity = entities[0]))
+
+        // when
+        val reading = readingService.getLatestReading(TEST_DEVICE_1.key, TEST_ENTITY_1.key)
+
+        // then
+        assertThat(reading.value).isEqualTo("55.51")
+    }
+
+    @Test
+    fun `given device with entities, when querying latest reading by entityId, will return appropriate reading`() {
+        // given
+        val device = saveDevice(TEST_DEVICE_1)
+        val entities = saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+
+        readingRepository.save(Reading(value = "55.49", entity = entities[0]))
+        readingRepository.save(Reading(value = "55.50", entity = entities[0]))
+        readingRepository.save(Reading(value = "55.51", entity = entities[0]))
+
+        // when
+        val reading = readingService.getLatestReading(entities[0].id)
+
+        // then
+        assertThat(reading.value).isEqualTo("55.51")
+    }
+
+    @Test
+    fun `given entity with no readings, when querying latest reading by entityId, will throw NoReadingsException`() {
+        // given
+        val device = saveDevice(TEST_DEVICE_1)
+        val entities = saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+
+        // when
+        assertThrows<NoReadingsException> {
+            readingService.getLatestReading(entities[0].id)
+        }
+
+        // then
+    }
+
+    @Test
+    fun `given entity with no readings, when querying latest reading by deviceKey and entityKey, will throw NoReadingsException`() {
+        // given
+        val device = saveDevice(TEST_DEVICE_1)
+        val entities = saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+
+        // when
+        assertThrows<NoReadingsException> {
+            readingService.getLatestReading(TEST_DEVICE_1.key, TEST_ENTITY_1.key)
+        }
+
+        // then
     }
 
     fun saveDevice(device: Device): Device {
