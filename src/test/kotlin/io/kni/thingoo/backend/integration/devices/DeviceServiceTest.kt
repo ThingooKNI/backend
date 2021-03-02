@@ -144,21 +144,18 @@ class DeviceServiceTest {
         val newEntities = listOf(
             createTestRegisterEntityDto(
                 key = "temp",
-                name = "temperature",
                 type = EntityType.SENSOR,
                 unitType = UnitType.DECIMAL,
                 unitDisplayName = "F"
             ),
             createTestRegisterEntityDto(
                 key = "hum",
-                name = "humidity",
                 type = EntityType.SENSOR,
                 unitType = UnitType.INTEGER,
                 unitDisplayName = "%"
             ),
             createTestRegisterEntityDto(
                 key = "online",
-                name = "online",
                 type = EntityType.SENSOR,
                 unitType = UnitType.BOOLEAN,
                 unitDisplayName = ""
@@ -203,14 +200,13 @@ class DeviceServiceTest {
 
         // when
         val newDevice = existingDevice.toRegisterDeviceDto()
-        newDevice.displayName = "test device"
 
         deviceService.registerDevice(newDevice)
 
         // then
         val updatedDevice = deviceRepository.findByKey(newDevice.key).get()
         assertThat(updatedDevice.entities).hasSize(2)
-        assertThat(updatedDevice.displayName).isEqualTo(newDevice.displayName)
+        assertThat(updatedDevice.displayName).isEqualTo("device1")
     }
 
     @Test
@@ -245,7 +241,6 @@ class DeviceServiceTest {
         val newEntities = listOf(
             createTestRegisterEntityDto(
                 key = "temp",
-                name = "temperature",
                 type = EntityType.SENSOR,
                 unitType = UnitType.DECIMAL,
                 unitDisplayName = "C",

@@ -94,8 +94,6 @@ class DeviceServiceImpl(
     private fun registerExistingDevice(existingDevice: Device, registerDeviceDto: RegisterDeviceDto) {
         validateDeviceKeyCollision(existingDevice, registerDeviceDto)
 
-        updateDevice(existingDevice, registerDeviceDto)
-
         val existingEntities = entityRepository.findByDeviceId(existingDevice.id)
 
         updateNewAndExistingEntities(registerDeviceDto, existingDevice, existingEntities)
@@ -143,11 +141,5 @@ class DeviceServiceImpl(
                 entityRepository.delete(entity)
             }
         }
-    }
-
-    private fun updateDevice(existingDevice: Device, registerDeviceDto: RegisterDeviceDto) {
-        // Should it be generic? We have only displayName to edit for now but this subset of fields may grow in the future
-        existingDevice.displayName = registerDeviceDto.displayName
-        deviceRepository.save(existingDevice)
     }
 }

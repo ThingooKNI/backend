@@ -34,27 +34,23 @@ fun createTestEntity(
 fun createTestRegisterDeviceDto(
     id: String = "test",
     mac: String = randomMACAddress(),
-    name: String? = "Test device",
     entities: List<RegisterEntityDto> = emptyList()
 ): RegisterDeviceDto {
     return RegisterDeviceDto(
         key = id,
         macAddress = mac,
-        displayName = name,
         entities = entities
     )
 }
 
 fun createTestRegisterEntityDto(
     key: String = "temp",
-    name: String = "Temperature",
     type: EntityType = EntityType.SENSOR,
     unitType: UnitType = UnitType.DECIMAL,
     unitDisplayName: String = "C"
 ): RegisterEntityDto {
     return RegisterEntityDto(
         key = key,
-        displayName = name,
         type = type,
         unitType = unitType,
         unitDisplayName = unitDisplayName
