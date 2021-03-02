@@ -24,4 +24,9 @@ class EntityController(
     fun getReadingsForEntity(@PathVariable id: Int): ResponseEntity<List<ReadingDto>> {
         return ResponseEntity.ok(readingService.getReadings(entityId = id))
     }
+
+    @GetMapping("/{id}/readings/latest")
+    fun getLatestReadingForEntity(@PathVariable id: Int): ResponseEntity<ReadingDto> {
+        return ResponseEntity.ok(readingService.getLatestReading(entityId = id))
+    }
 }
