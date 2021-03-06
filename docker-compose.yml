@@ -69,6 +69,7 @@ services:
     volumes:
       - mosquitto-data:/mosquitto/data
       - mosquitto-logs:/mosquitto/logs
+      - ./mosquitto/mosquitto.passwd:/mosquitto/config/mosquitto.passwd
       - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
     restart: unless-stopped
 
