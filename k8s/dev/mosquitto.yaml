@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    name: mosquitto
+  name: mosquitto
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: mosquitto
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        name: mosquitto
+    spec:
+      containers:
+        - image: "eclipse-mosquitto:2.0.8"
+          imagePullPolicy: Always
+          name: mosquitto
+          ports:
+            - containerPort: 1883
+            - containerPort: 9001
+          volumeMounts:
+            - mountPath: "/mosquitto/config"
+              name: mosquitto-config
+              readOnly: true
+      restartPolicy: Always
+      volumes:
+        - name: mosquitto-config
+          configMap:
+            name: mosquitto-config
+            items:
+              - key: mosquitto.conf
+                path: mosquitto.conf
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: mosquitto
+  name: mosquitto
+spec:
+  selector:
+    name: mosquitto
+  ports:
+    - protocol: TCP
+      port: 1883
+      targetPort: 1883
+      name: "1883"
+    - protocol: TCP
+      port: 9001
+      targetPort: 9001
+      name: "9001"
