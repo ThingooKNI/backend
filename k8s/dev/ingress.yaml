@@ -23,3 +23,10 @@ spec:
                 name: keycloak
                 port:
                   number: 8080
+          - path: /mqtt
+            pathType: Prefix
+            backend:
+              service:
+                name: mosquitto
+                port:
+                  number: 1883
