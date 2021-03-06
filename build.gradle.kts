@@ -53,7 +53,7 @@ dependencies {
     implementation("io.springfox:springfox-swagger-ui:3.0.0")
 
     implementation("io.sentry:sentry-spring-boot-starter:4.3.0")
-    implementation("io.sentry:sentry-logback:4.2.0")
+    implementation("io.sentry:sentry-logback:4.3.0")
 
 
 }
