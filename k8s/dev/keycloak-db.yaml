@@ -54,6 +54,7 @@ metadata:
     name: keycloak-db
   name: keycloak-db
 spec:
+  type: NodePort
   ports:
     - protocol: TCP
       port: 5432

@@ -91,6 +91,7 @@ metadata:
 spec:
   selector:
     name: backend
+  type: NodePort
   ports:
     - protocol: TCP
       port: 8080

@@ -35,6 +35,8 @@ spec:
             items:
               - key: mosquitto.conf
                 path: mosquitto.conf
+              - key: mosquitto.passwd
+                path: mosquitto.passwd
 
 ---
 apiVersion: v1
@@ -46,6 +48,7 @@ metadata:
 spec:
   selector:
     name: mosquitto
+  type: NodePort
   ports:
     - protocol: TCP
       port: 1883

@@ -6,4 +6,13 @@ data:
   mosquitto.conf: |-
     persistence true
     persistence_location /mosquitto/data/
+
     log_dest file /mosquitto/log/mosquitto.log
+    log_dest stdout
+
+    password_file /mosquitto/config/mosquitto.passwd
+    allow_anonymous false
+
+    listener 1883 0.0.0.0
+  mosquitto.passwd: |-
+    thingoo:$7$101$iEtDsDEHximlB/s+$coh3fjuuN3iUozaD8gni5y0dqSIb/RaRnRUgv7Pk1Rfl7izsXQQcpa8/nEJ6/7qQcv6wURCCqK/6Kqqh2jaakw==
