@@ -29,4 +29,4 @@ spec:
               service:
                 name: mosquitto
                 port:
-                  number: 1883
+                  number: 9001
