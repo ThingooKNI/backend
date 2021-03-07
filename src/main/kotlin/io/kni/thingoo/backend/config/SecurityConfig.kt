@@ -26,6 +26,7 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
             .antMatchers("/swagger-ui/**").permitAll()
             .antMatchers("/swagger-resources/**").permitAll()
             .mvcMatchers(HttpMethod.POST, "/devices").hasRole("device")
+            .mvcMatchers(HttpMethod.POST, "/readings").hasRole("device")
             .anyRequest().hasRole("user")
             .and()
             .oauth2ResourceServer()
