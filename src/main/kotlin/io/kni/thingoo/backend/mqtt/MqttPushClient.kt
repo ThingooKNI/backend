@@ -18,7 +18,7 @@ class MqttPushClient(
 
     private val logger = LoggerFactory.getLogger(MqttPushClient::class.java)
 
-    private var client: MqttClient? = null
+    private lateinit var client: MqttClient
 
     init {
         this.setup()
@@ -51,17 +51,14 @@ class MqttPushClient(
         message.isRetained = retain
         message.payload = pushMessage.toByteArray()
 
-        val mqttTopic = client!!.getTopic(topic)
+        val mqttTopic = client.getTopic(topic)
 
-        if (null == mqttTopic) {
-            logger.error("topic not exist")
-        }
-        val token = mqttTopic!!.publish(message)
+        val token = mqttTopic.publish(message)
         token.waitForCompletion()
     }
 
     fun subscribe(mqttConfig: MqttConfig) {
         logger.info("Start subscribing to topics${mqttConfig.defaultTopic}")
-        client!!.subscribe(mqttConfig.defaultTopic, 2)
+        client.subscribe(mqttConfig.defaultTopic, 2)
     }
 }

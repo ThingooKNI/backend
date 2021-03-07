@@ -37,7 +37,7 @@ sentry:
 mqtt:
   username: thingoo
   password: thingoo
-  host-url: tcp://localhost:1883
+  host-url: tcp://mosquitto:1883
   clientID: thingoo-backend
   default-topic: "#"
   timeout: 100
