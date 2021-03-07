@@ -24,7 +24,7 @@ class MqttPushClient(
 
     fun setup() {
         this.connect(mqttConfig)
-        this.subscribe(mqttConfig.defaultTopic, 0)
+        this.subscribe(mqttConfig.defaultTopic, 2)
     }
 
     fun connect(config: MqttConfig) {
