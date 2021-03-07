@@ -24,7 +24,7 @@ class MqttPushClient(
 
     fun setup() {
         this.connect(mqttConfig)
-        this.subscribe(mqttConfig.defaultTopic, 2)
+        this.subscribe(mqttConfig)
     }
 
     fun connect(config: MqttConfig) {
@@ -58,8 +58,8 @@ class MqttPushClient(
         token.waitForCompletion()
     }
 
-    fun subscribe(topic: String, qos: Int) {
-        logger.info("Start subscribing to topics$topic")
-        client!!.subscribe(topic, qos)
+    fun subscribe(mqttConfig: MqttConfig) {
+        logger.info("Start subscribing to topics${mqttConfig.defaultTopic}")
+        client!!.subscribe(mqttConfig.defaultTopic, 2)
     }
 }
