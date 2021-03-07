@@ -43,7 +43,7 @@ data:
     mqtt:
       username: thingoo
       password: thingoo
-      host-url: tcp://mosquitto:1883
+      host-url: wss://dev.thingoo.xyz/mqtt
       clientID: thingoo-backend
       default-topic: "#"
       timeout: 100
