@@ -1,3 +1,29 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    name: mosquitto-data
+  name: mosquitto-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    name: mosquitto-logs
+  name: mosquitto-logs
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -27,6 +53,10 @@ spec:
             - mountPath: "/mosquitto/config"
               name: mosquitto-config
               readOnly: true
+            - mountPath: "/mosquitto/data"
+              name: mosquitto-data
+            - mountPath: "/mosquitto/logs"
+              name: mosquitto-logs
       restartPolicy: Always
       volumes:
         - name: mosquitto-config
@@ -37,7 +67,12 @@ spec:
                 path: mosquitto.conf
               - key: mosquitto.passwd
                 path: mosquitto.passwd
-
+        - name: mosquitto-data
+          persistentVolumeClaim:
+            claimName: mosquitto-data
+        - name: mosquitto-logs
+          persistentVolumeClaim:
+            claimName: mosquitto-logs
 ---
 apiVersion: v1
 kind: Service
