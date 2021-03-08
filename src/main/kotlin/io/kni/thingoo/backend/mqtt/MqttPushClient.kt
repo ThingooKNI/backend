@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
 @Component
 @Profile("production")
 class MqttPushClient(
-    private val mqttMessageHandler: MqttCallback,
+    private val mqttCallback: MqttCallback,
     private val mqttConfig: MqttConfig
 ) {
 
