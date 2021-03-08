@@ -34,7 +34,7 @@ class MqttCallback(
         try {
             handleMessage(String(mqttMessage.payload), topic)
         } catch (e: MqttException) {
-            //TODO send details back to the client
+            // TODO send details back to the client
         }
     }
 

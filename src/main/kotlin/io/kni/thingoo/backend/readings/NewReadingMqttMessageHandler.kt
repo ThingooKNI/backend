@@ -1,6 +1,5 @@
 package io.kni.thingoo.backend.readings
 
-import io.kni.thingoo.backend.devices.DeviceSetupMqttMessageHandler
 import io.kni.thingoo.backend.mqtt.MqttMessageHandler
 import org.springframework.stereotype.Service
 

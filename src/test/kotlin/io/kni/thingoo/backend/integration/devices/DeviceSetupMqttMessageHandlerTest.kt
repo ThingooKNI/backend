@@ -39,7 +39,7 @@ class DeviceSetupMqttMessageHandlerTest {
 
     @Test
     fun `given wrong json1, when handling setup message, will throw InvalidDeviceSetupJsonException`() {
-        //given
+        // given
 
         // when
         assertThrows<InvalidDeviceSetupJsonException> {
@@ -51,7 +51,7 @@ class DeviceSetupMqttMessageHandlerTest {
 
     @Test
     fun `given wrong json2, when handling setup message, will throw InvalidDeviceSetupJsonException`() {
-        //given
+        // given
 
         // when
         assertThrows<InvalidDeviceSetupJsonException> {
@@ -66,7 +66,8 @@ class DeviceSetupMqttMessageHandlerTest {
                     "      \"unitDisplayName\": \"C\"\n" +
                     "    }\n" +
                     "  ]\n" +
-                    "}", "/devices/newDevice/setup"
+                    "}",
+                "/devices/newDevice/setup"
             )
         }
 
@@ -75,7 +76,7 @@ class DeviceSetupMqttMessageHandlerTest {
 
     @Test
     fun `given proper json, when handling setup message, will setup new device`() {
-        //given
+        // given
 
         // when
         deviceSetupMqttMessageHandler.handle(
@@ -90,9 +91,9 @@ class DeviceSetupMqttMessageHandlerTest {
                 "      \"unitDisplayName\": \"C\"\n" +
                 "    }\n" +
                 "  ]\n" +
-                "}", "/devices/newDevice/setup"
+                "}",
+            "/devices/newDevice/setup"
         )
-
 
         // then
         val device = deviceRepository.findByKey("test")
