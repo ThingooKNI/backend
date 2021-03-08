@@ -4,6 +4,7 @@ import io.kni.thingoo.backend.devices.DeviceSetupMqttMessageHandler
 import io.kni.thingoo.backend.readings.NewReadingMqttMessageHandler
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
 import org.eclipse.paho.client.mqttv3.MqttCallback
+import org.eclipse.paho.client.mqttv3.MqttException
 import org.eclipse.paho.client.mqttv3.MqttMessage
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
@@ -30,7 +31,11 @@ class MqttCallback(
         logger.info("Received message Qos: ${mqttMessage.qos}")
         logger.info("Received message content: ${String(mqttMessage.payload)}")
 
-        handleMessage(String(mqttMessage.payload), topic)
+        try {
+            handleMessage(String(mqttMessage.payload), topic)
+        } catch (e: MqttException) {
+            //TODO send details back to the client
+        }
     }
 
     override fun deliveryComplete(iMqttDeliveryToken: IMqttDeliveryToken) {

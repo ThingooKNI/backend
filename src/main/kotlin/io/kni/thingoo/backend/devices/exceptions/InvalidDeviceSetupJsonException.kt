@@ -1,3 +1,5 @@
 package io.kni.thingoo.backend.devices.exceptions
 
-class InvalidDeviceSetupJsonException(msg: String) : Exception(msg)
+import io.kni.thingoo.backend.mqtt.exceptions.MqttException
+
+class InvalidDeviceSetupJsonException(msg: String) : MqttException(msg)
