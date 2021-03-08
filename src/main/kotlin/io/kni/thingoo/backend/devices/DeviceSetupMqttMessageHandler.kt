@@ -13,7 +13,10 @@ class DeviceSetupMqttMessageHandler(
     }
 
     override fun handle(message: String, topic: String) {
-        println(message)
-        val match = deviceSetupTopicRegex
+        val (deviceKey) = getDestructuredTopic(topic)
+    }
+
+    private fun getDestructuredTopic(topic: String): MatchResult.Destructured {
+        return deviceSetupTopicRegex.find(topic)!!.destructured
     }
 }

@@ -1,5 +1,6 @@
 package io.kni.thingoo.backend.readings
 
+import io.kni.thingoo.backend.devices.DeviceSetupMqttMessageHandler
 import io.kni.thingoo.backend.mqtt.MqttMessageHandler
 import org.springframework.stereotype.Service
 
@@ -13,6 +14,10 @@ class NewReadingMqttMessageHandler(
     }
 
     override fun handle(message: String, topic: String) {
-        println(message)
+        val (deviceKey, entityKey) = getDestructuredTopic(topic)
+    }
+
+    private fun getDestructuredTopic(topic: String): MatchResult.Destructured {
+        return entityNewReadingTopicRegex.find(topic)!!.destructured
     }
 }
