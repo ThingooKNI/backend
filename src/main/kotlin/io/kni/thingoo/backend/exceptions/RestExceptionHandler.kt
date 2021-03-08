@@ -29,7 +29,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 class RestExceptionHandler :
     ResponseEntityExceptionHandler() {
-    private val log = LoggerFactory.getLogger(RestExceptionHandler::class.java)
+
+    companion object {
+        private val log = LoggerFactory.getLogger(RestExceptionHandler::class.java)
+    }
 
     override fun handleExceptionInternal(
         ex: java.lang.Exception,

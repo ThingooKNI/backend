@@ -8,7 +8,12 @@ class DeviceSetupMqttMessageHandler(
     private val deviceService: DeviceService
 ) : MqttMessageHandler {
 
+    companion object {
+        val deviceSetupTopicRegex = Regex("^/devices/(\\w+)/setup$")
+    }
+
     override fun handle(message: String, topic: String) {
-        TODO("Not yet implemented")
+        println(message)
+        val match = deviceSetupTopicRegex
     }
 }

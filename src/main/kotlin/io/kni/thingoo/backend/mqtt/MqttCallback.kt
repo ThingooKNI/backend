@@ -18,11 +18,7 @@ class MqttCallback(
 
     companion object {
         private val logger = LoggerFactory.getLogger(MqttPushClient::class.java)
-
-        private val deviceSetupTopicRegex = Regex("^/devices/(\\w+)/setup$")
-        private val entityNewReadingTopicRegex = Regex("^/devices/(\\w+)/entities/(\\w+)/reading$")
     }
-
 
     override fun connectionLost(throwable: Throwable) {
         logger.info("Disconnected, can be reconnected")
@@ -34,7 +30,7 @@ class MqttCallback(
         logger.info("Received message Qos: ${mqttMessage.qos}")
         logger.info("Received message content: ${String(mqttMessage.payload)}")
 
-        handleMessage(mqttMessage.payload.toString(), topic)
+        handleMessage(String(mqttMessage.payload), topic)
     }
 
     override fun deliveryComplete(iMqttDeliveryToken: IMqttDeliveryToken) {
@@ -43,8 +39,8 @@ class MqttCallback(
 
     fun handleMessage(messagePayload: String, topic: String) {
         when {
-            deviceSetupTopicRegex.matches(topic) -> deviceSetupMqttMessageHandler.handle(messagePayload, topic)
-            entityNewReadingTopicRegex.matches(topic) -> newReadingMqttMessageHandler.handle(messagePayload, topic)
+            DeviceSetupMqttMessageHandler.deviceSetupTopicRegex.matches(topic) -> deviceSetupMqttMessageHandler.handle(messagePayload, topic)
+            NewReadingMqttMessageHandler.entityNewReadingTopicRegex.matches(topic) -> newReadingMqttMessageHandler.handle(messagePayload, topic)
         }
     }
 }

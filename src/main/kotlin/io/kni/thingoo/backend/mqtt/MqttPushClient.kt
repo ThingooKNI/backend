@@ -16,7 +16,9 @@ class MqttPushClient(
     private val mqttConfig: MqttConfig
 ) {
 
-    private val logger = LoggerFactory.getLogger(MqttPushClient::class.java)
+    companion object {
+        private val logger = LoggerFactory.getLogger(MqttPushClient::class.java)
+    }
 
     private lateinit var client: MqttClient
 
