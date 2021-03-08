@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 
 @Component
-class MqttMessageHandler : MqttCallback {
+class MqttCallback : MqttCallback {
 
     var mqttPushClient: MqttPushClient? = null
 

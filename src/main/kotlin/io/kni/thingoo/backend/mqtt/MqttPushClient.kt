@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component
 @Component
 @Profile("production")
 class MqttPushClient(
-    private val mqttMessageHandler: MqttMessageHandler,
+    private val mqttCallback: MqttCallback,
     private val mqttConfig: MqttConfig
 ) {
 
@@ -39,8 +39,8 @@ class MqttPushClient(
         options.connectionTimeout = config.timeout
         options.keepAliveInterval = config.keepalive
 
-        mqttMessageHandler.mqttPushClient = this
-        client.setCallback(mqttMessageHandler)
+        mqttCallback.mqttPushClient = this
+        client.setCallback(mqttCallback)
         client.connect(options)
         this.client = client
     }
