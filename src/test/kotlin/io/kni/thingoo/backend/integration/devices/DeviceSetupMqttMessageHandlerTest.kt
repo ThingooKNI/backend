@@ -6,6 +6,7 @@ import io.kni.thingoo.backend.devices.DeviceSetupMqttMessageHandler
 import io.kni.thingoo.backend.devices.exceptions.InvalidDeviceSetupJsonException
 import io.kni.thingoo.backend.entities.EntityRepository
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -54,7 +55,32 @@ class DeviceSetupMqttMessageHandlerTest {
 
         // when
         assertThrows<InvalidDeviceSetupJsonException> {
-            deviceSetupMqttMessageHandler.handle("{\n" +
+            deviceSetupMqttMessageHandler.handle(
+                "{\n" +
+                    "  \"macAddress\": \"c0:3e:ba:c3:50:0b\",\n" +
+                    "  \"entities\": [\n" +
+                    "    {\n" +
+                    "      \"key\": \"temp\",\n" +
+                    "      \"type\": \"SENSOR\",\n" +
+                    "      \"unitType\": \"DECIMAL\",\n" +
+                    "      \"unitDisplayName\": \"C\"\n" +
+                    "    }\n" +
+                    "  ]\n" +
+                    "}", "/devices/newDevice/setup"
+            )
+        }
+
+        // then
+    }
+
+    @Test
+    fun `given proper json, when handling setup message, will setup new device`() {
+        //given
+
+        // when
+        deviceSetupMqttMessageHandler.handle(
+            "{\n" +
+                "  \"key\": \"test\",\n" +
                 "  \"macAddress\": \"c0:3e:ba:c3:50:0b\",\n" +
                 "  \"entities\": [\n" +
                 "    {\n" +
@@ -64,9 +90,12 @@ class DeviceSetupMqttMessageHandlerTest {
                 "      \"unitDisplayName\": \"C\"\n" +
                 "    }\n" +
                 "  ]\n" +
-                "}", "/devices/newDevice/setup")
-        }
+                "}", "/devices/newDevice/setup"
+        )
+
 
         // then
+        val device = deviceRepository.findByKey("test")
+        assertThat(device.isPresent).isTrue
     }
 }
