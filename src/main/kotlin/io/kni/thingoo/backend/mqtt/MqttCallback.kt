@@ -1,6 +1,7 @@
 package io.kni.thingoo.backend.mqtt
 
 import io.kni.thingoo.backend.devices.DeviceSetupMqttMessageHandler
+import io.kni.thingoo.backend.exceptions.RestException
 import io.kni.thingoo.backend.readings.NewReadingMqttMessageHandler
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
 import org.eclipse.paho.client.mqttv3.MqttCallback
@@ -34,6 +35,8 @@ class MqttCallback(
         try {
             handleMessage(String(mqttMessage.payload), topic)
         } catch (e: MqttException) {
+            // TODO send details back to the client
+        } catch (e: RestException) {
             // TODO send details back to the client
         }
     }

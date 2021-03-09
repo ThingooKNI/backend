@@ -75,13 +75,39 @@ class DeviceSetupMqttMessageHandlerTest {
     }
 
     @Test
+    fun `given wrong device key in topic, when handling setup message, will throw InvalidDeviceSetupJsonException`() {
+        // given
+
+        // when
+        assertThrows<InvalidDeviceSetupJsonException> {
+            deviceSetupMqttMessageHandler.handle(
+                "{\n" +
+                    "  \"key\": \"test\",\n" +
+                    "  \"macAddress\": \"c0:3e:ba:c3:50:0b\",\n" +
+                    "  \"entities\": [\n" +
+                    "    {\n" +
+                    "      \"key\": \"temp\",\n" +
+                    "      \"type\": \"SENSOR\",\n" +
+                    "      \"unitType\": \"DECIMAL\",\n" +
+                    "      \"unitDisplayName\": \"C\"\n" +
+                    "    }\n" +
+                    "  ]\n" +
+                    "}",
+                "/devices/newDevice/setup"
+            )
+        }
+
+        // then
+    }
+
+    @Test
     fun `given proper json, when handling setup message, will setup new device`() {
         // given
 
         // when
         deviceSetupMqttMessageHandler.handle(
             "{\n" +
-                "  \"key\": \"test\",\n" +
+                "  \"key\": \"newDevice\",\n" +
                 "  \"macAddress\": \"c0:3e:ba:c3:50:0b\",\n" +
                 "  \"entities\": [\n" +
                 "    {\n" +
@@ -96,7 +122,7 @@ class DeviceSetupMqttMessageHandlerTest {
         )
 
         // then
-        val device = deviceRepository.findByKey("test")
+        val device = deviceRepository.findByKey("newDevice")
         assertThat(device.isPresent).isTrue
     }
 }
