@@ -3,10 +3,8 @@ package io.kni.thingoo.backend.unit
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.kni.thingoo.backend.devices.DeviceSetupMqttMessageHandler
 import io.kni.thingoo.backend.mqtt.MqttCallback
-import io.kni.thingoo.backend.mqtt.exceptions.InvalidMqttTopicException
 import io.kni.thingoo.backend.readings.NewReadingMqttMessageHandler
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.mockito.Mockito
 
 class MqttCallbackTest {
@@ -52,7 +50,7 @@ class MqttCallbackTest {
         val topic = "/devices/testDevice/test"
 
         // when
-        assertThrows<InvalidMqttTopicException> { mqttCallback.handleMessage(payload, topic) }
+        mqttCallback.handleMessage(payload, topic)
 
         // then
         Mockito.verifyNoInteractions(newReadingMqttMessageHandlerMock)
@@ -66,7 +64,7 @@ class MqttCallbackTest {
         val topic = "/devices/testDevice/entities/temp/reading/test"
 
         // when
-        assertThrows<InvalidMqttTopicException> { mqttCallback.handleMessage(payload, topic) }
+        mqttCallback.handleMessage(payload, topic)
 
         // then
         Mockito.verifyNoInteractions(newReadingMqttMessageHandlerMock)
@@ -80,7 +78,7 @@ class MqttCallbackTest {
         val topic = "/devices/testDevice/setup/test"
 
         // when
-        assertThrows<InvalidMqttTopicException> { mqttCallback.handleMessage(payload, topic) }
+        mqttCallback.handleMessage(payload, topic)
 
         // then
         Mockito.verifyNoInteractions(newReadingMqttMessageHandlerMock)
