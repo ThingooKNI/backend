@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.kni.thingoo.backend.devices.dto.RegisterDeviceDto
 import io.kni.thingoo.backend.devices.exceptions.InvalidDeviceSetupJsonException
+import io.kni.thingoo.backend.mqtt.MqttMessage
 import io.kni.thingoo.backend.mqtt.MqttMessageHandler
 import org.springframework.stereotype.Service
 
@@ -18,7 +19,7 @@ class DeviceSetupMqttMessageHandler(
         val deviceSetupTopicRegex = Regex("^/devices/(\\w+)/setup$")
     }
 
-    override fun handle(message: String, topic: String) {
+    override fun handle(message: String, topic: String): MqttMessage? {
         val (deviceKey) = getDestructuredTopic(topic)
 
         try {
@@ -35,6 +36,8 @@ class DeviceSetupMqttMessageHandler(
         } catch (e: JsonParseException) {
             throw InvalidDeviceSetupJsonException("Provided setup config is invalid: ${e.message}")
         }
+
+        return null
     }
 
     private fun getDestructuredTopic(topic: String): MatchResult.Destructured {

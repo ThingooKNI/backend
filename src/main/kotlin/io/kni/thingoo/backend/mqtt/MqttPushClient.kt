@@ -60,7 +60,7 @@ class MqttPushClient(
     }
 
     fun subscribe(mqttConfig: MqttConfig) {
-        logger.info("Start subscribing to topics${mqttConfig.defaultTopic}")
+        logger.info("Started subscribing to topic: ${mqttConfig.defaultTopic}")
         client.subscribe(mqttConfig.defaultTopic, 2)
     }
 }
