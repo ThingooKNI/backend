@@ -56,3 +56,20 @@ class MqttPubSubClientImpl(
         client.subscribe(config.defaultTopic, 2)
     }
 }
+
+@Component
+@Profile("!production")
+class MqttPubSubClientDevStub : MqttPubSubClient {
+
+    override fun connect(mqttCallback: MqttCallback) {
+        // do nothing
+    }
+
+    override fun publish(pushMessage: String, topic: String, qos: Int, retain: Boolean) {
+        // do nothing
+    }
+
+    override fun subscribeToDefaultTopic() {
+        // do nothing
+    }
+}
