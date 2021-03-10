@@ -33,7 +33,7 @@ class DeviceRepositoryTest {
 
     @Test
     fun saveDeviceWithEntity() {
-        val device = Device(key = "test", macAddress = "00:0a:95:9d:68:16", displayName = "Test device")
+        val device = Device(key = "test", macAddress = "00:0a:95:9d:68:16", displayName = "Test device", icon = null)
 
         deviceRepository.save(device)
         assertThat(device.id).isNotEqualTo(0)
@@ -45,7 +45,8 @@ class DeviceRepositoryTest {
                 type = EntityType.SENSOR,
                 unitType = UnitType.DECIMAL,
                 unitDisplayName = "C",
-                device = device
+                device = device,
+                icon = null
             )
         )
 

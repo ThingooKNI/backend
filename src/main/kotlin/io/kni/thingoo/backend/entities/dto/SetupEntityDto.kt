@@ -18,6 +18,7 @@ data class SetupEntityDto(
             type,
             unitType,
             unitDisplayName,
+            null
         )
     }
 }

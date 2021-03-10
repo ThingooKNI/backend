@@ -3,6 +3,7 @@ package io.kni.thingoo.backend.entities
 import io.kni.thingoo.backend.devices.Device
 import io.kni.thingoo.backend.entities.dto.EntityDto
 import io.kni.thingoo.backend.entities.dto.SetupEntityDto
+import io.kni.thingoo.backend.icons.MaterialIcon
 import io.kni.thingoo.backend.readings.Reading
 import java.io.Serializable
 import javax.persistence.Column
@@ -41,6 +42,10 @@ class Entity(
 
     @Column(name = "unit_display_name", nullable = false)
     var unitDisplayName: String,
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "icon", nullable = true)
+    var icon: MaterialIcon?,
 
     @ManyToOne
     @JoinColumn(name = "device_id")

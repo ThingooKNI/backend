@@ -3,8 +3,12 @@ package io.kni.thingoo.backend.devices
 import io.kni.thingoo.backend.devices.dto.DeviceDto
 import io.kni.thingoo.backend.devices.dto.SetupDeviceDto
 import io.kni.thingoo.backend.entities.Entity
+import io.kni.thingoo.backend.entities.UnitType
+import io.kni.thingoo.backend.icons.MaterialIcon
 import java.io.Serializable
 import javax.persistence.Column
+import javax.persistence.EnumType
+import javax.persistence.Enumerated
 import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
@@ -27,6 +31,10 @@ class Device(
 
     @Column(name = "display_name", nullable = true)
     var displayName: String?,
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "icon", nullable = true)
+    var icon: MaterialIcon?,
 
     @OneToMany(mappedBy = "device", fetch = FetchType.EAGER, orphanRemoval = true)
     var entities: MutableList<Entity> = mutableListOf()
