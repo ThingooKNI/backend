@@ -31,10 +31,7 @@ class MqttCallback(
     override fun messageArrived(topic: String, mqttMessage: MqttMessage) {
         logger.debug("Received MQTT message on topic $topic, date: ${String(mqttMessage.payload)}")
         try {
-            val response = handleMessage(String(mqttMessage.payload), topic)
-            if (response != null) {
-                sendResponse(response, topic, mqttMessage.qos)
-            }
+            handleMessage(String(mqttMessage.payload), topic)
         } catch (e: io.kni.thingoo.backend.mqtt.exceptions.MqttException) {
             logger.error("MqttException thrown, sending response", e)
             sendResponse(e.toMqttMessage(), topic, mqttMessage.qos)
@@ -47,11 +44,10 @@ class MqttCallback(
     override fun deliveryComplete(iMqttDeliveryToken: IMqttDeliveryToken) {
     }
 
-    fun handleMessage(messagePayload: String, topic: String): io.kni.thingoo.backend.mqtt.MqttMessage? {
-        return when {
+    fun handleMessage(messagePayload: String, topic: String) {
+        when {
             DeviceSetupMqttMessageHandler.deviceSetupTopicRegex.matches(topic) -> deviceSetupMqttMessageHandler.handle(messagePayload, topic)
             NewReadingMqttMessageHandler.entityNewReadingTopicRegex.matches(topic) -> newReadingMqttMessageHandler.handle(messagePayload, topic)
-            else -> null
         }
     }
 
