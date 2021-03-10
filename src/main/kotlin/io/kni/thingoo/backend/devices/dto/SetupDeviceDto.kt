@@ -1,12 +1,12 @@
 package io.kni.thingoo.backend.devices.dto
 
 import io.kni.thingoo.backend.devices.Device
-import io.kni.thingoo.backend.entities.dto.RegisterEntityDto
+import io.kni.thingoo.backend.entities.dto.SetupEntityDto
 
-data class RegisterDeviceDto(
+data class SetupDeviceDto(
     var key: String,
     var macAddress: String,
-    var entities: List<RegisterEntityDto>
+    var entities: List<SetupEntityDto>
 ) {
     fun toDevice(): Device {
         return Device(

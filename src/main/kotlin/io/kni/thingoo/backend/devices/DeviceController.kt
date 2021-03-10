@@ -1,7 +1,7 @@
 package io.kni.thingoo.backend.devices
 
 import io.kni.thingoo.backend.devices.dto.DeviceDto
-import io.kni.thingoo.backend.devices.dto.RegisterDeviceDto
+import io.kni.thingoo.backend.devices.dto.SetupDeviceDto
 import io.kni.thingoo.backend.entities.EntityService
 import io.kni.thingoo.backend.entities.dto.EntityDto
 import org.springframework.http.ResponseEntity
@@ -35,8 +35,8 @@ class DeviceController(
     }
 
     @PostMapping
-    fun registerDevice(@RequestBody registerDeviceDto: RegisterDeviceDto): ResponseEntity<DeviceDto> {
-        return ResponseEntity.ok(deviceService.registerDevice(registerDeviceDto))
+    fun setupDevice(@RequestBody setupDeviceDto: SetupDeviceDto): ResponseEntity<DeviceDto> {
+        return ResponseEntity.ok(deviceService.setupDevice(setupDeviceDto))
     }
 
     @DeleteMapping("/{id}")

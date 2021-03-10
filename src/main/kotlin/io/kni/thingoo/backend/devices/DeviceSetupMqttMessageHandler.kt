@@ -3,7 +3,7 @@ package io.kni.thingoo.backend.devices
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.kni.thingoo.backend.devices.dto.RegisterDeviceDto
+import io.kni.thingoo.backend.devices.dto.SetupDeviceDto
 import io.kni.thingoo.backend.devices.exceptions.InvalidDeviceSetupJsonException
 import io.kni.thingoo.backend.mqtt.MqttMessageHandler
 import org.springframework.stereotype.Component
@@ -22,13 +22,13 @@ class DeviceSetupMqttMessageHandler(
         val (deviceKey) = getDestructuredTopic(topic)
 
         try {
-            val registerDeviceDto = objectMapper.readValue(message, RegisterDeviceDto::class.java)
+            val setupDeviceDto = objectMapper.readValue(message, SetupDeviceDto::class.java)
 
-            if (deviceKey != registerDeviceDto.key) {
+            if (deviceKey != setupDeviceDto.key) {
                 throw InvalidDeviceSetupJsonException("Provided device key is different from device key in the MQTT topic")
             }
 
-            deviceService.registerDevice(registerDeviceDto)
+            deviceService.setupDevice(setupDeviceDto)
         } catch (e: JsonMappingException) {
             throw InvalidDeviceSetupJsonException("Provided setup config is invalid: ${e.message}")
         } catch (e: JsonParseException) {
