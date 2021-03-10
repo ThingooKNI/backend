@@ -19,8 +19,6 @@ class DeviceSetupMqttMessageHandler(
     }
 
     override fun handle(message: String, topic: String) {
-        // TODO Will be deprecated soon
-
         val (deviceKey) = getDestructuredTopic(topic)
 
         try {

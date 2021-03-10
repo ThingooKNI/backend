@@ -1,7 +1,7 @@
 package io.kni.thingoo.backend.mqtt
 
 import io.kni.thingoo.backend.config.MqttConfig
-import org.eclipse.paho.client.mqttv3.MqttClient
+import org.eclipse.paho.client.mqttv3.MqttAsyncClient
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions
 import org.eclipse.paho.client.mqttv3.MqttMessage
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence
@@ -19,10 +19,10 @@ class MqttPubSubClientImpl(
         private val logger = LoggerFactory.getLogger(MqttPubSubClientImpl::class.java)
     }
 
-    private lateinit var client: MqttClient
+    private lateinit var client: MqttAsyncClient
 
     override fun connect(mqttCallback: MqttCallback) {
-        val client = MqttClient(config.hostUrl, config.clientID, MemoryPersistence())
+        val client = MqttAsyncClient(config.hostUrl, config.clientID, MemoryPersistence())
 
         val options = MqttConnectOptions()
         options.isCleanSession = true
@@ -31,7 +31,9 @@ class MqttPubSubClientImpl(
         options.connectionTimeout = config.timeout
         options.keepAliveInterval = config.keepalive
 
-        client.connect(options)
+        val token = client.connect(options)
+        token.waitForCompletion()
+
         client.setCallback(mqttCallback)
 
         this.client = client
@@ -43,16 +45,12 @@ class MqttPubSubClientImpl(
         message.isRetained = retain
         message.payload = pushMessage.toByteArray()
 
-        client.publish(topic, message)
-//
-//        val mqttTopic = client.getTopic(topic)
-//
-//        val token = mqttTopic.publish(message)
-//        token.waitForCompletion()
+        val token = client.publish(topic, message)
+        token.waitForCompletion()
     }
 
     override fun subscribeToDefaultTopic() {
-        logger.info("[MQTT] Started subscription to topic: ${config.defaultTopic}")
+        logger.info("[MQTT] Started subscription on topic: ${config.defaultTopic}")
         client.subscribe(config.defaultTopic, 2)
     }
 }
