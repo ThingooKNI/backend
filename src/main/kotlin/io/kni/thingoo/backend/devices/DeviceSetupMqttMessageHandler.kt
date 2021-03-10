@@ -30,14 +30,17 @@ class DeviceSetupMqttMessageHandler(
             }
 
             deviceService.registerDevice(registerDeviceDto)
-            // TODO return status object (200 OK or exception)
+
+            return MqttMessage(
+                httpCode = 200,
+                message = null,
+                exceptionName = null
+            )
         } catch (e: JsonMappingException) {
             throw InvalidDeviceSetupJsonException("Provided setup config is invalid: ${e.message}")
         } catch (e: JsonParseException) {
             throw InvalidDeviceSetupJsonException("Provided setup config is invalid: ${e.message}")
         }
-
-        return null
     }
 
     private fun getDestructuredTopic(topic: String): MatchResult.Destructured {
