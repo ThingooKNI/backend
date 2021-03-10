@@ -55,7 +55,7 @@ dependencies {
     implementation("io.sentry:sentry-spring-boot-starter:4.3.0")
     implementation("io.sentry:sentry-logback:4.3.0")
 
-
+    implementation("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5")
 }
 
 tasks.withType<Test> {

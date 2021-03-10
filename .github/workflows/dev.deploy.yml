@@ -106,3 +106,5 @@ jobs:
             kubectl apply --namespace thingoo -f k8s/dev/backend-db.yaml
             kubectl apply --namespace thingoo -f k8s/dev/backend-envsubst.yaml
             kubectl apply --namespace thingoo -f k8s/dev/ingress.yaml
+            kubectl apply --namespace thingoo -f k8s/dev/mosquitto-config.yaml
+            kubectl apply --namespace thingoo -f k8s/dev/mosquitto.yaml

@@ -65,6 +65,7 @@ metadata:
     name: keycloak
   name: keycloak
 spec:
+  type: NodePort
   ports:
     - protocol: TCP
       port: 8080

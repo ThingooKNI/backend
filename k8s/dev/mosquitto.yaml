@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    name: mosquitto-data
+  name: mosquitto-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    name: mosquitto-logs
+  name: mosquitto-logs
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    name: mosquitto
+  name: mosquitto
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: mosquitto
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        name: mosquitto
+    spec:
+      containers:
+        - image: "eclipse-mosquitto:2.0.8"
+          imagePullPolicy: Always
+          name: mosquitto
+          ports:
+            - containerPort: 1883
+            - containerPort: 9001
+          volumeMounts:
+            - mountPath: "/mosquitto/config"
+              name: mosquitto-config
+              readOnly: true
+            - mountPath: "/mosquitto/data"
+              name: mosquitto-data
+            - mountPath: "/mosquitto/logs"
+              name: mosquitto-logs
+      restartPolicy: Always
+      volumes:
+        - name: mosquitto-config
+          configMap:
+            name: mosquitto-config
+            items:
+              - key: mosquitto.conf
+                path: mosquitto.conf
+              - key: mosquitto.passwd
+                path: mosquitto.passwd
+        - name: mosquitto-data
+          persistentVolumeClaim:
+            claimName: mosquitto-data
+        - name: mosquitto-logs
+          persistentVolumeClaim:
+            claimName: mosquitto-logs
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: mosquitto
+  name: mosquitto
+spec:
+  selector:
+    name: mosquitto
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 1883
+      targetPort: 1883
+      name: "1883"
+    - protocol: TCP
+      port: 9001
+      targetPort: 9001
+      name: "9001"
