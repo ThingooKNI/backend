@@ -46,7 +46,6 @@ class RestExceptionHandler :
 
     @ExceptionHandler(Exception::class)
     fun handleApiException(ex: Exception, request: WebRequest?): ResponseEntity<Any> {
-        println(ex)
         val apiError: ApiError = when (ex) {
             is RestException -> {
                 ApiError(ex)

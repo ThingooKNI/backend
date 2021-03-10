@@ -5,11 +5,10 @@ import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.kni.thingoo.backend.devices.dto.RegisterDeviceDto
 import io.kni.thingoo.backend.devices.exceptions.InvalidDeviceSetupJsonException
-import io.kni.thingoo.backend.mqtt.MqttMessage
 import io.kni.thingoo.backend.mqtt.MqttMessageHandler
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Component
 
-@Service
+@Component
 class DeviceSetupMqttMessageHandler(
     private val deviceService: DeviceService,
     private val objectMapper: ObjectMapper

@@ -11,27 +11,17 @@ import org.springframework.stereotype.Component
 
 @Component
 @Profile("production")
-class MqttPushClient(
-    private val mqttCallback: MqttCallback,
-    private val mqttConfig: MqttConfig
-) {
+class MqttPubSubClientImpl(
+    private val config: MqttConfig
+) : MqttPubSubClient {
 
     companion object {
-        private val logger = LoggerFactory.getLogger(MqttPushClient::class.java)
+        private val logger = LoggerFactory.getLogger(MqttPubSubClientImpl::class.java)
     }
 
     private lateinit var client: MqttClient
 
-    init {
-        this.setup()
-    }
-
-    fun setup() {
-        this.connect(mqttConfig)
-        this.subscribe(mqttConfig)
-    }
-
-    fun connect(config: MqttConfig) {
+    override fun connect(mqttCallback: MqttCallback) {
         val client = MqttClient(config.hostUrl, config.clientID, MemoryPersistence())
 
         val options = MqttConnectOptions()
@@ -41,26 +31,28 @@ class MqttPushClient(
         options.connectionTimeout = config.timeout
         options.keepAliveInterval = config.keepalive
 
-        mqttCallback.mqttPushClient = this
-        client.setCallback(mqttCallback)
         client.connect(options)
+        client.setCallback(mqttCallback)
+
         this.client = client
     }
 
-    fun publish(pushMessage: String, topic: String, qos: Int, retain: Boolean) {
+    override fun publish(pushMessage: String, topic: String, qos: Int, retain: Boolean) {
         val message = MqttMessage()
         message.qos = qos
         message.isRetained = retain
         message.payload = pushMessage.toByteArray()
 
-        val mqttTopic = client.getTopic(topic)
-
-        val token = mqttTopic.publish(message)
-        token.waitForCompletion()
+        client.publish(topic, message)
+//
+//        val mqttTopic = client.getTopic(topic)
+//
+//        val token = mqttTopic.publish(message)
+//        token.waitForCompletion()
     }
 
-    fun subscribe(mqttConfig: MqttConfig) {
-        logger.info("Started subscribing to topic: ${mqttConfig.defaultTopic}")
-        client.subscribe(mqttConfig.defaultTopic, 2)
+    override fun subscribeToDefaultTopic() {
+        logger.info("[MQTT] Started subscription to topic: ${config.defaultTopic}")
+        client.subscribe(config.defaultTopic, 2)
     }
 }
