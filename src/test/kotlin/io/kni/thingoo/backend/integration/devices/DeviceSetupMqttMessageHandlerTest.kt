@@ -37,13 +37,15 @@ class DeviceSetupMqttMessageHandlerTest {
         entityRepository.deleteAll()
     }
 
+    private val defaultTopic = "/devices/newDevice/setup"
+
     @Test
     fun `given wrong json1, when handling setup message, will throw InvalidDeviceSetupJsonException`() {
         // given
 
         // when
         assertThrows<InvalidDeviceSetupJsonException> {
-            deviceSetupMqttMessageHandler.handle("wrong json", "/devices/newDevice/setup")
+            deviceSetupMqttMessageHandler.handle("wrong json", defaultTopic)
         }
 
         // then
@@ -67,7 +69,7 @@ class DeviceSetupMqttMessageHandlerTest {
                     "    }\n" +
                     "  ]\n" +
                     "}",
-                "/devices/newDevice/setup"
+                defaultTopic
             )
         }
 
@@ -93,7 +95,7 @@ class DeviceSetupMqttMessageHandlerTest {
                     "    }\n" +
                     "  ]\n" +
                     "}",
-                "/devices/newDevice/setup"
+                defaultTopic
             )
         }
 
@@ -118,7 +120,7 @@ class DeviceSetupMqttMessageHandlerTest {
                 "    }\n" +
                 "  ]\n" +
                 "}",
-            "/devices/newDevice/setup"
+            defaultTopic
         )
 
         // then
