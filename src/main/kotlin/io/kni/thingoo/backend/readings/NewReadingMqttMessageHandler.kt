@@ -14,7 +14,7 @@ class NewReadingMqttMessageHandler(
     }
 
     override fun handle(message: String, topic: String) {
-        val (deviceKey, entityKey) = getDestructuredTopic(topic)
+        val (deviceKey, entityKey) = getKeysFromTopic(topic)
 
         val reading = SaveReadingDto(
             value = message,
@@ -24,7 +24,7 @@ class NewReadingMqttMessageHandler(
         readingService.saveReading(reading)
     }
 
-    private fun getDestructuredTopic(topic: String): MatchResult.Destructured {
+    private fun getKeysFromTopic(topic: String): MatchResult.Destructured {
         return entityNewReadingTopicRegex.find(topic)!!.destructured
     }
 }
