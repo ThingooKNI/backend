@@ -22,8 +22,36 @@ class MqttPubSubClientImpl(
     private lateinit var client: MqttAsyncClient
 
     override fun connect(mqttCallback: MqttCallback) {
-        val client = MqttAsyncClient(config.hostUrl, config.clientID, MemoryPersistence())
+        val mqttClient = createMqttClient()
+        connectAsync()
 
+        mqttClient.setCallback(mqttCallback)
+
+        this.client = mqttClient
+    }
+
+    override fun publish(pushMessage: String, topic: String, qos: Int, retain: Boolean) {
+        val message = createMqttMessage(pushMessage, qos, retain)
+
+        publishAsync(topic, message)
+    }
+
+    override fun subscribeToDefaultTopic() {
+        logger.info("[MQTT] Started subscription on topic: ${config.defaultTopic}")
+        client.subscribe(config.defaultTopic, 2)
+    }
+
+    private fun createMqttClient(): MqttAsyncClient {
+        return MqttAsyncClient(config.hostUrl, config.clientID, MemoryPersistence())
+    }
+
+    private fun connectAsync() {
+        val options = createMqttConnectOptions()
+        val token = client.connect(options)
+        token.waitForCompletion()
+    }
+
+    private fun createMqttConnectOptions(): MqttConnectOptions {
         val options = MqttConnectOptions()
         options.isCleanSession = true
         options.userName = config.username
@@ -31,27 +59,21 @@ class MqttPubSubClientImpl(
         options.connectionTimeout = config.timeout
         options.keepAliveInterval = config.keepalive
 
-        val token = client.connect(options)
-        token.waitForCompletion()
-
-        client.setCallback(mqttCallback)
-
-        this.client = client
+        return options
     }
 
-    override fun publish(pushMessage: String, topic: String, qos: Int, retain: Boolean) {
+    private fun createMqttMessage(messagePayload: String, qos: Int, retain: Boolean): MqttMessage {
         val message = MqttMessage()
         message.qos = qos
         message.isRetained = retain
-        message.payload = pushMessage.toByteArray()
+        message.payload = messagePayload.toByteArray()
 
-        val token = client.publish(topic, message)
-        token.waitForCompletion()
+        return message
     }
 
-    override fun subscribeToDefaultTopic() {
-        logger.info("[MQTT] Started subscription on topic: ${config.defaultTopic}")
-        client.subscribe(config.defaultTopic, 2)
+    private fun publishAsync(topic: String, message: MqttMessage) {
+        val token = client.publish(topic, message)
+        token.waitForCompletion()
     }
 }
 
