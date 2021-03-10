@@ -36,3 +36,9 @@ jobs:
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           coverage-reports: build/jacoco.xml
+      - name: Run codecov coverage reporter
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: build/jacoco.xml
+          fail_ci_if_error: true
