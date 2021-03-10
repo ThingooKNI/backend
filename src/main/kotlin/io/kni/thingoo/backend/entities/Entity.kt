@@ -62,7 +62,7 @@ class Entity(
 
     fun toDto(): EntityDto {
         return EntityDto(
-            id, key, displayName, type, unitType, unitDisplayName
+            id, key, displayName, type, unitType, unitDisplayName, icon
         )
     }
 

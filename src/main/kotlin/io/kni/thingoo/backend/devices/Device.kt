@@ -3,7 +3,6 @@ package io.kni.thingoo.backend.devices
 import io.kni.thingoo.backend.devices.dto.DeviceDto
 import io.kni.thingoo.backend.devices.dto.SetupDeviceDto
 import io.kni.thingoo.backend.entities.Entity
-import io.kni.thingoo.backend.entities.UnitType
 import io.kni.thingoo.backend.icons.MaterialIcon
 import java.io.Serializable
 import javax.persistence.Column
@@ -47,7 +46,7 @@ class Device(
 
     fun toDto(): DeviceDto {
         return DeviceDto(
-            id, key, macAddress, displayName, entities.map { it.toDto() }
+            id, key, macAddress, displayName, icon, entities.map { it.toDto() }
         )
     }
 
