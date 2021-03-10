@@ -19,7 +19,7 @@ class DeviceSetupMqttMessageHandler(
         val deviceSetupTopicRegex = Regex("^/devices/(\\w+)/setup$")
     }
 
-    override fun handle(message: String, topic: String): MqttMessage? {
+    override fun handle(message: String, topic: String) {
         // TODO Will be deprecated soon
 
         val (deviceKey) = getDestructuredTopic(topic)
@@ -32,12 +32,6 @@ class DeviceSetupMqttMessageHandler(
             }
 
             deviceService.registerDevice(registerDeviceDto)
-
-            return MqttMessage(
-                httpCode = 200,
-                message = null,
-                exceptionName = null
-            )
         } catch (e: JsonMappingException) {
             throw InvalidDeviceSetupJsonException("Provided setup config is invalid: ${e.message}")
         } catch (e: JsonParseException) {
