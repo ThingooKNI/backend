@@ -37,7 +37,8 @@ class DeviceSetupMqttMessageHandlerTest {
         entityRepository.deleteAll()
     }
 
-    private val defaultTopic = "/devices/newDevice/setup"
+    private val defaultDeviceKey = "newDevice"
+    private val defaultTopic = "/devices/$defaultDeviceKey/setup"
 
     @Test
     fun `given wrong json1, when handling setup message, will throw InvalidDeviceSetupJsonException`() {
@@ -108,7 +109,7 @@ class DeviceSetupMqttMessageHandlerTest {
     fun `given proper json, when handling setup message, will setup new device`() {
         // given
         val setupJson = "{\n" +
-            "  \"key\": \"newDevice\",\n" +
+            "  \"key\": \"${defaultDeviceKey}\",\n" +
             "  \"macAddress\": \"c0:3e:ba:c3:50:0b\",\n" +
             "  \"entities\": [\n" +
             "    {\n" +
@@ -127,7 +128,7 @@ class DeviceSetupMqttMessageHandlerTest {
         )
 
         // then
-        val device = deviceRepository.findByKey("newDevice")
+        val device = deviceRepository.findByKey(defaultDeviceKey)
         assertThat(device.isPresent).isTrue
     }
 }
