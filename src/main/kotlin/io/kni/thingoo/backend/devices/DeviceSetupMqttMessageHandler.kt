@@ -19,7 +19,7 @@ class DeviceSetupMqttMessageHandler(
     }
 
     override fun handle(message: String, topic: String) {
-        val (deviceKey) = getDestructuredTopic(topic)
+        val (deviceKey) = getKeysFromTopic(topic)
 
         try {
             val setupDeviceDto = objectMapper.readValue(message, SetupDeviceDto::class.java)
@@ -36,7 +36,7 @@ class DeviceSetupMqttMessageHandler(
         }
     }
 
-    private fun getDestructuredTopic(topic: String): MatchResult.Destructured {
+    private fun getKeysFromTopic(topic: String): MatchResult.Destructured {
         return deviceSetupTopicRegex.find(topic)!!.destructured
     }
 }
