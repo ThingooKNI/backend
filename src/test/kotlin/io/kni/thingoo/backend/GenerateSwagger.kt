@@ -5,6 +5,7 @@ import org.apache.commons.io.FileUtils
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MvcResult
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
@@ -14,6 +15,7 @@ import java.nio.charset.StandardCharsets
 import javax.ws.rs.core.MediaType
 
 @SpringBootTest
+@ActiveProfiles("test")
 @AutoConfigureEmbeddedDatabase
 class GenerateSwagger {
 

@@ -40,6 +40,14 @@ data:
       dsn: https://2fe6ff860cdd4d06b4a2bd020fc42685@o538693.ingest.sentry.io/5657092
       enable-tracing: true
       traces-sample-rate: 1.0
+    mqtt:
+      username: thingoo
+      password: thingoo
+      host-url: wss://dev.thingoo.xyz/mqtt
+      clientID: thingoo-backend
+      default-topic: "#"
+      timeout: 100
+      keepalive: 100
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -91,6 +99,7 @@ metadata:
 spec:
   selector:
     name: backend
+  type: NodePort
   ports:
     - protocol: TCP
       port: 8080

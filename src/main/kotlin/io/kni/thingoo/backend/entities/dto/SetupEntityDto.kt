@@ -4,7 +4,7 @@ import io.kni.thingoo.backend.entities.Entity
 import io.kni.thingoo.backend.entities.EntityType
 import io.kni.thingoo.backend.entities.UnitType
 
-data class RegisterEntityDto(
+data class SetupEntityDto(
     var key: String,
     var type: EntityType,
     var unitType: UnitType,
@@ -18,6 +18,7 @@ data class RegisterEntityDto(
             type,
             unitType,
             unitDisplayName,
+            null
         )
     }
 }

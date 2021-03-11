@@ -1,16 +1,16 @@
 package io.kni.thingoo.backend.integration.devices
 
 import io.kni.thingoo.backend.devices.Device
-import io.kni.thingoo.backend.devices.dto.RegisterDeviceDto
+import io.kni.thingoo.backend.devices.dto.SetupDeviceDto
 import io.kni.thingoo.backend.entities.Entity
 import io.kni.thingoo.backend.entities.EntityType
 import io.kni.thingoo.backend.entities.UnitType
-import io.kni.thingoo.backend.entities.dto.RegisterEntityDto
+import io.kni.thingoo.backend.entities.dto.SetupEntityDto
 import java.util.Random
 import kotlin.experimental.and
 
 fun createTestDevice(key: String = "test", mac: String = randomMACAddress(), name: String = "Test device"): Device {
-    return Device(key = key, macAddress = mac, displayName = name)
+    return Device(key = key, macAddress = mac, displayName = name, icon = null)
 }
 
 fun createTestEntity(
@@ -27,29 +27,30 @@ fun createTestEntity(
         type = type,
         unitType = unitType,
         unitDisplayName = unitDisplayName,
-        device = device
+        device = device,
+        icon = null
     )
 }
 
-fun createTestRegisterDeviceDto(
+fun createTestsSetupDeviceDto(
     id: String = "test",
     mac: String = randomMACAddress(),
-    entities: List<RegisterEntityDto> = emptyList()
-): RegisterDeviceDto {
-    return RegisterDeviceDto(
+    entities: List<SetupEntityDto> = emptyList()
+): SetupDeviceDto {
+    return SetupDeviceDto(
         key = id,
         macAddress = mac,
         entities = entities
     )
 }
 
-fun createTestRegisterEntityDto(
+fun createTestSetupEntityDto(
     key: String = "temp",
     type: EntityType = EntityType.SENSOR,
     unitType: UnitType = UnitType.DECIMAL,
     unitDisplayName: String = "C"
-): RegisterEntityDto {
-    return RegisterEntityDto(
+): SetupEntityDto {
+    return SetupEntityDto(
         key = key,
         type = type,
         unitType = unitType,

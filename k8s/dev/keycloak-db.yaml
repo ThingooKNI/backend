@@ -9,7 +9,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Mi
+      storage: 1Gi
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -54,6 +54,7 @@ metadata:
     name: keycloak-db
   name: keycloak-db
 spec:
+  type: NodePort
   ports:
     - protocol: TCP
       port: 5432

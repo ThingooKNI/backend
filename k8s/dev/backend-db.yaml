@@ -9,7 +9,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Mi
+      storage: 1Gi
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -57,6 +57,7 @@ metadata:
     name: postgres
   name: postgres
 spec:
+  type: NodePort
   ports:
     - protocol: TCP
       port: 5432

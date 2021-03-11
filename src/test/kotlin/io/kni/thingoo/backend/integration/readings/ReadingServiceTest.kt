@@ -25,8 +25,10 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.ActiveProfiles
 
 @SpringBootTest
+@ActiveProfiles("test")
 @AutoConfigureEmbeddedDatabase
 class ReadingServiceTest {
 
@@ -276,7 +278,7 @@ class ReadingServiceTest {
     fun `given entity with no readings, when querying latest reading by deviceKey and entityKey, will throw NoReadingsException`() {
         // given
         val device = saveDevice(TEST_DEVICE_1)
-        val entities = saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+        saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
 
         // when
         assertThrows<NoReadingsException> {
@@ -296,6 +298,6 @@ class ReadingServiceTest {
 
     fun getEntityForDevice(entity: Entity, device: Device): Entity {
         // copy entity object to prevent mutating reference
-        return Entity(entity.id, entity.key, entity.displayName, entity.type, entity.unitType, entity.unitDisplayName, device)
+        return Entity(entity.id, entity.key, entity.displayName, entity.type, entity.unitType, entity.unitDisplayName, null, device)
     }
 }

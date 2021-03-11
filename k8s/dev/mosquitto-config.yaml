@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mosquitto-config
+data:
+  mosquitto.conf: |-
+    persistence true
+    persistence_location /mosquitto/data/
+
+    log_dest file /mosquitto/logs/mosquitto.log
+    log_dest stdout
+
+    password_file /mosquitto/config/mosquitto.passwd
+    allow_anonymous false
+
+    listener 1883
+
+    listener 9001
+    protocol websockets
+  mosquitto.passwd: |-
+    thingoo:$7$101$iEtDsDEHximlB/s+$coh3fjuuN3iUozaD8gni5y0dqSIb/RaRnRUgv7Pk1Rfl7izsXQQcpa8/nEJ6/7qQcv6wURCCqK/6Kqqh2jaakw==

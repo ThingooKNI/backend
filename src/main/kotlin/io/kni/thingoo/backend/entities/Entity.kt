@@ -2,7 +2,8 @@ package io.kni.thingoo.backend.entities
 
 import io.kni.thingoo.backend.devices.Device
 import io.kni.thingoo.backend.entities.dto.EntityDto
-import io.kni.thingoo.backend.entities.dto.RegisterEntityDto
+import io.kni.thingoo.backend.entities.dto.SetupEntityDto
+import io.kni.thingoo.backend.icons.MaterialIcon
 import io.kni.thingoo.backend.readings.Reading
 import java.io.Serializable
 import javax.persistence.Column
@@ -42,6 +43,10 @@ class Entity(
     @Column(name = "unit_display_name", nullable = false)
     var unitDisplayName: String,
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "icon", nullable = true)
+    var icon: MaterialIcon?,
+
     @ManyToOne
     @JoinColumn(name = "device_id")
     var device: Device? = null,
@@ -49,15 +54,15 @@ class Entity(
     @OneToMany(mappedBy = "entity", fetch = FetchType.LAZY, orphanRemoval = true)
     var readings: MutableList<Reading> = mutableListOf()
 ) : Serializable {
-    fun toRegisterEntityDto(): RegisterEntityDto {
-        return RegisterEntityDto(
+    fun toSetupEntityDto(): SetupEntityDto {
+        return SetupEntityDto(
             key, type, unitType, unitDisplayName
         )
     }
 
     fun toDto(): EntityDto {
         return EntityDto(
-            id, key, displayName, type, unitType, unitDisplayName
+            id, key, displayName, type, unitType, unitDisplayName, icon
         )
     }
 

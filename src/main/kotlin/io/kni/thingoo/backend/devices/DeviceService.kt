@@ -1,11 +1,11 @@
 package io.kni.thingoo.backend.devices
 
 import io.kni.thingoo.backend.devices.dto.DeviceDto
-import io.kni.thingoo.backend.devices.dto.RegisterDeviceDto
+import io.kni.thingoo.backend.devices.dto.SetupDeviceDto
 
 interface DeviceService {
 
-    fun registerDevice(registerDeviceDto: RegisterDeviceDto): DeviceDto
+    fun setupDevice(setupDeviceDto: SetupDeviceDto): DeviceDto
 
     fun getDevices(): List<DeviceDto>
 
