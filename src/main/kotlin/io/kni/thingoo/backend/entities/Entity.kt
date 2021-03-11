@@ -2,7 +2,7 @@ package io.kni.thingoo.backend.entities
 
 import io.kni.thingoo.backend.devices.Device
 import io.kni.thingoo.backend.entities.dto.EntityDto
-import io.kni.thingoo.backend.entities.dto.RegisterEntityDto
+import io.kni.thingoo.backend.entities.dto.SetupEntityDto
 import io.kni.thingoo.backend.readings.Reading
 import java.io.Serializable
 import javax.persistence.Column
@@ -49,8 +49,8 @@ class Entity(
     @OneToMany(mappedBy = "entity", fetch = FetchType.LAZY, orphanRemoval = true)
     var readings: MutableList<Reading> = mutableListOf()
 ) : Serializable {
-    fun toRegisterEntityDto(): RegisterEntityDto {
-        return RegisterEntityDto(
+    fun toSetupEntityDto(): SetupEntityDto {
+        return SetupEntityDto(
             key, type, unitType, unitDisplayName
         )
     }

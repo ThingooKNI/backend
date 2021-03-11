@@ -1,7 +1,7 @@
 package io.kni.thingoo.backend.devices
 
 import io.kni.thingoo.backend.devices.dto.DeviceDto
-import io.kni.thingoo.backend.devices.dto.RegisterDeviceDto
+import io.kni.thingoo.backend.devices.dto.SetupDeviceDto
 import io.kni.thingoo.backend.entities.Entity
 import java.io.Serializable
 import javax.persistence.Column
@@ -31,9 +31,9 @@ class Device(
     @OneToMany(mappedBy = "device", fetch = FetchType.EAGER, orphanRemoval = true)
     var entities: MutableList<Entity> = mutableListOf()
 ) : Serializable {
-    fun toRegisterDeviceDto(): RegisterDeviceDto {
-        return RegisterDeviceDto(
-            key, macAddress, entities.map { it.toRegisterEntityDto() }
+    fun toSetupDeviceDto(): SetupDeviceDto {
+        return SetupDeviceDto(
+            key, macAddress, entities.map { it.toSetupEntityDto() }
         )
     }
 

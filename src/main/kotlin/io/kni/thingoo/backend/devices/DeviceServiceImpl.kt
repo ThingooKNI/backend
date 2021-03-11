@@ -1,10 +1,10 @@
 package io.kni.thingoo.backend.devices
 
 import io.kni.thingoo.backend.devices.dto.DeviceDto
-import io.kni.thingoo.backend.devices.dto.RegisterDeviceDto
+import io.kni.thingoo.backend.devices.dto.SetupDeviceDto
 import io.kni.thingoo.backend.entities.Entity
 import io.kni.thingoo.backend.entities.EntityRepository
-import io.kni.thingoo.backend.entities.dto.RegisterEntityDto
+import io.kni.thingoo.backend.entities.dto.SetupEntityDto
 import io.kni.thingoo.backend.exceptions.ApiErrorCode
 import org.springframework.stereotype.Service
 import java.util.regex.Pattern
@@ -15,23 +15,23 @@ class DeviceServiceImpl(
     private val entityRepository: EntityRepository
 ) : DeviceService {
 
-    override fun registerDevice(registerDeviceDto: RegisterDeviceDto): DeviceDto {
-        validateMacAddressDuplication(registerDeviceDto.macAddress, registerDeviceDto.key)
+    override fun setupDevice(setupDeviceDto: SetupDeviceDto): DeviceDto {
+        validateMacAddressDuplication(setupDeviceDto.macAddress, setupDeviceDto.key)
 
-        validateMacAddress(registerDeviceDto.macAddress)
+        validateMacAddress(setupDeviceDto.macAddress)
 
-        validateEntities(registerDeviceDto.entities)
+        validateEntities(setupDeviceDto.entities)
 
-        val existingDeviceOptional = deviceRepository.findByKey(registerDeviceDto.key)
+        val existingDeviceOptional = deviceRepository.findByKey(setupDeviceDto.key)
 
         if (existingDeviceOptional.isPresent) {
             val existingDevice = existingDeviceOptional.get()
-            registerExistingDevice(existingDevice, registerDeviceDto)
+            setupExistingDevice(existingDevice, setupDeviceDto)
         } else {
-            registerNewDevice(registerDeviceDto)
+            setupNewDevice(setupDeviceDto)
         }
 
-        return deviceRepository.findByKey(registerDeviceDto.key).get().toDto()
+        return deviceRepository.findByKey(setupDeviceDto.key).get().toDto()
     }
 
     override fun getDevices(): List<DeviceDto> {
@@ -56,7 +56,7 @@ class DeviceServiceImpl(
         deviceRepository.deleteById(id)
     }
 
-    private fun validateEntities(entities: List<RegisterEntityDto>) {
+    private fun validateEntities(entities: List<SetupEntityDto>) {
         if (entities.distinctBy { it.key }.size != entities.size) {
             ApiErrorCode.ENTITIES_001.throwException()
         }
@@ -81,8 +81,8 @@ class DeviceServiceImpl(
         return matcher.find()
     }
 
-    private fun registerNewDevice(registerDeviceDto: RegisterDeviceDto) {
-        var device = registerDeviceDto.toDevice()
+    private fun setupNewDevice(setupDeviceDto: SetupDeviceDto) {
+        var device = setupDeviceDto.toDevice()
         device = deviceRepository.save(device)
 
         val entities = device.entities
@@ -91,27 +91,27 @@ class DeviceServiceImpl(
         entityRepository.saveAll(entities)
     }
 
-    private fun registerExistingDevice(existingDevice: Device, registerDeviceDto: RegisterDeviceDto) {
-        validateDeviceKeyCollision(existingDevice, registerDeviceDto)
+    private fun setupExistingDevice(existingDevice: Device, setupDeviceDto: SetupDeviceDto) {
+        validateDeviceKeyCollision(existingDevice, setupDeviceDto)
 
         val existingEntities = entityRepository.findByDeviceId(existingDevice.id)
 
-        updateNewAndExistingEntities(registerDeviceDto, existingDevice, existingEntities)
-        deleteOldEntities(existingEntities, registerDeviceDto, existingDevice)
+        updateNewAndExistingEntities(setupDeviceDto, existingDevice, existingEntities)
+        deleteOldEntities(existingEntities, setupDeviceDto, existingDevice)
     }
 
-    private fun validateDeviceKeyCollision(existingDevice: Device, registerDeviceDto: RegisterDeviceDto) {
-        if (existingDevice.macAddress != registerDeviceDto.macAddress) {
+    private fun validateDeviceKeyCollision(existingDevice: Device, setupDeviceDto: SetupDeviceDto) {
+        if (existingDevice.macAddress != setupDeviceDto.macAddress) {
             ApiErrorCode.DEVICES_004.throwException()
         }
     }
 
     private fun updateNewAndExistingEntities(
-        registerDeviceDto: RegisterDeviceDto,
+        setupDeviceDto: SetupDeviceDto,
         existingDevice: Device,
         existingEntities: List<Entity>
     ) {
-        registerDeviceDto.entities.forEach { entity ->
+        setupDeviceDto.entities.forEach { entity ->
             val oldEntity = existingEntities.find { it.key == entity.key }
             if (oldEntity != null) {
                 updateExistingEntity(entity, oldEntity, existingDevice)
@@ -121,22 +121,22 @@ class DeviceServiceImpl(
         }
     }
 
-    private fun updateExistingEntity(entity: RegisterEntityDto, oldEntity: Entity, existingDevice: Device) {
+    private fun updateExistingEntity(entity: SetupEntityDto, oldEntity: Entity, existingDevice: Device) {
         val updatedEntity = entity.toEntity()
         updatedEntity.id = oldEntity.id
         updatedEntity.device = existingDevice
         entityRepository.save(updatedEntity)
     }
 
-    private fun createNewEntity(entity: RegisterEntityDto, existingDevice: Device) {
+    private fun createNewEntity(entity: SetupEntityDto, existingDevice: Device) {
         val newEntity = entity.toEntity()
         existingDevice.addEntity(newEntity)
         entityRepository.save(newEntity)
     }
 
-    private fun deleteOldEntities(existingEntities: List<Entity>, registerDeviceDto: RegisterDeviceDto, existingDevice: Device) {
+    private fun deleteOldEntities(existingEntities: List<Entity>, setupDeviceDto: SetupDeviceDto, existingDevice: Device) {
         existingEntities.forEach { entity ->
-            if (registerDeviceDto.entities.none { it.key == entity.key }) {
+            if (setupDeviceDto.entities.none { it.key == entity.key }) {
                 existingDevice.deleteEntity(entity)
                 entityRepository.delete(entity)
             }
