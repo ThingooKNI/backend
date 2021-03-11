@@ -14,6 +14,7 @@ data class SetupDeviceDto(
             key = key,
             macAddress = macAddress,
             displayName = null,
+            icon = null,
             entities = entities.map { it.toEntity() }.toMutableList()
         )
     }

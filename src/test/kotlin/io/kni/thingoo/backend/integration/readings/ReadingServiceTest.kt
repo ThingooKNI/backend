@@ -298,6 +298,6 @@ class ReadingServiceTest {
 
     fun getEntityForDevice(entity: Entity, device: Device): Entity {
         // copy entity object to prevent mutating reference
-        return Entity(entity.id, entity.key, entity.displayName, entity.type, entity.unitType, entity.unitDisplayName, device)
+        return Entity(entity.id, entity.key, entity.displayName, entity.type, entity.unitType, entity.unitDisplayName, null, device)
     }
 }
