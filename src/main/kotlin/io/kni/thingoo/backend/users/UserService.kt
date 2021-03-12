@@ -13,16 +13,4 @@ class UserService(private val userRepository: UserRepository) {
     fun getOneById(id: UUID): User {
         return userRepository.findById(id)
     }
-
-    fun getOneByUsername(username: String): User {
-        return userRepository.findByUsername(username)
-    }
-
-    fun createNew(userCreateDto: UserCreateDto): User {
-        TODO("Not yet implemented")
-    }
-
-    fun updateOne() {
-        TODO("Not yet implemented")
-    }
 }

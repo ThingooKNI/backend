@@ -11,10 +11,6 @@ class UserKeycloakRepository(private val keycloakInstance: Keycloak) : UserRepos
     @Value("\${app.keycloak.realm}")
     private lateinit var keycloakRealm: String
 
-    override fun findByUsername(username: String): User {
-        TODO("Not yet implemented")
-    }
-
     override fun findAll(): List<User> {
         val users = keycloakInstance.realm(keycloakRealm).users().list()
         return users.map { User.fromUserRepresentation(it) }
@@ -25,9 +21,5 @@ class UserKeycloakRepository(private val keycloakInstance: Keycloak) : UserRepos
         // This will probably throw some exception when not found
 
         return User.fromUserRepresentation(user)
-    }
-
-    override fun save(user: User): User {
-        TODO("Not yet implemented")
     }
 }
