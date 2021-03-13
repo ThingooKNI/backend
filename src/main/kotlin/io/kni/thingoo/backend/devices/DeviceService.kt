@@ -14,5 +14,5 @@ interface DeviceService {
 
     fun deleteDevice(id: Int)
 
-    fun updateDevice(updateDeviceDto: UpdateDeviceDto, id: Int): DeviceDto
+    fun updateDevice(id: Int, updateDeviceDto: UpdateDeviceDto): DeviceDto
 }

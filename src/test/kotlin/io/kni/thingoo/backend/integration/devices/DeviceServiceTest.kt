@@ -333,7 +333,7 @@ class DeviceServiceTest {
             displayName = "new device",
             icon = MaterialIcon.SENSORS
         )
-        deviceService.updateDevice(updateDeviceDto, savedDevice.id)
+        deviceService.updateDevice(savedDevice.id, updateDeviceDto)
 
         // then
         val updatedDeviceOptional = deviceRepository.findById(savedDevice.id)
@@ -352,7 +352,7 @@ class DeviceServiceTest {
             displayName = "new device",
             icon = MaterialIcon.SENSORS
         )
-        assertThrows<DeviceNotFoundException> { deviceService.updateDevice(updateDeviceDto, 99999) }
+        assertThrows<DeviceNotFoundException> { deviceService.updateDevice(99999, updateDeviceDto) }
 
         // then
     }

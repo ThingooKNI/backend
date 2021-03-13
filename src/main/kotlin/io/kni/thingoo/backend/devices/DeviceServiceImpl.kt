@@ -57,7 +57,7 @@ class DeviceServiceImpl(
         deviceRepository.deleteById(id)
     }
 
-    override fun updateDevice(updateDeviceDto: UpdateDeviceDto, id: Int): DeviceDto {
+    override fun updateDevice(id: Int, updateDeviceDto: UpdateDeviceDto): DeviceDto {
         val deviceOptional = deviceRepository.findById(id)
         if (deviceOptional.isEmpty) {
             ApiErrorCode.DEVICES_001.throwException()

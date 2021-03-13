@@ -48,6 +48,6 @@ class DeviceController(
 
     @PutMapping("/{id}")
     fun updateDeviceById(@PathVariable id: Int, @RequestBody updateDeviceDto: UpdateDeviceDto): ResponseEntity<DeviceDto> {
-        return ResponseEntity.ok(deviceService.updateDevice(updateDeviceDto, id))
+        return ResponseEntity.ok(deviceService.updateDevice(id, updateDeviceDto))
     }
 }
