@@ -9,5 +9,5 @@ interface EntityService {
 
     fun getEntity(id: Int): EntityDto
 
-    fun updateEntity(updateEntityDto: UpdateEntityDto, id: Int): EntityDto
+    fun updateEntity(id: Int, updateEntityDto: UpdateEntityDto): EntityDto
 }

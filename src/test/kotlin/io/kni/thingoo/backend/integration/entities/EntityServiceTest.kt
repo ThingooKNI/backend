@@ -55,7 +55,7 @@ class EntityServiceTest {
             displayName = "test entity",
             icon = MaterialIcon.THERMOSTAT
         )
-        entityService.updateEntity(updateEntityDto, savedEntities[0].id)
+        entityService.updateEntity(savedEntities[0].id, updateEntityDto)
 
         // then
         val updatedEntityOptional = entityRepository.findById(savedEntities[0].id)
@@ -75,7 +75,7 @@ class EntityServiceTest {
             icon = MaterialIcon.THERMOSTAT
         )
 
-        assertThrows<EntityNotFoundException> { entityService.updateEntity(updateEntityDto, 99999) }
+        assertThrows<EntityNotFoundException> { entityService.updateEntity(99999, updateEntityDto) }
 
         // then
     }

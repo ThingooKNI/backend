@@ -35,6 +35,6 @@ class EntityController(
 
     @PutMapping("/{id}")
     fun updateEntityById(@PathVariable id: Int, @RequestBody updateEntityDto: UpdateEntityDto): ResponseEntity<EntityDto> {
-        return ResponseEntity.ok(entityService.updateEntity(updateEntityDto, id))
+        return ResponseEntity.ok(entityService.updateEntity(id, updateEntityDto))
     }
 }

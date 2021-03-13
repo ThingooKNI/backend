@@ -23,7 +23,7 @@ class EntityServiceImpl(
             }
     }
 
-    override fun updateEntity(updateEntityDto: UpdateEntityDto, id: Int): EntityDto {
+    override fun updateEntity(id: Int, updateEntityDto: UpdateEntityDto): EntityDto {
         val entityOptional = entityRepository.findById(id)
         if (entityOptional.isEmpty) {
             ApiErrorCode.ENTITIES_003.throwException()
