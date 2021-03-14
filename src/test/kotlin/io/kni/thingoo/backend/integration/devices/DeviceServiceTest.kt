@@ -3,6 +3,7 @@ package io.kni.thingoo.backend.integration.devices
 
 import io.kni.thingoo.backend.devices.DeviceRepository
 import io.kni.thingoo.backend.devices.DeviceService
+import io.kni.thingoo.backend.devices.dto.UpdateDeviceDto
 import io.kni.thingoo.backend.devices.exceptions.DeviceNotFoundException
 import io.kni.thingoo.backend.devices.exceptions.ExistingDeviceKeyException
 import io.kni.thingoo.backend.devices.exceptions.ExistingMACAddressException
@@ -11,6 +12,7 @@ import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.EntityType
 import io.kni.thingoo.backend.entities.UnitType
 import io.kni.thingoo.backend.entities.exceptions.ExistingEntityKeyException
+import io.kni.thingoo.backend.icons.MaterialIcon
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
@@ -318,5 +320,40 @@ class DeviceServiceTest {
         // then
         assertThat(deviceRepository.findAll()).isEmpty()
         assertThat(entityRepository.findByDeviceId(savedDevice.id)).isEmpty()
+    }
+
+    @Test
+    fun `given existing device when updating device by id, then will update one`() {
+        // given
+        val newDevice = createTestDevice()
+        val savedDevice = deviceRepository.save(newDevice)
+
+        // when
+        val updateDeviceDto = UpdateDeviceDto(
+            displayName = "new device",
+            icon = MaterialIcon.SENSORS
+        )
+        deviceService.updateDevice(savedDevice.id, updateDeviceDto)
+
+        // then
+        val updatedDeviceOptional = deviceRepository.findById(savedDevice.id)
+        assertThat(updatedDeviceOptional.isPresent).isTrue
+        val updatedDevice = updatedDeviceOptional.get()
+        assertThat(updatedDevice.displayName).isEqualTo(updateDeviceDto.displayName)
+        assertThat(updatedDevice.icon).isEqualTo(updateDeviceDto.icon)
+    }
+
+    @Test
+    fun `given no device when updating device by id, then will throw DeviceNotFoundException`() {
+        // given
+
+        // when
+        val updateDeviceDto = UpdateDeviceDto(
+            displayName = "new device",
+            icon = MaterialIcon.SENSORS
+        )
+        assertThrows<DeviceNotFoundException> { deviceService.updateDevice(99999, updateDeviceDto) }
+
+        // then
     }
 }
