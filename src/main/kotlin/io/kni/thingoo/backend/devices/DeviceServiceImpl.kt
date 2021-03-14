@@ -2,6 +2,7 @@ package io.kni.thingoo.backend.devices
 
 import io.kni.thingoo.backend.devices.dto.DeviceDto
 import io.kni.thingoo.backend.devices.dto.SetupDeviceDto
+import io.kni.thingoo.backend.devices.dto.UpdateDeviceDto
 import io.kni.thingoo.backend.entities.Entity
 import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.dto.SetupEntityDto
@@ -54,6 +55,18 @@ class DeviceServiceImpl(
         }
 
         deviceRepository.deleteById(id)
+    }
+
+    override fun updateDevice(id: Int, updateDeviceDto: UpdateDeviceDto): DeviceDto {
+        val deviceOptional = deviceRepository.findById(id)
+        if (deviceOptional.isEmpty) {
+            ApiErrorCode.DEVICES_001.throwException()
+        }
+
+        val device = deviceOptional.get()
+        device.displayName = updateDeviceDto.displayName
+        device.icon = updateDeviceDto.icon
+        return deviceRepository.save(device).toDto()
     }
 
     private fun validateEntities(entities: List<SetupEntityDto>) {
