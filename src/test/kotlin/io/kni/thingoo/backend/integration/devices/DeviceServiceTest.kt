@@ -392,6 +392,21 @@ class DeviceServiceTest {
     }
 
     @Test
+    fun `given existing device when patching device with entity field with invalid value, then will throw InvalidDevicePatchEntryValueException`() {
+        // given
+        val newDevice = createTestDevice()
+        val savedDevice = deviceRepository.save(newDevice)
+
+        // when
+        val devicePatch = mapOf(
+            "icon" to "SENSORSS"
+        )
+        assertThrows<InvalidDevicePatchEntryValueException> { deviceService.patchDevice(savedDevice.id, devicePatch) }
+
+        // then
+    }
+
+    @Test
     fun `given existing device when patching device with two fields by id, then will patch two`() {
         // given
         val newDevice = createTestDevice()
