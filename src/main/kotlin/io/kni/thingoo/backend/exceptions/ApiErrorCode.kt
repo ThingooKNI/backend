@@ -7,6 +7,7 @@ import io.kni.thingoo.backend.devices.exceptions.InvalidDevicePatchEntryValueExc
 import io.kni.thingoo.backend.devices.exceptions.InvalidMACAddressException
 import io.kni.thingoo.backend.entities.exceptions.EntityNotFoundException
 import io.kni.thingoo.backend.entities.exceptions.ExistingEntityKeyException
+import io.kni.thingoo.backend.entities.exceptions.InvalidEntityPatchEntryValueException
 import io.kni.thingoo.backend.readings.exceptions.NoReadingsException
 import io.kni.thingoo.backend.readings.exceptions.ReadingUnitTypeMismatchException
 import org.springframework.http.HttpStatus
@@ -25,6 +26,7 @@ enum class ApiErrorCode(private val exception: RestException) : ErrorCode {
     ENTITIES_001(ExistingEntityKeyException("Duplicated Entity key value")),
     ENTITIES_002(EntityNotFoundException("Entity with given key and deviceKey doesn't exist")),
     ENTITIES_003(EntityNotFoundException("Entity with given id not found")),
+    ENTITIES_004(InvalidEntityPatchEntryValueException("Invalid patch object provided. Check types of provided fields")),
 
     READINGS_001(ReadingUnitTypeMismatchException("Reading value is not correct value of entity's unit type")),
     READINGS_002(NoReadingsException("Given entity has no readings. Cannot return latest reading."))

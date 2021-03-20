@@ -392,7 +392,7 @@ class DeviceServiceTest {
     }
 
     @Test
-    fun `given existing device when patching device with entity field with invalid value, then will throw InvalidDevicePatchEntryValueException`() {
+    fun `given existing device when patching device with enum field with invalid value, then will throw InvalidDevicePatchEntryValueException`() {
         // given
         val newDevice = createTestDevice()
         val savedDevice = deviceRepository.save(newDevice)
