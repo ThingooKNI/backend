@@ -409,7 +409,7 @@ class DeviceServiceTest {
         assertThat(updatedDeviceOptional.isPresent).isTrue
         val updatedDevice = updatedDeviceOptional.get()
         assertThat(updatedDevice.displayName).isEqualTo(devicePatch["displayName"])
-        assertThat(updatedDevice.icon).isEqualTo(devicePatch["icon"])
+        assertThat(updatedDevice.icon).isEqualTo(MaterialIcon.SENSORS)
     }
 
     @Test

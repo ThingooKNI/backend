@@ -5,7 +5,4 @@ interface ErrorCode {
 
     @Throws(RestException::class)
     fun throwException(): Nothing
-
-    @Throws(RestException::class)
-    fun throwExceptionWithCause(throwable: Throwable): Nothing
 }

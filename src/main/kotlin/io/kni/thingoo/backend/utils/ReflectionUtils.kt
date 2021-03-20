@@ -1,6 +1,5 @@
 package io.kni.thingoo.backend.utils
 
-import java.lang.reflect.Field
 import kotlin.reflect.KMutableProperty1
 import kotlin.reflect.KProperty1
 import kotlin.reflect.KType
@@ -24,14 +23,6 @@ class ReflectionUtils {
             property.set(instance, propertyValue)
         }
 
-        @Suppress("UNCHECKED_CAST")
-        fun getEnumValues(enumClass: Class<*>): Array<*> {
-            val f: Field = enumClass.getDeclaredField("\$VALUES")
-            f.isAccessible = true
-            val o: Any = f.get(null)
-            return o as Array<*>
-        }
-
         fun isExactTypeOf(value: Any, type: KType): Boolean {
             return value::class.createType().withNullability(true) == type
         }
@@ -47,12 +38,19 @@ class ReflectionUtils {
             return false
         }
 
-        fun isEnum(type: KType): Boolean {
-            return (type.javaType as Class<*>).isEnum
+        @Suppress("UNCHECKED_CAST")
+        fun createEnumFromString(type: KType, value: String): Any {
+            val enumValues = getEnumValues(type)
+            return enumValues.first { it.name == value }
         }
 
-        fun getEnumValues(type: KType): Array<*> {
-            return (type.javaType as Class<*>).enumConstants
+        @Suppress("UNCHECKED_CAST")
+        fun getEnumValues(type: KType): Array<Enum<*>> {
+            return (type.javaType as Class<*>).enumConstants as Array<Enum<*>>
+        }
+
+        fun isEnum(type: KType): Boolean {
+            return (type.javaType as Class<*>).isEnum
         }
     }
 }

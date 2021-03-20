@@ -39,9 +39,4 @@ enum class ApiErrorCode(private val exception: RestException) : ErrorCode {
     override fun throwException(): Nothing {
         throw this.exception
     }
-
-    override fun throwExceptionWithCause(throwable: Throwable): Nothing {
-        this.exception.initCause(throwable)
-        throw this.exception
-    }
 }
