@@ -21,12 +21,12 @@ enum class ApiErrorCode(private val exception: RestException) : ErrorCode {
     DEVICES_003(ExistingMACAddressException("There is already a device registered with this macAddress")),
     DEVICES_004(ExistingDeviceKeyException("There is already a device registered with this key")),
     DEVICES_005(DeviceNotFoundException("Device with given key doesn't exist")),
-    DEVICES_006(InvalidDevicePatchEntryValueException("Invalid patch object provided. Check types of provided fields")),
+    DEVICES_006(InvalidDevicePatchEntryValueException("Invalid patch object provided. Check types and values of provided fields")),
 
     ENTITIES_001(ExistingEntityKeyException("Duplicated Entity key value")),
     ENTITIES_002(EntityNotFoundException("Entity with given key and deviceKey doesn't exist")),
     ENTITIES_003(EntityNotFoundException("Entity with given id not found")),
-    ENTITIES_004(InvalidEntityPatchEntryValueException("Invalid patch object provided. Check types of provided fields")),
+    ENTITIES_004(InvalidEntityPatchEntryValueException("Invalid patch object provided. Check types and values of provided fields")),
 
     READINGS_001(ReadingUnitTypeMismatchException("Reading value is not correct value of entity's unit type")),
     READINGS_002(NoReadingsException("Given entity has no readings. Cannot return latest reading."))
