@@ -3,6 +3,7 @@ package io.kni.thingoo.backend.exceptions
 import io.kni.thingoo.backend.devices.exceptions.DeviceNotFoundException
 import io.kni.thingoo.backend.devices.exceptions.ExistingDeviceKeyException
 import io.kni.thingoo.backend.devices.exceptions.ExistingMACAddressException
+import io.kni.thingoo.backend.devices.exceptions.InvalidDevicePatchEntryValueException
 import io.kni.thingoo.backend.devices.exceptions.InvalidMACAddressException
 import io.kni.thingoo.backend.entities.exceptions.EntityNotFoundException
 import io.kni.thingoo.backend.entities.exceptions.ExistingEntityKeyException
@@ -19,6 +20,7 @@ enum class ApiErrorCode(private val exception: RestException) : ErrorCode {
     DEVICES_003(ExistingMACAddressException("There is already a device registered with this macAddress")),
     DEVICES_004(ExistingDeviceKeyException("There is already a device registered with this key")),
     DEVICES_005(DeviceNotFoundException("Device with given key doesn't exist")),
+    DEVICES_006(InvalidDevicePatchEntryValueException("Invalid patch object provided. Check types of provided fields")),
 
     ENTITIES_001(ExistingEntityKeyException("Duplicated Entity key value")),
     ENTITIES_002(EntityNotFoundException("Entity with given key and deviceKey doesn't exist")),
@@ -33,7 +35,13 @@ enum class ApiErrorCode(private val exception: RestException) : ErrorCode {
     }
 
     override fun id(): String = this.name
+
     override fun throwException(): Nothing {
+        throw this.exception
+    }
+
+    override fun throwExceptionWithCause(throwable: Throwable): Nothing {
+        this.exception.initCause(throwable)
         throw this.exception
     }
 }

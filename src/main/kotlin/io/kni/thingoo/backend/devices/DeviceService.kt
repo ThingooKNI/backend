@@ -15,4 +15,6 @@ interface DeviceService {
     fun deleteDevice(id: Int)
 
     fun updateDevice(id: Int, updateDeviceDto: UpdateDeviceDto): DeviceDto
+
+    fun patchDevice(id: Int, patch: Map<String, Any>): DeviceDto
 }

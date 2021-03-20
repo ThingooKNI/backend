@@ -1,14 +1,17 @@
 package io.kni.thingoo.backend.devices
 
 import io.kni.thingoo.backend.devices.dto.DeviceDto
+import io.kni.thingoo.backend.devices.dto.PatchDeviceDto
 import io.kni.thingoo.backend.devices.dto.SetupDeviceDto
 import io.kni.thingoo.backend.devices.dto.UpdateDeviceDto
 import io.kni.thingoo.backend.entities.Entity
 import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.dto.SetupEntityDto
 import io.kni.thingoo.backend.exceptions.ApiErrorCode
+import io.kni.thingoo.backend.utils.ReflectionUtils
 import org.springframework.stereotype.Service
 import java.util.regex.Pattern
+import kotlin.reflect.full.declaredMemberProperties
 
 @Service
 class DeviceServiceImpl(
@@ -67,6 +70,44 @@ class DeviceServiceImpl(
         device.displayName = updateDeviceDto.displayName
         device.icon = updateDeviceDto.icon
         return deviceRepository.save(device).toDto()
+    }
+
+    override fun patchDevice(id: Int, patch: Map<String, Any>): DeviceDto {
+        val deviceOptional = deviceRepository.findById(id)
+        if (deviceOptional.isEmpty) {
+            ApiErrorCode.DEVICES_001.throwException()
+        }
+
+        val device = deviceOptional.get()
+        try {
+            patchDeviceInstance(patch, device)
+        } catch (e: Exception) {
+            // TODO Why unreachable code?
+            throw ApiErrorCode.DEVICES_006.throwExceptionWithCause(e)
+        }
+
+        return deviceRepository.save(device).toDto()
+    }
+
+    // TODO generify?
+    private fun patchDeviceInstance(patch: Map<String, Any>, device: Device) {
+        val patchDeviceDtoFields = PatchDeviceDto::class.declaredMemberProperties
+        patchDeviceDtoFields.forEach {
+            if (patch.keys.contains(it.name)) {
+                val patchValue = patch[it.name]!!
+                when {
+                    ReflectionUtils.isExactTypeOf(patchValue, it.returnType) -> {
+                        ReflectionUtils.setInstanceProperty(device, it.name, patchValue)
+                    }
+                    ReflectionUtils.isEnumTypeOf(patchValue, it.returnType) -> {
+                        // to enum? which enum
+                    }
+                    else -> {
+                        throw Exception("Patch entry field has invalid type")
+                    }
+                }
+            }
+        }
     }
 
     private fun validateEntities(entities: List<SetupEntityDto>) {
