@@ -2,7 +2,6 @@ package io.kni.thingoo.backend.integration.entities
 
 import io.kni.thingoo.backend.devices.DeviceRepository
 import io.kni.thingoo.backend.devices.DeviceService
-import io.kni.thingoo.backend.devices.exceptions.InvalidDevicePatchEntryValueException
 import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.EntityService
 import io.kni.thingoo.backend.entities.dto.UpdateEntityDto
