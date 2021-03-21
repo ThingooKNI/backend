@@ -9,6 +9,7 @@ import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.dto.SetupEntityDto
 import io.kni.thingoo.backend.exceptions.ApiErrorCode
 import io.kni.thingoo.backend.utils.PatchUtils
+import io.kni.thingoo.backend.utils.exception.EntityPatchException
 import org.springframework.stereotype.Service
 import java.util.regex.Pattern
 
@@ -80,7 +81,7 @@ class DeviceServiceImpl(
         val device = deviceOptional.get()
         try {
             PatchUtils.patchEntity(patch, PatchDeviceDto::class, device)
-        } catch (e: Exception) {
+        } catch (e: EntityPatchException) {
             ApiErrorCode.DEVICES_006.throwException()
         }
 

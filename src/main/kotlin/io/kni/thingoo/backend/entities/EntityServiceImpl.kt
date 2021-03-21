@@ -5,6 +5,7 @@ import io.kni.thingoo.backend.entities.dto.PatchEntityDto
 import io.kni.thingoo.backend.entities.dto.UpdateEntityDto
 import io.kni.thingoo.backend.exceptions.ApiErrorCode
 import io.kni.thingoo.backend.utils.PatchUtils
+import io.kni.thingoo.backend.utils.exception.EntityPatchException
 import org.springframework.stereotype.Service
 
 @Service
@@ -46,7 +47,7 @@ class EntityServiceImpl(
         val entity = entityOptional.get()
         try {
             PatchUtils.patchEntity(patch, PatchEntityDto::class, entity)
-        } catch (e: Exception) {
+        } catch (e: EntityPatchException) {
             ApiErrorCode.ENTITIES_004.throwException()
         }
 

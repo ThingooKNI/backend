@@ -1,5 +1,6 @@
 package io.kni.thingoo.backend.utils
 
+import io.kni.thingoo.backend.utils.exception.EntityPatchException
 import kotlin.reflect.KClass
 import kotlin.reflect.full.declaredMemberProperties
 
@@ -25,7 +26,7 @@ class PatchUtils {
                             ReflectionUtils.setInstanceProperty(entity, fieldName, enumValue)
                         }
                         else -> {
-                            throw Exception("Patch entry field has invalid type")
+                            throw EntityPatchException()
                         }
                     }
                 }

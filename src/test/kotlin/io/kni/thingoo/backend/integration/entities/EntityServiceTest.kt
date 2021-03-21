@@ -1,7 +1,6 @@
 package io.kni.thingoo.backend.integration.entities
 
 import io.kni.thingoo.backend.devices.DeviceRepository
-import io.kni.thingoo.backend.devices.DeviceService
 import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.EntityService
 import io.kni.thingoo.backend.entities.dto.UpdateEntityDto
@@ -31,9 +30,6 @@ class EntityServiceTest {
     private lateinit var entityRepository: EntityRepository
 
     @Autowired
-    private lateinit var deviceService: DeviceService
-
-    @Autowired
     private lateinit var entityService: EntityService
 
     @AfterEach
@@ -41,6 +37,11 @@ class EntityServiceTest {
         deviceRepository.deleteAll()
         entityRepository.deleteAll()
     }
+
+    val testDisplayName = "test entity"
+    val testNewDisplayName = "newName"
+    val displayNameKey = "displayName"
+    val iconKey = "icon"
 
     @Test
     fun `given existing entity when updating entity by id, then will update one`() {
@@ -53,7 +54,7 @@ class EntityServiceTest {
 
         // when
         val updateEntityDto = UpdateEntityDto(
-            displayName = "test entity",
+            displayName = testDisplayName,
             icon = MaterialIcon.THERMOSTAT
         )
         entityService.updateEntity(savedEntities[0].id, updateEntityDto)
@@ -72,7 +73,7 @@ class EntityServiceTest {
 
         // when
         val updateEntityDto = UpdateEntityDto(
-            displayName = "test entity",
+            displayName = testDisplayName,
             icon = MaterialIcon.THERMOSTAT
         )
 
@@ -87,7 +88,7 @@ class EntityServiceTest {
 
         // when
         val entityPatch = mapOf(
-            "displayName" to "newName"
+            displayNameKey to testNewDisplayName
         )
         assertThrows<EntityNotFoundException> { entityService.patchEntity(99999, entityPatch) }
 
@@ -105,7 +106,7 @@ class EntityServiceTest {
 
         // when
         val entityPatch = mapOf(
-            "displayName" to "newName"
+            displayNameKey to testNewDisplayName
         )
         entityService.patchEntity(savedEntities[0].id, entityPatch)
 
@@ -113,7 +114,7 @@ class EntityServiceTest {
         val updatedEntityOptional = entityRepository.findById(savedEntities[0].id)
         assertThat(updatedEntityOptional.isPresent).isTrue
         val updatedEntity = updatedEntityOptional.get()
-        assertThat(updatedEntity.displayName).isEqualTo(entityPatch["displayName"])
+        assertThat(updatedEntity.displayName).isEqualTo(entityPatch[displayNameKey])
         assertThat(updatedEntity.icon).isEqualTo(savedEntities[0].icon)
     }
 
@@ -128,7 +129,7 @@ class EntityServiceTest {
 
         // when
         val entityPatch = mapOf(
-            "icon" to "SENSORSS"
+            iconKey to "SENSORSS"
         )
         assertThrows<InvalidEntityPatchEntryValueException> { entityService.patchEntity(savedEntities[0].id, entityPatch) }
 
@@ -146,8 +147,8 @@ class EntityServiceTest {
 
         // when
         val entityPatch = mapOf(
-            "displayName" to "newName",
-            "icon" to "SENSORS"
+            displayNameKey to testNewDisplayName,
+            iconKey to "SENSORS"
         )
         entityService.patchEntity(savedEntities[0].id, entityPatch)
 
@@ -155,7 +156,7 @@ class EntityServiceTest {
         val updatedEntityOptional = entityRepository.findById(savedEntities[0].id)
         assertThat(updatedEntityOptional.isPresent).isTrue
         val updatedEntity = updatedEntityOptional.get()
-        assertThat(updatedEntity.displayName).isEqualTo(entityPatch["displayName"])
+        assertThat(updatedEntity.displayName).isEqualTo(entityPatch[displayNameKey])
         assertThat(updatedEntity.icon).isEqualTo(MaterialIcon.SENSORS)
     }
 
@@ -170,7 +171,7 @@ class EntityServiceTest {
 
         // when
         val entityPatch = mapOf(
-            "displayName" to 123
+            displayNameKey to 123
         )
         assertThrows<InvalidEntityPatchEntryValueException> { entityService.patchEntity(savedEntities[0].id, entityPatch) }
 
