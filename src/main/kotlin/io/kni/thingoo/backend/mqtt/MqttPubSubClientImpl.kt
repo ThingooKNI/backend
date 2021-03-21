@@ -24,11 +24,12 @@ class MqttPubSubClientImpl(
 
     override fun connect(mqttCallback: MqttCallback) {
         val mqttClient = createMqttClient()
-        connectAsync()
 
         mqttClient.setCallback(mqttCallback)
 
         this.client = mqttClient
+
+        connectAsync()
     }
 
     override fun publish(pushMessage: String, topic: String, qos: Int, retain: Boolean) {
