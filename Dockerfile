@@ -1,5 +1,15 @@
-FROM openjdk:11-jre-slim-buster
+FROM openjdk:17-slim
+
+RUN mkdir /etc/spring && useradd spring && chown -R spring /etc/spring
+
+USER spring
+
 VOLUME /tmp
+
 ENV JAVA_OPTIONS="-Dspring.profiles.active=production"
+
 COPY build/libs/thingoo-backend.jar /etc/spring/thingoo-backend.jar
+
+EXPOSE 8080
+
 ENTRYPOINT java $JAVA_OPTIONS -jar /etc/spring/thingoo-backend.jar --spring.config.location=optional:file:/etc/spring/config/,classpath:/
