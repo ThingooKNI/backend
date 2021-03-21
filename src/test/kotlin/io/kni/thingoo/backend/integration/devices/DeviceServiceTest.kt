@@ -43,6 +43,9 @@ class DeviceServiceTest {
         entityRepository.deleteAll()
     }
 
+    val displayNameKey = "displayName"
+    val testNewDisplayName = "new device"
+
     @Test
     fun `given new device, when setting up new device with invalid mac, then will throw InvalidMACAddressException`() {
         // given
@@ -364,7 +367,7 @@ class DeviceServiceTest {
 
         // when
         val devicePatch = mapOf(
-            "displayName" to "newName"
+            displayNameKey to testNewDisplayName
         )
         assertThrows<DeviceNotFoundException> { deviceService.patchDevice(99999, devicePatch) }
 
@@ -379,7 +382,7 @@ class DeviceServiceTest {
 
         // when
         val devicePatch = mapOf(
-            "displayName" to "newName"
+            displayNameKey to testNewDisplayName
         )
         deviceService.patchDevice(savedDevice.id, devicePatch)
 
@@ -387,7 +390,7 @@ class DeviceServiceTest {
         val updatedDeviceOptional = deviceRepository.findById(savedDevice.id)
         assertThat(updatedDeviceOptional.isPresent).isTrue
         val updatedDevice = updatedDeviceOptional.get()
-        assertThat(updatedDevice.displayName).isEqualTo(devicePatch["displayName"])
+        assertThat(updatedDevice.displayName).isEqualTo(devicePatch[displayNameKey])
         assertThat(updatedDevice.icon).isEqualTo(savedDevice.icon)
     }
 
@@ -414,7 +417,7 @@ class DeviceServiceTest {
 
         // when
         val devicePatch = mapOf(
-            "displayName" to "newName",
+            displayNameKey to testNewDisplayName,
             "icon" to "SENSORS"
         )
         deviceService.patchDevice(savedDevice.id, devicePatch)
@@ -423,7 +426,7 @@ class DeviceServiceTest {
         val updatedDeviceOptional = deviceRepository.findById(savedDevice.id)
         assertThat(updatedDeviceOptional.isPresent).isTrue
         val updatedDevice = updatedDeviceOptional.get()
-        assertThat(updatedDevice.displayName).isEqualTo(devicePatch["displayName"])
+        assertThat(updatedDevice.displayName).isEqualTo(devicePatch[displayNameKey])
         assertThat(updatedDevice.icon).isEqualTo(MaterialIcon.SENSORS)
     }
 
@@ -435,7 +438,7 @@ class DeviceServiceTest {
 
         // when
         val devicePatch = mapOf(
-            "displayName" to 123,
+            displayNameKey to 123,
         )
         assertThrows<InvalidDevicePatchEntryValueException> { deviceService.patchDevice(savedDevice.id, devicePatch) }
 
