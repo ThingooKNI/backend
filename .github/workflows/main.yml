@@ -5,12 +5,8 @@ on:
     branches: [ '**' ]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        jdk-version: [ 11, 15 ]
+  lint:
+    runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@v2
@@ -23,6 +19,17 @@ jobs:
           FILTER_REGEX_INCLUDE: .*src/.*
           FILTER_REGEX_EXCLUDE: .*src/.*.sql
           VALIDATE_JSCPD: false
+
+  build:
+    runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        jdk-version: [ 11, 12, 13, 14, 15 ]
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v2
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
