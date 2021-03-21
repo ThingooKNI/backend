@@ -8,8 +8,9 @@ VOLUME /tmp
 
 ENV JAVA_OPTIONS="-Dspring.profiles.active=production"
 
+EXPOSE 8080
+
 COPY build/libs/thingoo-backend.jar /etc/spring/thingoo-backend.jar
 
-EXPOSE 8080
 
 ENTRYPOINT java $JAVA_OPTIONS -jar /etc/spring/thingoo-backend.jar --spring.config.location=optional:file:/etc/spring/config/,classpath:/
