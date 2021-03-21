@@ -33,7 +33,7 @@ class MqttCallback(
     }
 
     override fun messageArrived(topic: String, mqttMessage: MqttMessage) {
-        logger.info("[MQTT] Received message on topic $topic, date: ${String(mqttMessage.payload)}")
+        logger.info("[MQTT] Received message on topic $topic, data: ${String(mqttMessage.payload)}")
         try {
             handleMessage(String(mqttMessage.payload), topic)
         } catch (e: io.kni.thingoo.backend.mqtt.exceptions.MqttException) {
