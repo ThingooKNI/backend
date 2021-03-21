@@ -334,7 +334,7 @@ class DeviceServiceTest {
 
         // when
         val updateDeviceDto = UpdateDeviceDto(
-            displayName = "new device",
+            displayName = testNewDisplayName,
             icon = MaterialIcon.SENSORS
         )
         deviceService.updateDevice(savedDevice.id, updateDeviceDto)
@@ -353,7 +353,7 @@ class DeviceServiceTest {
 
         // when
         val updateDeviceDto = UpdateDeviceDto(
-            displayName = "new device",
+            displayName = testNewDisplayName,
             icon = MaterialIcon.SENSORS
         )
         assertThrows<DeviceNotFoundException> { deviceService.updateDevice(99999, updateDeviceDto) }
