@@ -1,6 +1,7 @@
 package io.kni.thingoo.backend.mqtt
 
 import io.kni.thingoo.backend.config.MqttConfig
+import io.kni.thingoo.backend.utils.StringUtils
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions
 import org.eclipse.paho.client.mqttv3.MqttMessage
@@ -42,7 +43,11 @@ class MqttPubSubClientImpl(
     }
 
     private fun createMqttClient(): MqttAsyncClient {
-        return MqttAsyncClient(config.hostUrl, config.clientID, MemoryPersistence())
+        return MqttAsyncClient(config.hostUrl, getClientID(), MemoryPersistence())
+    }
+
+    private fun getClientID(): String {
+        return "${config.clientID}-${StringUtils.getRandomAlphanumericString(8)}"
     }
 
     private fun connectAsync() {
