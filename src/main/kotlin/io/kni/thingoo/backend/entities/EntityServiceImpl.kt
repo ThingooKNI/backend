@@ -47,7 +47,7 @@ class EntityServiceImpl(
         try {
             PatchUtils.patchEntity(patch, PatchEntityDto::class, entity)
         } catch (e: Exception) {
-            throw ApiErrorCode.ENTITIES_004.throwException()
+            ApiErrorCode.ENTITIES_004.throwException()
         }
 
         return entityRepository.save(entity).toDto()

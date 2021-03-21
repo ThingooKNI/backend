@@ -81,7 +81,7 @@ class DeviceServiceImpl(
         try {
             PatchUtils.patchEntity(patch, PatchDeviceDto::class, device)
         } catch (e: Exception) {
-            throw ApiErrorCode.DEVICES_006.throwException()
+            ApiErrorCode.DEVICES_006.throwException()
         }
 
         return deviceRepository.save(device).toDto()
