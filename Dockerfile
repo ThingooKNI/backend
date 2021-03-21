@@ -10,4 +10,4 @@ EXPOSE 8080
 
 COPY build/libs/thingoo-backend.jar /etc/spring/thingoo-backend.jar
 
-ENTRYPOINT java -jar /etc/spring/thingoo-backend.jar --spring.config.location=file:/etc/spring/config/application.yml
+ENTRYPOINT java -jar /etc/spring/thingoo-backend.jar --spring.config.location=optional:file:/etc/spring/config/application.yml,classpath:/
