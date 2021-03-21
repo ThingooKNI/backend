@@ -20,7 +20,7 @@ class MqttPubSubClientImpl(
         private val logger = LoggerFactory.getLogger(MqttPubSubClientImpl::class.java)
     }
 
-    private lateinit var client: MqttAsyncClient
+    private var client: MqttAsyncClient? = null
 
     override fun connect(mqttCallback: MqttCallback) {
         val mqttClient = createMqttClient()
@@ -39,7 +39,7 @@ class MqttPubSubClientImpl(
 
     override fun subscribeToDefaultTopic() {
         logger.info("[MQTT] Started subscription on topic: ${config.defaultTopic}")
-        client.subscribe(config.defaultTopic, 2)
+        client!!.subscribe(config.defaultTopic, 2)
     }
 
     private fun createMqttClient(): MqttAsyncClient {
@@ -52,7 +52,7 @@ class MqttPubSubClientImpl(
 
     private fun connectAsync() {
         val options = createMqttConnectOptions()
-        val token = client.connect(options)
+        val token = client!!.connect(options)
         token.waitForCompletion()
     }
 
@@ -77,7 +77,7 @@ class MqttPubSubClientImpl(
     }
 
     private fun publishAsync(topic: String, message: MqttMessage) {
-        val token = client.publish(topic, message)
+        val token = client!!.publish(topic, message)
         token.waitForCompletion()
     }
 }
