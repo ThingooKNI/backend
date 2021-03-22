@@ -1,6 +1,7 @@
 package io.kni.thingoo.backend.mqtt
 
 import io.kni.thingoo.backend.config.MqttConfig
+import io.kni.thingoo.backend.utils.StringUtils
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions
 import org.eclipse.paho.client.mqttv3.MqttMessage
@@ -19,15 +20,16 @@ class MqttPubSubClientImpl(
         private val logger = LoggerFactory.getLogger(MqttPubSubClientImpl::class.java)
     }
 
-    private lateinit var client: MqttAsyncClient
+    private var client: MqttAsyncClient? = null
 
     override fun connect(mqttCallback: MqttCallback) {
         val mqttClient = createMqttClient()
-        connectAsync()
 
         mqttClient.setCallback(mqttCallback)
 
         this.client = mqttClient
+
+        connectAsync()
     }
 
     override fun publish(pushMessage: String, topic: String, qos: Int, retain: Boolean) {
@@ -38,16 +40,20 @@ class MqttPubSubClientImpl(
 
     override fun subscribeToDefaultTopic() {
         logger.info("[MQTT] Started subscription on topic: ${config.defaultTopic}")
-        client.subscribe(config.defaultTopic, 2)
+        client!!.subscribe(config.defaultTopic, 2)
     }
 
     private fun createMqttClient(): MqttAsyncClient {
-        return MqttAsyncClient(config.hostUrl, config.clientID, MemoryPersistence())
+        return MqttAsyncClient(config.hostUrl, getClientID(), MemoryPersistence())
+    }
+
+    private fun getClientID(): String {
+        return "${config.clientID}-${StringUtils.getRandomAlphanumericString(8)}"
     }
 
     private fun connectAsync() {
         val options = createMqttConnectOptions()
-        val token = client.connect(options)
+        val token = client!!.connect(options)
         token.waitForCompletion()
     }
 
@@ -72,7 +78,7 @@ class MqttPubSubClientImpl(
     }
 
     private fun publishAsync(topic: String, message: MqttMessage) {
-        val token = client.publish(topic, message)
+        val token = client!!.publish(topic, message)
         token.waitForCompletion()
     }
 }
