@@ -7,6 +7,7 @@ import io.kni.thingoo.backend.devices.dto.UpdateDeviceDto
 import io.kni.thingoo.backend.devices.exceptions.DeviceNotFoundException
 import io.kni.thingoo.backend.devices.exceptions.ExistingDeviceKeyException
 import io.kni.thingoo.backend.devices.exceptions.ExistingMACAddressException
+import io.kni.thingoo.backend.devices.exceptions.InvalidDevicePatchEntryValueException
 import io.kni.thingoo.backend.devices.exceptions.InvalidMACAddressException
 import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.EntityType
@@ -41,6 +42,9 @@ class DeviceServiceTest {
         deviceRepository.deleteAll()
         entityRepository.deleteAll()
     }
+
+    val displayNameKey = "displayName"
+    val testNewDisplayName = "new device"
 
     @Test
     fun `given new device, when setting up new device with invalid mac, then will throw InvalidMACAddressException`() {
@@ -330,7 +334,7 @@ class DeviceServiceTest {
 
         // when
         val updateDeviceDto = UpdateDeviceDto(
-            displayName = "new device",
+            displayName = testNewDisplayName,
             icon = MaterialIcon.SENSORS
         )
         deviceService.updateDevice(savedDevice.id, updateDeviceDto)
@@ -349,11 +353,113 @@ class DeviceServiceTest {
 
         // when
         val updateDeviceDto = UpdateDeviceDto(
-            displayName = "new device",
+            displayName = testNewDisplayName,
             icon = MaterialIcon.SENSORS
         )
         assertThrows<DeviceNotFoundException> { deviceService.updateDevice(99999, updateDeviceDto) }
 
         // then
+    }
+
+    @Test
+    fun `given no device when patching device by id, then will throw DeviceNotFoundException`() {
+        // given
+
+        // when
+        val devicePatch = mapOf(
+            displayNameKey to testNewDisplayName
+        )
+        assertThrows<DeviceNotFoundException> { deviceService.patchDevice(99999, devicePatch) }
+
+        // then
+    }
+
+    @Test
+    fun `given existing device when patching device with one field by id, then will patch one`() {
+        // given
+        val newDevice = createTestDevice()
+        val savedDevice = deviceRepository.save(newDevice)
+
+        // when
+        val devicePatch = mapOf(
+            displayNameKey to testNewDisplayName
+        )
+        deviceService.patchDevice(savedDevice.id, devicePatch)
+
+        // then
+        val updatedDeviceOptional = deviceRepository.findById(savedDevice.id)
+        assertThat(updatedDeviceOptional.isPresent).isTrue
+        val updatedDevice = updatedDeviceOptional.get()
+        assertThat(updatedDevice.displayName).isEqualTo(devicePatch[displayNameKey])
+        assertThat(updatedDevice.icon).isEqualTo(savedDevice.icon)
+    }
+
+    @Test
+    fun `given existing device when patching device with enum field with invalid value, then will throw InvalidDevicePatchEntryValueException`() {
+        // given
+        val newDevice = createTestDevice()
+        val savedDevice = deviceRepository.save(newDevice)
+
+        // when
+        val devicePatch = mapOf(
+            "icon" to "SENSORSS"
+        )
+        assertThrows<InvalidDevicePatchEntryValueException> { deviceService.patchDevice(savedDevice.id, devicePatch) }
+
+        // then
+    }
+
+    @Test
+    fun `given existing device when patching device with two fields by id, then will patch two`() {
+        // given
+        val newDevice = createTestDevice()
+        val savedDevice = deviceRepository.save(newDevice)
+
+        // when
+        val devicePatch = mapOf(
+            displayNameKey to testNewDisplayName,
+            "icon" to "SENSORS"
+        )
+        deviceService.patchDevice(savedDevice.id, devicePatch)
+
+        // then
+        val updatedDeviceOptional = deviceRepository.findById(savedDevice.id)
+        assertThat(updatedDeviceOptional.isPresent).isTrue
+        val updatedDevice = updatedDeviceOptional.get()
+        assertThat(updatedDevice.displayName).isEqualTo(devicePatch[displayNameKey])
+        assertThat(updatedDevice.icon).isEqualTo(MaterialIcon.SENSORS)
+    }
+
+    @Test
+    fun `given existing device when patching device with one invalid type field by id, then will throw InvalidDevicePatchEntryValueException`() {
+        // given
+        val newDevice = createTestDevice()
+        val savedDevice = deviceRepository.save(newDevice)
+
+        // when
+        val devicePatch = mapOf(
+            displayNameKey to 123,
+        )
+        assertThrows<InvalidDevicePatchEntryValueException> { deviceService.patchDevice(savedDevice.id, devicePatch) }
+
+        // then
+    }
+
+    @Test
+    fun `given existing device when patching device with no by id, then will not patch`() {
+        // given
+        val newDevice = createTestDevice()
+        val savedDevice = deviceRepository.save(newDevice)
+
+        // when
+        val devicePatch = emptyMap<String, Any>()
+        deviceService.patchDevice(savedDevice.id, devicePatch)
+
+        // then
+        val updatedDeviceOptional = deviceRepository.findById(savedDevice.id)
+        assertThat(updatedDeviceOptional.isPresent).isTrue
+        val updatedDevice = updatedDeviceOptional.get()
+        assertThat(updatedDevice.displayName).isEqualTo(savedDevice.displayName)
+        assertThat(updatedDevice.icon).isEqualTo(savedDevice.icon)
     }
 }

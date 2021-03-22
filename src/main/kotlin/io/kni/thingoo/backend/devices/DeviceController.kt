@@ -8,6 +8,7 @@ import io.kni.thingoo.backend.entities.dto.EntityDto
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -49,5 +50,10 @@ class DeviceController(
     @PutMapping("/{id}")
     fun updateDeviceById(@PathVariable id: Int, @RequestBody updateDeviceDto: UpdateDeviceDto): ResponseEntity<DeviceDto> {
         return ResponseEntity.ok(deviceService.updateDevice(id, updateDeviceDto))
+    }
+
+    @PatchMapping("/{id}")
+    fun patchDeviceById(@PathVariable id: Int, @RequestBody patch: Map<String, Any>): ResponseEntity<DeviceDto> {
+        return ResponseEntity.ok(deviceService.patchDevice(id, patch))
     }
 }

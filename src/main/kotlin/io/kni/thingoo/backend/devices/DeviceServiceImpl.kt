@@ -1,12 +1,15 @@
 package io.kni.thingoo.backend.devices
 
 import io.kni.thingoo.backend.devices.dto.DeviceDto
+import io.kni.thingoo.backend.devices.dto.PatchDeviceDto
 import io.kni.thingoo.backend.devices.dto.SetupDeviceDto
 import io.kni.thingoo.backend.devices.dto.UpdateDeviceDto
 import io.kni.thingoo.backend.entities.Entity
 import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.dto.SetupEntityDto
 import io.kni.thingoo.backend.exceptions.ApiErrorCode
+import io.kni.thingoo.backend.utils.PatchUtils
+import io.kni.thingoo.backend.utils.exception.EntityPatchException
 import org.springframework.stereotype.Service
 import java.util.regex.Pattern
 
@@ -66,6 +69,22 @@ class DeviceServiceImpl(
         val device = deviceOptional.get()
         device.displayName = updateDeviceDto.displayName
         device.icon = updateDeviceDto.icon
+        return deviceRepository.save(device).toDto()
+    }
+
+    override fun patchDevice(id: Int, patch: Map<String, Any>): DeviceDto {
+        val deviceOptional = deviceRepository.findById(id)
+        if (deviceOptional.isEmpty) {
+            ApiErrorCode.DEVICES_001.throwException()
+        }
+
+        val device = deviceOptional.get()
+        try {
+            PatchUtils.patchEntity(patch, PatchDeviceDto::class, device)
+        } catch (e: EntityPatchException) {
+            ApiErrorCode.DEVICES_006.throwException()
+        }
+
         return deviceRepository.save(device).toDto()
     }
 

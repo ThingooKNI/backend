@@ -10,4 +10,6 @@ interface EntityService {
     fun getEntity(id: Int): EntityDto
 
     fun updateEntity(id: Int, updateEntityDto: UpdateEntityDto): EntityDto
+
+    fun patchEntity(id: Int, patch: Map<String, Any>): EntityDto
 }
