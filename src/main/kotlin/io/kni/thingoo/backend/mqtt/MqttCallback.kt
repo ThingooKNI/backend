@@ -33,14 +33,14 @@ class MqttCallback(
     }
 
     override fun messageArrived(topic: String, mqttMessage: MqttMessage) {
-        logger.debug("[MQTT] Received message on topic $topic, date: ${String(mqttMessage.payload)}")
+        logger.info("[MQTT] Received message on topic $topic, data: ${String(mqttMessage.payload)}")
         try {
             handleMessage(String(mqttMessage.payload), topic)
         } catch (e: io.kni.thingoo.backend.mqtt.exceptions.MqttException) {
-            logger.error("[MQTT] MqttException thrown, sending response", e)
+            logger.info("[MQTT] MqttException thrown, sending response", e)
             sendResponse(e.toMqttMessage(), topic, mqttMessage.qos)
         } catch (e: RestException) {
-            logger.error("[MQTT] RestException thrown, sending response", e)
+            logger.info("[MQTT] RestException thrown, sending response", e)
             sendResponse(e.toMqttMessage(), topic, mqttMessage.qos)
         }
     }

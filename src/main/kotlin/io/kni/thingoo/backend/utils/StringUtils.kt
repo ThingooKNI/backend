@@ -13,5 +13,11 @@ class StringUtils {
         fun isDecimal(str: String): Boolean {
             return str.matches(Regex("-?\\d+.\\d+"))
         }
+
+        fun getRandomAlphanumericString(length: Int): String {
+            val charset = ('a'..'z') + ('A'..'Z') + ('0'..'9')
+
+            return List(length) { charset.random() }.joinToString("")
+        }
     }
 }
