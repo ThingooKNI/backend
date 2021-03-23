@@ -14,10 +14,10 @@ import javax.sql.DataSource
 class DefaultDBDevConfig {
 
     @Value("\${app.dev.database.port}")
-    lateinit var port: String
+    private lateinit var port: String
 
     @Value("\${app.dev.database.dir}")
-    lateinit var dir: String
+    private lateinit var dir: String
 
     private lateinit var pg: EmbeddedPostgres
 
