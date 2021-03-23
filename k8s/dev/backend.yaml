@@ -48,6 +48,8 @@ data:
       default-topic: "#"
       timeout: 100
       keepalive: 100
+      connectTimeout: 10
+      connectRetryCount: 10
 ---
 apiVersion: apps/v1
 kind: Deployment

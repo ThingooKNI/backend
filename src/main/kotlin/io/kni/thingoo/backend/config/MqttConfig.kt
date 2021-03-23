@@ -11,6 +11,8 @@ class MqttConfig {
     lateinit var hostUrl: String
     lateinit var clientID: String
     lateinit var defaultTopic: String
+    var connectTimeout: Long = 0
+    var connectRetryCount: Int = 0
     var timeout: Int = 0
     var keepalive: Int = 0
 }

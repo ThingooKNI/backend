@@ -4,16 +4,21 @@ import io.kni.thingoo.backend.config.MqttConfig
 import io.kni.thingoo.backend.utils.StringUtils
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions
+import org.eclipse.paho.client.mqttv3.MqttException
 import org.eclipse.paho.client.mqttv3.MqttMessage
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence
 import org.slf4j.LoggerFactory
+import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
+import java.util.concurrent.TimeUnit
+import kotlin.system.exitProcess
 
 @Component
 @Profile("production")
 class MqttPubSubClientImpl(
-    private val config: MqttConfig
+    private val config: MqttConfig,
+    private val ctx: ConfigurableApplicationContext
 ) : MqttPubSubClient {
 
     companion object {
@@ -53,8 +58,33 @@ class MqttPubSubClientImpl(
 
     private fun connectAsync() {
         val options = createMqttConnectOptions()
-        val token = client!!.connect(options)
-        token.waitForCompletion()
+        tryConnectAsyncWithRetries(options)
+    }
+
+    private fun tryConnectAsyncWithRetries(options: MqttConnectOptions) {
+        var retries = 0
+        while (true) {
+            if (retries == config.connectRetryCount) {
+                logger.error("[MQTT] Couldn't connect to broker in $retries retries. Closing Spring application.")
+                ctx.close()
+                exitProcess(-1)
+            }
+
+            val token = client!!.connect(options)
+            val timeoutInMillis = TimeUnit.SECONDS.toMillis(config.connectTimeout)
+            try {
+                retries++
+                logger.warn("[MQTT] Trying to connect to broker")
+                token.waitForCompletion(timeoutInMillis)
+            } catch (ignore: MqttException) {
+                TimeUnit.SECONDS.sleep(config.connectTimeout)
+            }
+
+            if (client!!.isConnected) {
+                logger.info("[MQTT] Connected to broker in $retries retries")
+                break
+            }
+        }
     }
 
     private fun createMqttConnectOptions(): MqttConnectOptions {
