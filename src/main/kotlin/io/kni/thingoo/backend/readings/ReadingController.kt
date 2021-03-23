@@ -16,12 +16,18 @@ class ReadingController(
     private val readingService: ReadingService
 ) {
     @GetMapping
-    fun getAllReadingsByDeviceKeyAndEntityKey(@RequestParam("device_key") deviceKey: String, @RequestParam("entity_key") entityKey: String): ResponseEntity<List<ReadingDto>> {
+    fun getAllReadingsByDeviceKeyAndEntityKey(
+        @RequestParam("device_key") deviceKey: String,
+        @RequestParam("entity_key") entityKey: String
+    ): ResponseEntity<List<ReadingDto>> {
         return ResponseEntity.ok(readingService.getReadingsByDeviceKeyAndEntityKey(deviceKey, entityKey))
     }
 
     @GetMapping("/latest")
-    fun getLatestReadingByDeviceKeyAndEntityKey(@RequestParam("device_key") deviceKey: String, @RequestParam("entity_key") entityKey: String): ResponseEntity<ReadingDto> {
+    fun getLatestReadingByDeviceKeyAndEntityKey(
+        @RequestParam("device_key") deviceKey: String,
+        @RequestParam("entity_key") entityKey: String
+    ): ResponseEntity<ReadingDto> {
         return ResponseEntity.ok(readingService.getLatestReadingByDeviceKeyAndEntityKey(deviceKey, entityKey))
     }
 
