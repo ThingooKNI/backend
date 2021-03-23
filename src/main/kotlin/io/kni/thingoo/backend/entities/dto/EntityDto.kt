@@ -5,11 +5,11 @@ import io.kni.thingoo.backend.entities.UnitType
 import io.kni.thingoo.backend.icons.MaterialIcon
 
 data class EntityDto(
-    var id: Int,
-    var key: String,
-    var displayName: String?,
-    var type: EntityType,
-    var unitType: UnitType,
-    var unitDisplayName: String,
-    var icon: MaterialIcon?
+    val id: Int,
+    val key: String,
+    val displayName: String?,
+    val type: EntityType,
+    val unitType: UnitType,
+    val unitDisplayName: String,
+    val icon: MaterialIcon?
 )
