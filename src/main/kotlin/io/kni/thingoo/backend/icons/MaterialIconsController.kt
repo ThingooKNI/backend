@@ -12,6 +12,6 @@ class MaterialIconsController(
 ) {
     @GetMapping
     fun getAllIcons(): ResponseEntity<List<MaterialIcon>> {
-        return ResponseEntity.ok(iconService.getIcons())
+        return ResponseEntity.ok(iconService.getAllIcons())
     }
 }

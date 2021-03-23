@@ -9,15 +9,15 @@ import java.util.UUID
 
 @RestController
 @RequestMapping("users")
-class UserController(private val userService: UserService) {
+class UserController(private val userService: UserServiceImpl) {
 
     @GetMapping("/me")
     fun getCurrentUser(principal: Principal): ResponseEntity<User> {
-        return ResponseEntity.ok(userService.getOneById(UUID.fromString(principal.name)))
+        return ResponseEntity.ok(userService.getUserById(UUID.fromString(principal.name)))
     }
 
     @GetMapping
     fun getAllUsers(): ResponseEntity<List<User>?> {
-        return ResponseEntity.ok(userService.getAll())
+        return ResponseEntity.ok(userService.getAllUsers())
     }
 }

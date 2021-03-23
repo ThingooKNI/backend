@@ -21,7 +21,7 @@ class NewReadingMqttMessageHandler(
             entityKey = entityKey,
             deviceKey = deviceKey
         )
-        readingService.saveReading(reading)
+        readingService.createReading(reading)
     }
 
     private fun getKeysFromTopic(topic: String): MatchResult.Destructured {

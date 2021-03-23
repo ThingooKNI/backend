@@ -283,7 +283,7 @@ class DeviceServiceTest {
         deviceRepository.save(newDevice)
 
         // when
-        val devices = deviceService.getDevices()
+        val devices = deviceService.getAllDevices()
 
         // then
         assertThat(devices).hasSize(1)
@@ -296,7 +296,7 @@ class DeviceServiceTest {
         val savedDevice = deviceRepository.save(newDevice)
 
         // when
-        val device = deviceService.getDevice(savedDevice.id)
+        val device = deviceService.getDeviceById(savedDevice.id)
 
         // then
         assertThat(device).isNotNull
@@ -307,7 +307,7 @@ class DeviceServiceTest {
         // given
 
         // when
-        assertThrows<DeviceNotFoundException> { deviceService.getDevice(999) }
+        assertThrows<DeviceNotFoundException> { deviceService.getDeviceById(999) }
 
         // then
     }
@@ -319,7 +319,7 @@ class DeviceServiceTest {
         val savedDevice = deviceRepository.save(newDevice)
 
         // when
-        deviceService.deleteDevice(savedDevice.id)
+        deviceService.deleteDeviceById(savedDevice.id)
 
         // then
         assertThat(deviceRepository.findAll()).isEmpty()
@@ -337,7 +337,7 @@ class DeviceServiceTest {
             displayName = testNewDisplayName,
             icon = MaterialIcon.SENSORS
         )
-        deviceService.updateDevice(savedDevice.id, updateDeviceDto)
+        deviceService.updateDeviceById(savedDevice.id, updateDeviceDto)
 
         // then
         val updatedDeviceOptional = deviceRepository.findById(savedDevice.id)
@@ -356,7 +356,7 @@ class DeviceServiceTest {
             displayName = testNewDisplayName,
             icon = MaterialIcon.SENSORS
         )
-        assertThrows<DeviceNotFoundException> { deviceService.updateDevice(99999, updateDeviceDto) }
+        assertThrows<DeviceNotFoundException> { deviceService.updateDeviceById(99999, updateDeviceDto) }
 
         // then
     }
@@ -369,7 +369,7 @@ class DeviceServiceTest {
         val devicePatch = mapOf(
             displayNameKey to testNewDisplayName
         )
-        assertThrows<DeviceNotFoundException> { deviceService.patchDevice(99999, devicePatch) }
+        assertThrows<DeviceNotFoundException> { deviceService.patchDeviceById(99999, devicePatch) }
 
         // then
     }
@@ -384,7 +384,7 @@ class DeviceServiceTest {
         val devicePatch = mapOf(
             displayNameKey to testNewDisplayName
         )
-        deviceService.patchDevice(savedDevice.id, devicePatch)
+        deviceService.patchDeviceById(savedDevice.id, devicePatch)
 
         // then
         val updatedDeviceOptional = deviceRepository.findById(savedDevice.id)
@@ -404,7 +404,7 @@ class DeviceServiceTest {
         val devicePatch = mapOf(
             "icon" to "SENSORSS"
         )
-        assertThrows<InvalidDevicePatchEntryValueException> { deviceService.patchDevice(savedDevice.id, devicePatch) }
+        assertThrows<InvalidDevicePatchEntryValueException> { deviceService.patchDeviceById(savedDevice.id, devicePatch) }
 
         // then
     }
@@ -420,7 +420,7 @@ class DeviceServiceTest {
             displayNameKey to testNewDisplayName,
             "icon" to "SENSORS"
         )
-        deviceService.patchDevice(savedDevice.id, devicePatch)
+        deviceService.patchDeviceById(savedDevice.id, devicePatch)
 
         // then
         val updatedDeviceOptional = deviceRepository.findById(savedDevice.id)
@@ -440,7 +440,7 @@ class DeviceServiceTest {
         val devicePatch = mapOf(
             displayNameKey to 123,
         )
-        assertThrows<InvalidDevicePatchEntryValueException> { deviceService.patchDevice(savedDevice.id, devicePatch) }
+        assertThrows<InvalidDevicePatchEntryValueException> { deviceService.patchDeviceById(savedDevice.id, devicePatch) }
 
         // then
     }
@@ -453,7 +453,7 @@ class DeviceServiceTest {
 
         // when
         val devicePatch = emptyMap<String, Any>()
-        deviceService.patchDevice(savedDevice.id, devicePatch)
+        deviceService.patchDeviceById(savedDevice.id, devicePatch)
 
         // then
         val updatedDeviceOptional = deviceRepository.findById(savedDevice.id)

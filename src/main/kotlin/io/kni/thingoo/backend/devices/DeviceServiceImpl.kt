@@ -38,11 +38,11 @@ class DeviceServiceImpl(
         return deviceRepository.findByKey(setupDeviceDto.key).get().toDto()
     }
 
-    override fun getDevices(): List<DeviceDto> {
+    override fun getAllDevices(): List<DeviceDto> {
         return deviceRepository.findAll().toList().map { it.toDto() }
     }
 
-    override fun getDevice(id: Int): DeviceDto {
+    override fun getDeviceById(id: Int): DeviceDto {
         val deviceOptional = deviceRepository.findById(id)
         return deviceOptional
             .map { it.toDto() }
@@ -51,7 +51,7 @@ class DeviceServiceImpl(
             }
     }
 
-    override fun deleteDevice(id: Int) {
+    override fun deleteDeviceById(id: Int) {
         val device = deviceRepository.findById(id)
         if (device.isEmpty) {
             ApiErrorCode.DEVICES_001.throwException()
@@ -60,7 +60,7 @@ class DeviceServiceImpl(
         deviceRepository.deleteById(id)
     }
 
-    override fun updateDevice(id: Int, updateDeviceDto: UpdateDeviceDto): DeviceDto {
+    override fun updateDeviceById(id: Int, updateDeviceDto: UpdateDeviceDto): DeviceDto {
         val deviceOptional = deviceRepository.findById(id)
         if (deviceOptional.isEmpty) {
             ApiErrorCode.DEVICES_001.throwException()
@@ -72,7 +72,7 @@ class DeviceServiceImpl(
         return deviceRepository.save(device).toDto()
     }
 
-    override fun patchDevice(id: Int, patch: Map<String, Any>): DeviceDto {
+    override fun patchDeviceById(id: Int, patch: Map<String, Any>): DeviceDto {
         val deviceOptional = deviceRepository.findById(id)
         if (deviceOptional.isEmpty) {
             ApiErrorCode.DEVICES_001.throwException()

@@ -5,11 +5,11 @@ import io.kni.thingoo.backend.entities.dto.UpdateEntityDto
 
 interface EntityService {
 
-    fun getEntities(deviceId: Int): List<EntityDto>
+    fun getEntitiesByDeviceId(deviceId: Int): List<EntityDto>
 
-    fun getEntity(id: Int): EntityDto
+    fun getEntityById(id: Int): EntityDto
 
-    fun updateEntity(id: Int, updateEntityDto: UpdateEntityDto): EntityDto
+    fun updateEntityById(id: Int, updateEntityDto: UpdateEntityDto): EntityDto
 
-    fun patchEntity(id: Int, patch: Map<String, Any>): EntityDto
+    fun patchEntityById(id: Int, patch: Map<String, Any>): EntityDto
 }
