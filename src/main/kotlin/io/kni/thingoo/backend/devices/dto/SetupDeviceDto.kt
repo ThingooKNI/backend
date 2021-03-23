@@ -4,9 +4,9 @@ import io.kni.thingoo.backend.devices.Device
 import io.kni.thingoo.backend.entities.dto.SetupEntityDto
 
 data class SetupDeviceDto(
-    var key: String,
-    var macAddress: String,
-    var entities: List<SetupEntityDto>
+    val key: String,
+    val macAddress: String,
+    val entities: List<SetupEntityDto>
 ) {
     fun toDevice(): Device {
         return Device(

@@ -60,10 +60,11 @@ class DeviceServiceTest {
     @Test
     fun `given new device, when setting up new device, then will setup new device with entities`() {
         // given
-        val newDevice = createTestsSetupDeviceDto()
-        newDevice.entities = listOf(
-            createTestSetupEntityDto(key = "1"),
-            createTestSetupEntityDto(key = "2")
+        val newDevice = createTestsSetupDeviceDto(
+            entities = listOf(
+                createTestSetupEntityDto(key = "1"),
+                createTestSetupEntityDto(key = "2")
+            )
         )
 
         // when
@@ -108,10 +109,11 @@ class DeviceServiceTest {
     @Test
     fun `given new device, when setting up new device with duplicated entities, then will throw`() {
         // given
-        val newDevice = createTestsSetupDeviceDto()
-        newDevice.entities = listOf(
-            createTestSetupEntityDto(key = "1"),
-            createTestSetupEntityDto(key = "1")
+        val newDevice = createTestsSetupDeviceDto(
+            entities = listOf(
+                createTestSetupEntityDto(key = "1"),
+                createTestSetupEntityDto(key = "1")
+            )
         )
 
         // when
@@ -146,30 +148,29 @@ class DeviceServiceTest {
         )
         entityRepository.saveAll(existingEntities)
         existingDevice = deviceRepository.findById(existingDevice.id).get()
-
-        // when
-        val newDevice = existingDevice.toSetupDeviceDto()
-        val newEntities = listOf(
-            createTestSetupEntityDto(
+        existingDevice.entities = mutableListOf(
+            createTestEntity(
                 key = "temp",
                 type = EntityType.SENSOR,
                 unitType = UnitType.DECIMAL,
                 unitDisplayName = "F"
             ),
-            createTestSetupEntityDto(
+            createTestEntity(
                 key = "hum",
                 type = EntityType.SENSOR,
                 unitType = UnitType.INTEGER,
                 unitDisplayName = "%"
             ),
-            createTestSetupEntityDto(
+            createTestEntity(
                 key = "online",
                 type = EntityType.SENSOR,
                 unitType = UnitType.BOOLEAN,
                 unitDisplayName = ""
             )
         )
-        newDevice.entities = newEntities
+
+        // when
+        val newDevice = existingDevice.toSetupDeviceDto()
 
         deviceService.setupDevice(newDevice)
 
@@ -243,18 +244,17 @@ class DeviceServiceTest {
         )
         entityRepository.saveAll(existingEntities)
         existingDevice = deviceRepository.findById(existingDevice.id).get()
-
-        // when
-        val newDevice = existingDevice.toSetupDeviceDto()
-        val newEntities = listOf(
-            createTestSetupEntityDto(
+        existingDevice.entities = mutableListOf(
+            createTestEntity(
                 key = "temp",
                 type = EntityType.SENSOR,
                 unitType = UnitType.DECIMAL,
                 unitDisplayName = "C",
             ),
         )
-        newDevice.entities = newEntities
+
+        // when
+        val newDevice = existingDevice.toSetupDeviceDto()
 
         deviceService.setupDevice(newDevice)
 

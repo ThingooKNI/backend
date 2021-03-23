@@ -4,10 +4,10 @@ import io.kni.thingoo.backend.entities.dto.EntityDto
 import io.kni.thingoo.backend.icons.MaterialIcon
 
 data class DeviceDto(
-    var id: Int,
-    var key: String,
-    var macAddress: String,
-    var displayName: String?,
-    var icon: MaterialIcon?,
-    var entities: List<EntityDto>,
+    val id: Int,
+    val key: String,
+    val macAddress: String,
+    val displayName: String?,
+    val icon: MaterialIcon?,
+    val entities: List<EntityDto>,
 )
