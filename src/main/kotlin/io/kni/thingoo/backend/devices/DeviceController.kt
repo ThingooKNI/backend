@@ -34,7 +34,7 @@ class DeviceController(
 
     @GetMapping("/{id}/entities")
     fun getEntitiesForDevice(@PathVariable id: Int): ResponseEntity<List<EntityDto>> {
-        return ResponseEntity.ok(entityService.getEntitiesByDeviceId(deviceId = id))
+        return ResponseEntity.ok(entityService.getEntitiesByDeviceId(id))
     }
 
     @PostMapping
