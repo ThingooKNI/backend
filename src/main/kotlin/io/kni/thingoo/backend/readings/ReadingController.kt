@@ -17,12 +17,12 @@ class ReadingController(
 ) {
     @GetMapping
     fun getAllReadingsByDeviceKeyAndEntityKey(@RequestParam("device_key") deviceKey: String, @RequestParam("entity_key") entityKey: String): ResponseEntity<List<ReadingDto>> {
-        return ResponseEntity.ok(readingService.getReadingsByDeviceKeyAndEntityKey(deviceKey = deviceKey, entityKey = entityKey))
+        return ResponseEntity.ok(readingService.getReadingsByDeviceKeyAndEntityKey(deviceKey, entityKey))
     }
 
     @GetMapping("/latest")
     fun getLatestReadingByDeviceKeyAndEntityKey(@RequestParam("device_key") deviceKey: String, @RequestParam("entity_key") entityKey: String): ResponseEntity<ReadingDto> {
-        return ResponseEntity.ok(readingService.getLatestReadingByDeviceKeyAndEntityKey(deviceKey = deviceKey, entityKey = entityKey))
+        return ResponseEntity.ok(readingService.getLatestReadingByDeviceKeyAndEntityKey(deviceKey, entityKey))
     }
 
     @PostMapping
