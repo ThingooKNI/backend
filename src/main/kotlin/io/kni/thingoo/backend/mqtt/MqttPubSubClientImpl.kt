@@ -74,7 +74,7 @@ class MqttPubSubClientImpl(
             val timeoutInMillis = TimeUnit.SECONDS.toMillis(config.connectTimeout)
             try {
                 retries++
-                logger.warn("[MQTT] Trying to connect to broker")
+                logger.info("[MQTT] Trying to connect to broker")
                 token.waitForCompletion(timeoutInMillis)
             } catch (ignore: MqttException) {
                 TimeUnit.SECONDS.sleep(config.connectTimeout)
