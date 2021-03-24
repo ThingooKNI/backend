@@ -22,7 +22,7 @@ class MaterialIconServiceTest {
         // given
 
         // when
-        val icons = iconService.getIcons()
+        val icons = iconService.getAllIcons()
 
         // then
         assertThat(icons).containsExactlyElementsOf(MaterialIcon.values().toList())

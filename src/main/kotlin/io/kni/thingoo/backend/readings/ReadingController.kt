@@ -16,17 +16,23 @@ class ReadingController(
     private val readingService: ReadingService
 ) {
     @GetMapping
-    fun getReadings(@RequestParam("device_key") deviceKey: String, @RequestParam("entity_key") entityKey: String): ResponseEntity<List<ReadingDto>> {
-        return ResponseEntity.ok(readingService.getReadings(deviceKey = deviceKey, entityKey = entityKey))
+    fun getAllReadingsByDeviceKeyAndEntityKey(
+        @RequestParam("device_key") deviceKey: String,
+        @RequestParam("entity_key") entityKey: String
+    ): ResponseEntity<List<ReadingDto>> {
+        return ResponseEntity.ok(readingService.getReadingsByDeviceKeyAndEntityKey(deviceKey, entityKey))
     }
 
     @GetMapping("/latest")
-    fun getLatestReading(@RequestParam("device_key") deviceKey: String, @RequestParam("entity_key") entityKey: String): ResponseEntity<ReadingDto> {
-        return ResponseEntity.ok(readingService.getLatestReading(deviceKey = deviceKey, entityKey = entityKey))
+    fun getLatestReadingByDeviceKeyAndEntityKey(
+        @RequestParam("device_key") deviceKey: String,
+        @RequestParam("entity_key") entityKey: String
+    ): ResponseEntity<ReadingDto> {
+        return ResponseEntity.ok(readingService.getLatestReadingByDeviceKeyAndEntityKey(deviceKey, entityKey))
     }
 
     @PostMapping
-    fun saveReading(@RequestBody saveReadingDto: SaveReadingDto): ResponseEntity<ReadingDto> {
-        return ResponseEntity.ok(readingService.saveReading(saveReadingDto))
+    fun createNewReading(@RequestBody saveReadingDto: SaveReadingDto): ResponseEntity<ReadingDto> {
+        return ResponseEntity.ok(readingService.createReading(saveReadingDto))
     }
 }

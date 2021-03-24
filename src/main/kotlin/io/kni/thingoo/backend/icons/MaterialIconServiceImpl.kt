@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service
 @Service
 class MaterialIconServiceImpl : MaterialIconService {
 
-    override fun getIcons(): List<MaterialIcon> {
+    override fun getAllIcons(): List<MaterialIcon> {
         return MaterialIcon.values().toList()
     }
 }

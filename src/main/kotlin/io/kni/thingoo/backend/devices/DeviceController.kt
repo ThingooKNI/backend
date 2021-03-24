@@ -24,17 +24,17 @@ class DeviceController(
 ) {
     @GetMapping
     fun getAllDevices(): ResponseEntity<List<DeviceDto>> {
-        return ResponseEntity.ok(deviceService.getDevices())
+        return ResponseEntity.ok(deviceService.getAllDevices())
     }
 
     @GetMapping("/{id}")
     fun getDeviceById(@PathVariable id: Int): ResponseEntity<DeviceDto> {
-        return ResponseEntity.ok(deviceService.getDevice(id))
+        return ResponseEntity.ok(deviceService.getDeviceById(id))
     }
 
     @GetMapping("/{id}/entities")
     fun getEntitiesForDevice(@PathVariable id: Int): ResponseEntity<List<EntityDto>> {
-        return ResponseEntity.ok(entityService.getEntities(deviceId = id))
+        return ResponseEntity.ok(entityService.getEntitiesByDeviceId(id))
     }
 
     @PostMapping
@@ -44,16 +44,16 @@ class DeviceController(
 
     @DeleteMapping("/{id}")
     fun deleteDeviceById(@PathVariable id: Int) {
-        deviceService.deleteDevice(id)
+        deviceService.deleteDeviceById(id)
     }
 
     @PutMapping("/{id}")
     fun updateDeviceById(@PathVariable id: Int, @RequestBody updateDeviceDto: UpdateDeviceDto): ResponseEntity<DeviceDto> {
-        return ResponseEntity.ok(deviceService.updateDevice(id, updateDeviceDto))
+        return ResponseEntity.ok(deviceService.updateDeviceById(id, updateDeviceDto))
     }
 
     @PatchMapping("/{id}")
     fun patchDeviceById(@PathVariable id: Int, @RequestBody patch: Map<String, Any>): ResponseEntity<DeviceDto> {
-        return ResponseEntity.ok(deviceService.patchDevice(id, patch))
+        return ResponseEntity.ok(deviceService.patchDeviceById(id, patch))
     }
 }
