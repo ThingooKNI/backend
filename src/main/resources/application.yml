@@ -42,3 +42,5 @@ mqtt:
   default-topic: "#"
   timeout: 100
   keepalive: 100
+  connectTimeout: 10
+  connectRetryCount: 10

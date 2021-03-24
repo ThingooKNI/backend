@@ -28,7 +28,7 @@ class MqttCallback(
     }
 
     override fun connectionLost(throwable: Throwable) {
-        logger.info("[MQTT] Connection to broker lost, trying to reconnect...")
+        logger.warn("[MQTT] Connection to broker lost")
         mqttService.connectToBroker()
     }
 
