@@ -91,7 +91,7 @@ class ReadingServiceTest {
         saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
 
         // when
-        val newReading = readingService.saveReading(SaveReadingDto(value = "10.5", entityKey = TEST_ENTITY_1.key, deviceKey = TEST_DEVICE_1.key))
+        val newReading = readingService.createReading(SaveReadingDto(value = "10.5", entityKey = TEST_ENTITY_1.key, deviceKey = TEST_DEVICE_1.key))
 
         // then
         val readingOptional = readingRepository.findById(newReading.id)
@@ -110,7 +110,7 @@ class ReadingServiceTest {
 
         // when
         assertThrows<DeviceNotFoundException> {
-            readingService.saveReading(SaveReadingDto(value = "someValue", entityKey = TEST_ENTITY_1.key, deviceKey = "33211"))
+            readingService.createReading(SaveReadingDto(value = "someValue", entityKey = TEST_ENTITY_1.key, deviceKey = "33211"))
         }
     }
 
@@ -122,7 +122,7 @@ class ReadingServiceTest {
 
         // when
         assertThrows<EntityNotFoundException> {
-            readingService.saveReading(SaveReadingDto(value = "someValue", entityKey = "33211", deviceKey = TEST_DEVICE_1.key))
+            readingService.createReading(SaveReadingDto(value = "someValue", entityKey = "33211", deviceKey = TEST_DEVICE_1.key))
         }
     }
 
@@ -134,43 +134,43 @@ class ReadingServiceTest {
 
         // when
         assertThrows<ReadingUnitTypeMismatchException> {
-            readingService.saveReading(SaveReadingDto(value = "true", entityKey = TEST_ENTITY_1.key, deviceKey = TEST_DEVICE_1.key))
+            readingService.createReading(SaveReadingDto(value = "true", entityKey = TEST_ENTITY_1.key, deviceKey = TEST_DEVICE_1.key))
         }
 
         assertThrows<ReadingUnitTypeMismatchException> {
-            readingService.saveReading(SaveReadingDto(value = "wrong value", entityKey = TEST_ENTITY_1.key, deviceKey = TEST_DEVICE_1.key))
+            readingService.createReading(SaveReadingDto(value = "wrong value", entityKey = TEST_ENTITY_1.key, deviceKey = TEST_DEVICE_1.key))
         }
 
         assertThrows<ReadingUnitTypeMismatchException> {
-            readingService.saveReading(SaveReadingDto(value = "55", entityKey = TEST_ENTITY_1.key, deviceKey = TEST_DEVICE_1.key))
+            readingService.createReading(SaveReadingDto(value = "55", entityKey = TEST_ENTITY_1.key, deviceKey = TEST_DEVICE_1.key))
         }
 
         assertThrows<ReadingUnitTypeMismatchException> {
-            readingService.saveReading(SaveReadingDto(value = "false", entityKey = TEST_ENTITY_2.key, deviceKey = TEST_DEVICE_1.key))
+            readingService.createReading(SaveReadingDto(value = "false", entityKey = TEST_ENTITY_2.key, deviceKey = TEST_DEVICE_1.key))
         }
 
         assertThrows<ReadingUnitTypeMismatchException> {
-            readingService.saveReading(SaveReadingDto(value = "wrong value", entityKey = TEST_ENTITY_2.key, deviceKey = TEST_DEVICE_1.key))
+            readingService.createReading(SaveReadingDto(value = "wrong value", entityKey = TEST_ENTITY_2.key, deviceKey = TEST_DEVICE_1.key))
         }
 
         assertThrows<ReadingUnitTypeMismatchException> {
-            readingService.saveReading(SaveReadingDto(value = "55.49", entityKey = TEST_ENTITY_2.key, deviceKey = TEST_DEVICE_1.key))
+            readingService.createReading(SaveReadingDto(value = "55.49", entityKey = TEST_ENTITY_2.key, deviceKey = TEST_DEVICE_1.key))
         }
 
         assertThrows<ReadingUnitTypeMismatchException> {
-            readingService.saveReading(SaveReadingDto(value = "55.49", entityKey = TEST_ENTITY_4.key, deviceKey = TEST_DEVICE_1.key))
+            readingService.createReading(SaveReadingDto(value = "55.49", entityKey = TEST_ENTITY_4.key, deviceKey = TEST_DEVICE_1.key))
         }
 
         assertThrows<ReadingUnitTypeMismatchException> {
-            readingService.saveReading(SaveReadingDto(value = "55", entityKey = TEST_ENTITY_4.key, deviceKey = TEST_DEVICE_1.key))
+            readingService.createReading(SaveReadingDto(value = "55", entityKey = TEST_ENTITY_4.key, deviceKey = TEST_DEVICE_1.key))
         }
 
         assertThrows<ReadingUnitTypeMismatchException> {
-            readingService.saveReading(SaveReadingDto(value = "wrong value", entityKey = TEST_ENTITY_4.key, deviceKey = TEST_DEVICE_1.key))
+            readingService.createReading(SaveReadingDto(value = "wrong value", entityKey = TEST_ENTITY_4.key, deviceKey = TEST_DEVICE_1.key))
         }
 
         assertDoesNotThrow {
-            readingService.saveReading(SaveReadingDto(value = "proper value", entityKey = TEST_ENTITY_3.key, deviceKey = TEST_DEVICE_1.key))
+            readingService.createReading(SaveReadingDto(value = "proper value", entityKey = TEST_ENTITY_3.key, deviceKey = TEST_DEVICE_1.key))
         }
     }
 
@@ -188,10 +188,10 @@ class ReadingServiceTest {
         readingRepository.save(Reading(value = "11", entity = entities2[1]))
 
         // when
-        val readings = readingService.getReadings(entities[0].id)
-        val readings1 = readingService.getReadings(entities[1].id)
-        val readings2 = readingService.getReadings(entities2[0].id)
-        val readings3 = readingService.getReadings(entities2[1].id)
+        val readings = readingService.getReadingsByEntityId(entities[0].id)
+        val readings1 = readingService.getReadingsByEntityId(entities[1].id)
+        val readings2 = readingService.getReadingsByEntityId(entities2[0].id)
+        val readings3 = readingService.getReadingsByEntityId(entities2[1].id)
 
         // then
         assertThat(readings).hasSize(2)
@@ -214,10 +214,10 @@ class ReadingServiceTest {
         readingRepository.save(Reading(value = "11", entity = entities2[1]))
 
         // when
-        val readings = readingService.getReadings(TEST_DEVICE_1.key, TEST_ENTITY_1.key)
-        val readings1 = readingService.getReadings(TEST_DEVICE_1.key, TEST_ENTITY_2.key)
-        val readings2 = readingService.getReadings(TEST_DEVICE_2.key, TEST_ENTITY_1.key)
-        val readings3 = readingService.getReadings(TEST_DEVICE_2.key, TEST_ENTITY_2.key)
+        val readings = readingService.getReadingsByDeviceKeyAndEntityKey(TEST_DEVICE_1.key, TEST_ENTITY_1.key)
+        val readings1 = readingService.getReadingsByDeviceKeyAndEntityKey(TEST_DEVICE_1.key, TEST_ENTITY_2.key)
+        val readings2 = readingService.getReadingsByDeviceKeyAndEntityKey(TEST_DEVICE_2.key, TEST_ENTITY_1.key)
+        val readings3 = readingService.getReadingsByDeviceKeyAndEntityKey(TEST_DEVICE_2.key, TEST_ENTITY_2.key)
 
         // then
         assertThat(readings).hasSize(2)
@@ -237,7 +237,7 @@ class ReadingServiceTest {
         readingRepository.save(Reading(value = "55.51", entity = entities[0]))
 
         // when
-        val reading = readingService.getLatestReading(TEST_DEVICE_1.key, TEST_ENTITY_1.key)
+        val reading = readingService.getLatestReadingByDeviceKeyAndEntityKey(TEST_DEVICE_1.key, TEST_ENTITY_1.key)
 
         // then
         assertThat(reading.value).isEqualTo("55.51")
@@ -254,7 +254,7 @@ class ReadingServiceTest {
         readingRepository.save(Reading(value = "55.51", entity = entities[0]))
 
         // when
-        val reading = readingService.getLatestReading(entities[0].id)
+        val reading = readingService.getLatestReadingByEntityId(entities[0].id)
 
         // then
         assertThat(reading.value).isEqualTo("55.51")
@@ -268,7 +268,7 @@ class ReadingServiceTest {
 
         // when
         assertThrows<NoReadingsException> {
-            readingService.getLatestReading(entities[0].id)
+            readingService.getLatestReadingByEntityId(entities[0].id)
         }
 
         // then
@@ -282,7 +282,7 @@ class ReadingServiceTest {
 
         // when
         assertThrows<NoReadingsException> {
-            readingService.getLatestReading(TEST_DEVICE_1.key, TEST_ENTITY_1.key)
+            readingService.getLatestReadingByDeviceKeyAndEntityKey(TEST_DEVICE_1.key, TEST_ENTITY_1.key)
         }
 
         // then

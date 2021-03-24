@@ -57,7 +57,7 @@ class EntityServiceTest {
             displayName = testDisplayName,
             icon = MaterialIcon.THERMOSTAT
         )
-        entityService.updateEntity(savedEntities[0].id, updateEntityDto)
+        entityService.updateEntityById(savedEntities[0].id, updateEntityDto)
 
         // then
         val updatedEntityOptional = entityRepository.findById(savedEntities[0].id)
@@ -77,7 +77,7 @@ class EntityServiceTest {
             icon = MaterialIcon.THERMOSTAT
         )
 
-        assertThrows<EntityNotFoundException> { entityService.updateEntity(99999, updateEntityDto) }
+        assertThrows<EntityNotFoundException> { entityService.updateEntityById(99999, updateEntityDto) }
 
         // then
     }
@@ -90,7 +90,7 @@ class EntityServiceTest {
         val entityPatch = mapOf(
             displayNameKey to testNewDisplayName
         )
-        assertThrows<EntityNotFoundException> { entityService.patchEntity(99999, entityPatch) }
+        assertThrows<EntityNotFoundException> { entityService.patchEntityById(99999, entityPatch) }
 
         // then
     }
@@ -108,7 +108,7 @@ class EntityServiceTest {
         val entityPatch = mapOf(
             displayNameKey to testNewDisplayName
         )
-        entityService.patchEntity(savedEntities[0].id, entityPatch)
+        entityService.patchEntityById(savedEntities[0].id, entityPatch)
 
         // then
         val updatedEntityOptional = entityRepository.findById(savedEntities[0].id)
@@ -131,7 +131,7 @@ class EntityServiceTest {
         val entityPatch = mapOf(
             iconKey to "SENSORSS"
         )
-        assertThrows<InvalidEntityPatchEntryValueException> { entityService.patchEntity(savedEntities[0].id, entityPatch) }
+        assertThrows<InvalidEntityPatchEntryValueException> { entityService.patchEntityById(savedEntities[0].id, entityPatch) }
 
         // then
     }
@@ -150,7 +150,7 @@ class EntityServiceTest {
             displayNameKey to testNewDisplayName,
             iconKey to "SENSORS"
         )
-        entityService.patchEntity(savedEntities[0].id, entityPatch)
+        entityService.patchEntityById(savedEntities[0].id, entityPatch)
 
         // then
         val updatedEntityOptional = entityRepository.findById(savedEntities[0].id)
@@ -173,7 +173,7 @@ class EntityServiceTest {
         val entityPatch = mapOf(
             displayNameKey to 123
         )
-        assertThrows<InvalidEntityPatchEntryValueException> { entityService.patchEntity(savedEntities[0].id, entityPatch) }
+        assertThrows<InvalidEntityPatchEntryValueException> { entityService.patchEntityById(savedEntities[0].id, entityPatch) }
 
         // then
     }
@@ -189,7 +189,7 @@ class EntityServiceTest {
 
         // when
         val entityPatch = emptyMap<String, Any>()
-        entityService.patchEntity(savedEntities[0].id, entityPatch)
+        entityService.patchEntityById(savedEntities[0].id, entityPatch)
 
         // then
         val updatedEntityOptional = entityRepository.findById(savedEntities[0].id)

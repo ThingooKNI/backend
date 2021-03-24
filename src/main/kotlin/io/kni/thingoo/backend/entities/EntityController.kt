@@ -21,26 +21,26 @@ class EntityController(
 ) {
     @GetMapping("/{id}")
     fun getEntityById(@PathVariable id: Int): ResponseEntity<EntityDto> {
-        return ResponseEntity.ok(entityService.getEntity(id))
+        return ResponseEntity.ok(entityService.getEntityById(id))
     }
 
     @GetMapping("/{id}/readings")
-    fun getReadingsForEntity(@PathVariable id: Int): ResponseEntity<List<ReadingDto>> {
-        return ResponseEntity.ok(readingService.getReadings(entityId = id))
+    fun getAllReadingsForEntity(@PathVariable id: Int): ResponseEntity<List<ReadingDto>> {
+        return ResponseEntity.ok(readingService.getReadingsByEntityId(id))
     }
 
     @GetMapping("/{id}/readings/latest")
     fun getLatestReadingForEntity(@PathVariable id: Int): ResponseEntity<ReadingDto> {
-        return ResponseEntity.ok(readingService.getLatestReading(entityId = id))
+        return ResponseEntity.ok(readingService.getLatestReadingByEntityId(id))
     }
 
     @PutMapping("/{id}")
     fun updateEntityById(@PathVariable id: Int, @RequestBody updateEntityDto: UpdateEntityDto): ResponseEntity<EntityDto> {
-        return ResponseEntity.ok(entityService.updateEntity(id, updateEntityDto))
+        return ResponseEntity.ok(entityService.updateEntityById(id, updateEntityDto))
     }
 
     @PatchMapping("/{id}")
     fun patchEntityById(@PathVariable id: Int, @RequestBody patch: Map<String, Any>): ResponseEntity<EntityDto> {
-        return ResponseEntity.ok(entityService.patchEntity(id, patch))
+        return ResponseEntity.ok(entityService.patchEntityById(id, patch))
     }
 }

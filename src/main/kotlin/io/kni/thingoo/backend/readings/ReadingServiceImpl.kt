@@ -17,7 +17,7 @@ class ReadingServiceImpl(
     private val entityRepository: EntityRepository
 ) : ReadingService {
 
-    override fun saveReading(reading: SaveReadingDto): ReadingDto {
+    override fun createReading(reading: SaveReadingDto): ReadingDto {
         tryGetRelatedDevice(reading)
         val relatedEntity = tryGetRelatedEntity(reading)
 
@@ -33,21 +33,21 @@ class ReadingServiceImpl(
         return savedReading.toDto()
     }
 
-    override fun getReadings(entityId: Int): List<ReadingDto> {
+    override fun getReadingsByEntityId(entityId: Int): List<ReadingDto> {
         return readingRepository.findByEntityId(entityId).toList().map { it.toDto() }
     }
 
-    override fun getReadings(deviceKey: String, entityKey: String): List<ReadingDto> {
+    override fun getReadingsByDeviceKeyAndEntityKey(deviceKey: String, entityKey: String): List<ReadingDto> {
         return readingRepository.findByEntityKeyAndEntityDeviceKey(entityKey, deviceKey).toList().map { it.toDto() }
     }
 
-    override fun getLatestReading(entityId: Int): ReadingDto {
+    override fun getLatestReadingByEntityId(entityId: Int): ReadingDto {
         return readingRepository.findFirstByEntityIdOrderByTimestampDesc(entityId).map { it.toDto() }.orElseThrow {
             ApiErrorCode.READINGS_002.throwException()
         }
     }
 
-    override fun getLatestReading(deviceKey: String, entityKey: String): ReadingDto {
+    override fun getLatestReadingByDeviceKeyAndEntityKey(deviceKey: String, entityKey: String): ReadingDto {
         return readingRepository.findFirstByEntityKeyAndEntityDeviceKeyOrderByTimestampDesc(entityKey, deviceKey).map { it.toDto() }.orElseThrow {
             ApiErrorCode.READINGS_002.throwException()
         }

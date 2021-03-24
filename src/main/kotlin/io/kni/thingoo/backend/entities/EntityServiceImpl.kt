@@ -13,11 +13,11 @@ class EntityServiceImpl(
     private val entityRepository: EntityRepository
 ) : EntityService {
 
-    override fun getEntities(deviceId: Int): List<EntityDto> {
+    override fun getEntitiesByDeviceId(deviceId: Int): List<EntityDto> {
         return entityRepository.findByDeviceId(deviceId).map { it.toDto() }
     }
 
-    override fun getEntity(id: Int): EntityDto {
+    override fun getEntityById(id: Int): EntityDto {
         val entityOptional = entityRepository.findById(id)
         return entityOptional
             .map { it.toDto() }
@@ -26,7 +26,7 @@ class EntityServiceImpl(
             }
     }
 
-    override fun updateEntity(id: Int, updateEntityDto: UpdateEntityDto): EntityDto {
+    override fun updateEntityById(id: Int, updateEntityDto: UpdateEntityDto): EntityDto {
         val entityOptional = entityRepository.findById(id)
         if (entityOptional.isEmpty) {
             ApiErrorCode.ENTITIES_003.throwException()
@@ -38,7 +38,7 @@ class EntityServiceImpl(
         return entityRepository.save(entity).toDto()
     }
 
-    override fun patchEntity(id: Int, patch: Map<String, Any>): EntityDto {
+    override fun patchEntityById(id: Int, patch: Map<String, Any>): EntityDto {
         val entityOptional = entityRepository.findById(id)
         if (entityOptional.isEmpty) {
             ApiErrorCode.ENTITIES_003.throwException()
