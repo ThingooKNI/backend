@@ -1,5 +1,6 @@
 package io.kni.thingoo.backend.exceptions
 
+import io.kni.thingoo.backend.commands.exceptions.NonActuatorCommandException
 import io.kni.thingoo.backend.devices.exceptions.DeviceNotFoundException
 import io.kni.thingoo.backend.devices.exceptions.ExistingDeviceKeyException
 import io.kni.thingoo.backend.devices.exceptions.ExistingMACAddressException
@@ -29,7 +30,9 @@ enum class ApiErrorCode(private val exception: RestException) : ErrorCode {
     ENTITIES_004(InvalidEntityPatchEntryValueException("Invalid patch object provided. Check types and values of provided fields")),
 
     READINGS_001(ReadingUnitTypeMismatchException("Reading value is not correct value of entity's unit type")),
-    READINGS_002(NoReadingsException("Given entity has no readings. Cannot return latest reading."))
+    READINGS_002(NoReadingsException("Given entity has no readings. Cannot return latest reading.")),
+
+    COMMANDS_001(NonActuatorCommandException("Cannot send command to non-actuator entity"))
     ;
 
     init {
