@@ -7,7 +7,7 @@ import io.kni.thingoo.backend.commands.exceptions.NonActuatorCommandException
 import io.kni.thingoo.backend.devices.DeviceRepository
 import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.EntityType
-import io.kni.thingoo.backend.entities.UnitType
+import io.kni.thingoo.backend.entities.ValueType
 import io.kni.thingoo.backend.entities.exceptions.EntityNotFoundException
 import io.kni.thingoo.backend.mqtt.MqttService
 import io.kni.thingoo.backend.utils.createTestDevice
@@ -59,21 +59,21 @@ class CommandServiceTest {
             key = "temp",
             name = "temperature",
             type = EntityType.SENSOR,
-            unitType = UnitType.DECIMAL,
+            valueType = ValueType.DECIMAL,
             unitDisplayName = "C"
         )
         private val TEST_ENTITY_2 = createTestEntity(
             key = "light",
             name = "light switch",
             type = EntityType.ACTUATOR,
-            unitType = UnitType.STRING,
+            valueType = ValueType.STRING,
             unitDisplayName = "C"
         )
         private val TEST_ENTITY_3 = createTestEntity(
             key = "thermostat",
             name = "thermostat",
             type = EntityType.ACTUATOR,
-            unitType = UnitType.INTEGER,
+            valueType = ValueType.INTEGER,
             unitDisplayName = "C"
         )
     }

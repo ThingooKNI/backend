@@ -61,7 +61,7 @@ class DeviceSetupMqttMessageHandlerTest {
             "    {\n" +
             "      \"key\": \"temp\",\n" +
             "      \"type\": \"SENSOR\",\n" +
-            "      \"unitType\": \"DECIMAL\",\n" +
+            "      \"valueType\": \"DECIMAL\",\n" +
             "      \"unitDisplayName\": \"C\"\n" +
             "    }\n" +
             "  ]\n" +
@@ -88,7 +88,7 @@ class DeviceSetupMqttMessageHandlerTest {
             "    {\n" +
             "      \"key\": \"temp\",\n" +
             "      \"type\": \"SENSOR\",\n" +
-            "      \"unitType\": \"DECIMAL\",\n" +
+            "      \"valueType\": \"DECIMAL\",\n" +
             "      \"unitDisplayName\": \"C\"\n" +
             "    }\n" +
             "  ]\n" +
@@ -115,7 +115,7 @@ class DeviceSetupMqttMessageHandlerTest {
             "    {\n" +
             "      \"key\": \"temp\",\n" +
             "      \"type\": \"SENSOR\",\n" +
-            "      \"unitType\": \"DECIMAL\",\n" +
+            "      \"valueType\": \"DECIMAL\",\n" +
             "      \"unitDisplayName\": \"C\"\n" +
             "    }\n" +
             "  ]\n" +

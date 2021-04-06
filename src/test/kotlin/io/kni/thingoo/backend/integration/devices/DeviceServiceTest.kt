@@ -11,7 +11,7 @@ import io.kni.thingoo.backend.devices.exceptions.InvalidDevicePatchEntryValueExc
 import io.kni.thingoo.backend.devices.exceptions.InvalidMACAddressException
 import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.EntityType
-import io.kni.thingoo.backend.entities.UnitType
+import io.kni.thingoo.backend.entities.ValueType
 import io.kni.thingoo.backend.entities.exceptions.ExistingEntityKeyException
 import io.kni.thingoo.backend.icons.MaterialIcon
 import io.kni.thingoo.backend.utils.createTestDevice
@@ -137,7 +137,7 @@ class DeviceServiceTest {
                 key = "temp",
                 name = "temperature",
                 type = EntityType.SENSOR,
-                unitType = UnitType.DECIMAL,
+                valueType = ValueType.DECIMAL,
                 unitDisplayName = "C",
                 device = existingDevice
             ),
@@ -145,7 +145,7 @@ class DeviceServiceTest {
                 key = "hum",
                 name = "humidity",
                 type = EntityType.SENSOR,
-                unitType = UnitType.INTEGER,
+                valueType = ValueType.INTEGER,
                 unitDisplayName = "%",
                 device = existingDevice
             )
@@ -156,19 +156,19 @@ class DeviceServiceTest {
             createTestEntity(
                 key = "temp",
                 type = EntityType.SENSOR,
-                unitType = UnitType.DECIMAL,
+                valueType = ValueType.DECIMAL,
                 unitDisplayName = "F"
             ),
             createTestEntity(
                 key = "hum",
                 type = EntityType.SENSOR,
-                unitType = UnitType.INTEGER,
+                valueType = ValueType.INTEGER,
                 unitDisplayName = "%"
             ),
             createTestEntity(
                 key = "online",
                 type = EntityType.SENSOR,
-                unitType = UnitType.BOOLEAN,
+                valueType = ValueType.BOOLEAN,
                 unitDisplayName = ""
             )
         )
@@ -195,7 +195,7 @@ class DeviceServiceTest {
                 key = "temp",
                 name = "temperature",
                 type = EntityType.SENSOR,
-                unitType = UnitType.DECIMAL,
+                valueType = ValueType.DECIMAL,
                 unitDisplayName = "C",
                 device = existingDevice
             ),
@@ -203,7 +203,7 @@ class DeviceServiceTest {
                 key = "hum",
                 name = "humidity",
                 type = EntityType.SENSOR,
-                unitType = UnitType.INTEGER,
+                valueType = ValueType.INTEGER,
                 unitDisplayName = "%",
                 device = existingDevice
             )
@@ -233,7 +233,7 @@ class DeviceServiceTest {
                 key = "temp",
                 name = "temperature",
                 type = EntityType.SENSOR,
-                unitType = UnitType.DECIMAL,
+                valueType = ValueType.DECIMAL,
                 unitDisplayName = "C",
                 device = existingDevice
             ),
@@ -241,7 +241,7 @@ class DeviceServiceTest {
                 key = "hum",
                 name = "humidity",
                 type = EntityType.SENSOR,
-                unitType = UnitType.INTEGER,
+                valueType = ValueType.INTEGER,
                 unitDisplayName = "%",
                 device = existingDevice
             )
@@ -252,7 +252,7 @@ class DeviceServiceTest {
             createTestEntity(
                 key = "temp",
                 type = EntityType.SENSOR,
-                unitType = UnitType.DECIMAL,
+                valueType = ValueType.DECIMAL,
                 unitDisplayName = "C",
             ),
         )

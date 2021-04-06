@@ -4,7 +4,7 @@ import io.kni.thingoo.backend.commands.dto.NewCommandDto
 import io.kni.thingoo.backend.entities.Entity
 import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.EntityType
-import io.kni.thingoo.backend.entities.UnitType
+import io.kni.thingoo.backend.entities.ValueType
 import io.kni.thingoo.backend.exceptions.ApiErrorCode
 import io.kni.thingoo.backend.mqtt.MqttService
 import org.springframework.stereotype.Service
@@ -28,7 +28,7 @@ class CommandServiceImpl(
         }
 
         if (command.value != null) {
-            validateCommandValue(command.value, entity.unitType)
+            validateCommandValue(command.value, entity.valueType)
         }
 
         val commandTopic = getCommandTopic(entity)
@@ -43,7 +43,7 @@ class CommandServiceImpl(
         return "/devices/$deviceKey/entities/$entityKey/command"
     }
 
-    private fun validateCommandValue(value: String, valueType: UnitType) {
+    private fun validateCommandValue(value: String, valueType: ValueType) {
         if (!valueType.getValueValidator().isValid(value)) {
             ApiErrorCode.COMMANDS_002.throwException()
         }

@@ -6,7 +6,7 @@ import io.kni.thingoo.backend.devices.dto.SetupDeviceDto
 import io.kni.thingoo.backend.entities.Entity
 import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.EntityType
-import io.kni.thingoo.backend.entities.UnitType
+import io.kni.thingoo.backend.entities.ValueType
 import io.kni.thingoo.backend.entities.dto.SetupEntityDto
 import java.util.Random
 import kotlin.experimental.and
@@ -19,7 +19,7 @@ fun createTestEntity(
     key: String = "temp",
     name: String = "Temperature",
     type: EntityType = EntityType.SENSOR,
-    unitType: UnitType = UnitType.DECIMAL,
+    valueType: ValueType = ValueType.DECIMAL,
     unitDisplayName: String = "C",
     device: Device? = null
 ): Entity {
@@ -27,7 +27,7 @@ fun createTestEntity(
         key = key,
         displayName = name,
         type = type,
-        unitType = unitType,
+        valueType = valueType,
         unitDisplayName = unitDisplayName,
         device = device,
         icon = null
@@ -49,13 +49,13 @@ fun createTestsSetupDeviceDto(
 fun createTestSetupEntityDto(
     key: String = "temp",
     type: EntityType = EntityType.SENSOR,
-    unitType: UnitType = UnitType.DECIMAL,
+    valueType: ValueType = ValueType.DECIMAL,
     unitDisplayName: String = "C"
 ): SetupEntityDto {
     return SetupEntityDto(
         key = key,
         type = type,
-        unitType = unitType,
+        valueType = valueType,
         unitDisplayName = unitDisplayName
     )
 }
@@ -84,5 +84,5 @@ fun saveEntities(entityRepository: EntityRepository, device: Device, entities: L
 
 fun getEntityForDevice(entity: Entity, device: Device): Entity {
     // copy entity object to prevent mutating reference
-    return Entity(entity.id, entity.key, entity.displayName, entity.type, entity.unitType, entity.unitDisplayName, null, device)
+    return Entity(entity.id, entity.key, entity.displayName, entity.type, entity.valueType, entity.unitDisplayName, null, device)
 }

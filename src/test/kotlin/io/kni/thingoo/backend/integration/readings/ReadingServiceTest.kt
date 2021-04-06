@@ -5,14 +5,14 @@ import io.kni.thingoo.backend.devices.DeviceRepository
 import io.kni.thingoo.backend.devices.exceptions.DeviceNotFoundException
 import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.EntityType
-import io.kni.thingoo.backend.entities.UnitType
+import io.kni.thingoo.backend.entities.ValueType
 import io.kni.thingoo.backend.entities.exceptions.EntityNotFoundException
 import io.kni.thingoo.backend.readings.Reading
 import io.kni.thingoo.backend.readings.ReadingRepository
 import io.kni.thingoo.backend.readings.ReadingService
 import io.kni.thingoo.backend.readings.dto.SaveReadingDto
 import io.kni.thingoo.backend.readings.exceptions.NoReadingsException
-import io.kni.thingoo.backend.readings.exceptions.ReadingUnitTypeMismatchException
+import io.kni.thingoo.backend.readings.exceptions.ReadingValueTypeMismatchException
 import io.kni.thingoo.backend.utils.createTestDevice
 import io.kni.thingoo.backend.utils.createTestEntity
 import io.kni.thingoo.backend.utils.saveDevice
@@ -51,28 +51,28 @@ class ReadingServiceTest {
             key = "temp",
             name = "temperature",
             type = EntityType.SENSOR,
-            unitType = UnitType.DECIMAL,
+            valueType = ValueType.DECIMAL,
             unitDisplayName = "C"
         )
         private val TEST_ENTITY_2 = createTestEntity(
             key = "hum",
             name = "humidity",
             type = EntityType.SENSOR,
-            unitType = UnitType.INTEGER,
+            valueType = ValueType.INTEGER,
             unitDisplayName = "%"
         )
         private val TEST_ENTITY_3 = createTestEntity(
             key = "status",
             name = "status",
             type = EntityType.SENSOR,
-            unitType = UnitType.STRING,
+            valueType = ValueType.STRING,
             unitDisplayName = ""
         )
         private val TEST_ENTITY_4 = createTestEntity(
             key = "on",
             name = "on/off",
             type = EntityType.SENSOR,
-            unitType = UnitType.BOOLEAN,
+            valueType = ValueType.BOOLEAN,
             unitDisplayName = ""
         )
     }
@@ -127,45 +127,45 @@ class ReadingServiceTest {
     }
 
     @Test
-    fun `given device and entity, when saving reading with wrong value type, will throw ReadingUnitTypeMismatchException`() {
+    fun `given device and entity, when saving reading with wrong value type, will throw ReadingValueTypeMismatchException`() {
         // given
         val device = saveDevice(deviceRepository, TEST_DEVICE_1)
         saveEntities(entityRepository, device, listOf(TEST_ENTITY_1, TEST_ENTITY_2, TEST_ENTITY_3, TEST_ENTITY_4))
 
         // when
-        assertThrows<ReadingUnitTypeMismatchException> {
+        assertThrows<ReadingValueTypeMismatchException> {
             readingService.createReading(SaveReadingDto(value = "true", entityKey = TEST_ENTITY_1.key, deviceKey = TEST_DEVICE_1.key))
         }
 
-        assertThrows<ReadingUnitTypeMismatchException> {
+        assertThrows<ReadingValueTypeMismatchException> {
             readingService.createReading(SaveReadingDto(value = "wrong value", entityKey = TEST_ENTITY_1.key, deviceKey = TEST_DEVICE_1.key))
         }
 
-        assertThrows<ReadingUnitTypeMismatchException> {
+        assertThrows<ReadingValueTypeMismatchException> {
             readingService.createReading(SaveReadingDto(value = "55", entityKey = TEST_ENTITY_1.key, deviceKey = TEST_DEVICE_1.key))
         }
 
-        assertThrows<ReadingUnitTypeMismatchException> {
+        assertThrows<ReadingValueTypeMismatchException> {
             readingService.createReading(SaveReadingDto(value = "false", entityKey = TEST_ENTITY_2.key, deviceKey = TEST_DEVICE_1.key))
         }
 
-        assertThrows<ReadingUnitTypeMismatchException> {
+        assertThrows<ReadingValueTypeMismatchException> {
             readingService.createReading(SaveReadingDto(value = "wrong value", entityKey = TEST_ENTITY_2.key, deviceKey = TEST_DEVICE_1.key))
         }
 
-        assertThrows<ReadingUnitTypeMismatchException> {
+        assertThrows<ReadingValueTypeMismatchException> {
             readingService.createReading(SaveReadingDto(value = "55.49", entityKey = TEST_ENTITY_2.key, deviceKey = TEST_DEVICE_1.key))
         }
 
-        assertThrows<ReadingUnitTypeMismatchException> {
+        assertThrows<ReadingValueTypeMismatchException> {
             readingService.createReading(SaveReadingDto(value = "55.49", entityKey = TEST_ENTITY_4.key, deviceKey = TEST_DEVICE_1.key))
         }
 
-        assertThrows<ReadingUnitTypeMismatchException> {
+        assertThrows<ReadingValueTypeMismatchException> {
             readingService.createReading(SaveReadingDto(value = "55", entityKey = TEST_ENTITY_4.key, deviceKey = TEST_DEVICE_1.key))
         }
 
-        assertThrows<ReadingUnitTypeMismatchException> {
+        assertThrows<ReadingValueTypeMismatchException> {
             readingService.createReading(SaveReadingDto(value = "wrong value", entityKey = TEST_ENTITY_4.key, deviceKey = TEST_DEVICE_1.key))
         }
 

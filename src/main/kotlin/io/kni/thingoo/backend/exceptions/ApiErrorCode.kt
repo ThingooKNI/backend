@@ -11,7 +11,7 @@ import io.kni.thingoo.backend.entities.exceptions.EntityNotFoundException
 import io.kni.thingoo.backend.entities.exceptions.ExistingEntityKeyException
 import io.kni.thingoo.backend.entities.exceptions.InvalidEntityPatchEntryValueException
 import io.kni.thingoo.backend.readings.exceptions.NoReadingsException
-import io.kni.thingoo.backend.readings.exceptions.ReadingUnitTypeMismatchException
+import io.kni.thingoo.backend.readings.exceptions.ReadingValueTypeMismatchException
 import org.springframework.http.HttpStatus
 
 enum class ApiErrorCode(private val exception: RestException) : ErrorCode {
@@ -30,7 +30,7 @@ enum class ApiErrorCode(private val exception: RestException) : ErrorCode {
     ENTITIES_003(EntityNotFoundException("Entity with given id not found")),
     ENTITIES_004(InvalidEntityPatchEntryValueException("Invalid patch object provided. Check types and values of provided fields")),
 
-    READINGS_001(ReadingUnitTypeMismatchException("Reading value is not correct value of entity's unit type")),
+    READINGS_001(ReadingValueTypeMismatchException("Reading value is not correct value of entity's unit type")),
     READINGS_002(NoReadingsException("Given entity has no readings. Cannot return latest reading.")),
 
     COMMANDS_001(NonActuatorCommandException("Cannot send command to non-actuator entity")),

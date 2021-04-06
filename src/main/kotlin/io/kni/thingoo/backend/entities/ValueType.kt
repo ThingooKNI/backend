@@ -6,7 +6,7 @@ import io.kni.thingoo.backend.validators.IntegerValueValidator
 import io.kni.thingoo.backend.validators.StringValueValidator
 import io.kni.thingoo.backend.validators.ValueValidator
 
-enum class UnitType {
+enum class ValueType {
     INTEGER,
     DECIMAL,
     STRING,
@@ -26,7 +26,7 @@ enum class UnitType {
             this == STRING -> {
                 StringValueValidator()
             }
-            else -> throw IllegalStateException("Invalid UnitType value")
+            else -> throw IllegalStateException("Invalid ValueType value")
         }
     }
 }
