@@ -1,10 +1,10 @@
 package io.kni.thingoo.backend.entities
 
-import io.kni.thingoo.backend.readings.validators.BooleanReadingValueValidator
-import io.kni.thingoo.backend.readings.validators.DecimalReadingValueValidator
-import io.kni.thingoo.backend.readings.validators.IntegerReadingValueValidator
-import io.kni.thingoo.backend.readings.validators.ReadingValueValidator
-import io.kni.thingoo.backend.readings.validators.StringReadingValueValidator
+import io.kni.thingoo.backend.validators.BooleanValueValidator
+import io.kni.thingoo.backend.validators.DecimalValueValidator
+import io.kni.thingoo.backend.validators.IntegerValueValidator
+import io.kni.thingoo.backend.validators.ValueValidator
+import io.kni.thingoo.backend.validators.StringValueValidator
 
 enum class UnitType {
     INTEGER,
@@ -12,19 +12,19 @@ enum class UnitType {
     STRING,
     BOOLEAN;
 
-    fun getReadingValueValidator(): ReadingValueValidator {
+    fun getReadingValueValidator(): ValueValidator {
         return when {
             this == INTEGER -> {
-                IntegerReadingValueValidator()
+                IntegerValueValidator()
             }
             this == DECIMAL -> {
-                DecimalReadingValueValidator()
+                DecimalValueValidator()
             }
             this == BOOLEAN -> {
-                BooleanReadingValueValidator()
+                BooleanValueValidator()
             }
             this == STRING -> {
-                StringReadingValueValidator()
+                StringValueValidator()
             }
             else -> throw IllegalStateException("Invalid UnitType value")
         }
