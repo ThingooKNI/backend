@@ -3,8 +3,8 @@ package io.kni.thingoo.backend.entities
 import io.kni.thingoo.backend.validators.BooleanValueValidator
 import io.kni.thingoo.backend.validators.DecimalValueValidator
 import io.kni.thingoo.backend.validators.IntegerValueValidator
-import io.kni.thingoo.backend.validators.ValueValidator
 import io.kni.thingoo.backend.validators.StringValueValidator
+import io.kni.thingoo.backend.validators.ValueValidator
 
 enum class UnitType {
     INTEGER,
@@ -12,7 +12,7 @@ enum class UnitType {
     STRING,
     BOOLEAN;
 
-    fun getReadingValueValidator(): ValueValidator {
+    fun getValueValidator(): ValueValidator {
         return when {
             this == INTEGER -> {
                 IntegerValueValidator()

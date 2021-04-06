@@ -1,5 +1,6 @@
 package io.kni.thingoo.backend.exceptions
 
+import io.kni.thingoo.backend.commands.exceptions.CommandValueTypeMismatchException
 import io.kni.thingoo.backend.commands.exceptions.NonActuatorCommandException
 import io.kni.thingoo.backend.devices.exceptions.DeviceNotFoundException
 import io.kni.thingoo.backend.devices.exceptions.ExistingDeviceKeyException
@@ -32,7 +33,8 @@ enum class ApiErrorCode(private val exception: RestException) : ErrorCode {
     READINGS_001(ReadingUnitTypeMismatchException("Reading value is not correct value of entity's unit type")),
     READINGS_002(NoReadingsException("Given entity has no readings. Cannot return latest reading.")),
 
-    COMMANDS_001(NonActuatorCommandException("Cannot send command to non-actuator entity"))
+    COMMANDS_001(NonActuatorCommandException("Cannot send command to non-actuator entity")),
+    COMMANDS_002(CommandValueTypeMismatchException("Command's value is not correct value of entity's value type"))
     ;
 
     init {

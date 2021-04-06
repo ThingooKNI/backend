@@ -4,6 +4,7 @@ import io.kni.thingoo.backend.commands.dto.NewCommandDto
 import io.kni.thingoo.backend.entities.Entity
 import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.EntityType
+import io.kni.thingoo.backend.entities.UnitType
 import io.kni.thingoo.backend.exceptions.ApiErrorCode
 import io.kni.thingoo.backend.mqtt.MqttService
 import org.springframework.stereotype.Service
@@ -26,10 +27,12 @@ class CommandServiceImpl(
             ApiErrorCode.COMMANDS_001.throwException()
         }
 
-        // TODO validate unit type
+        if (command.value != null) {
+            validateCommandValue(command.value, entity.unitType)
+        }
 
         val commandTopic = getCommandTopic(entity)
-        val mqttMessage = command.value
+        val mqttMessage = command.value ?: ""
         mqttService.publish(mqttMessage, commandTopic, 1, false) // should we use qos 2 instead? Might not be supported by clients
     }
 
@@ -38,5 +41,11 @@ class CommandServiceImpl(
         val deviceKey = entity.device!!.key
 
         return "/devices/$deviceKey/entities/$entityKey/command"
+    }
+
+    private fun validateCommandValue(value: String, valueType: UnitType) {
+        if (!valueType.getValueValidator().isValid(value)) {
+            ApiErrorCode.COMMANDS_002.throwException()
+        }
     }
 }

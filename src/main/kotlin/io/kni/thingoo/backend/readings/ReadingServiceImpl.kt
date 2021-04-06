@@ -64,7 +64,7 @@ class ReadingServiceImpl(
     }
 
     private fun validateReadingValue(reading: SaveReadingDto, valueType: UnitType) {
-        if (!valueType.getReadingValueValidator().isValid(reading.value)) {
+        if (!valueType.getValueValidator().isValid(reading.value)) {
             ApiErrorCode.READINGS_001.throwException()
         }
     }
