@@ -26,6 +26,8 @@ class CommandServiceImpl(
             ApiErrorCode.COMMANDS_001.throwException()
         }
 
+        // TODO validate unit type
+
         val commandTopic = getCommandTopic(entity)
         val mqttMessage = command.value
         mqttService.publish(mqttMessage, commandTopic, 1, false) // should we use qos 2 instead? Might not be supported by clients

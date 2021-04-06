@@ -14,6 +14,10 @@ import io.kni.thingoo.backend.entities.EntityType
 import io.kni.thingoo.backend.entities.UnitType
 import io.kni.thingoo.backend.entities.exceptions.ExistingEntityKeyException
 import io.kni.thingoo.backend.icons.MaterialIcon
+import io.kni.thingoo.backend.utils.createTestDevice
+import io.kni.thingoo.backend.utils.createTestEntity
+import io.kni.thingoo.backend.utils.createTestSetupEntityDto
+import io.kni.thingoo.backend.utils.createTestsSetupDeviceDto
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach

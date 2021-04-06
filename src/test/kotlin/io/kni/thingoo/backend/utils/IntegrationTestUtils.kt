@@ -1,8 +1,10 @@
-package io.kni.thingoo.backend.integration.devices
+package io.kni.thingoo.backend.utils
 
 import io.kni.thingoo.backend.devices.Device
+import io.kni.thingoo.backend.devices.DeviceRepository
 import io.kni.thingoo.backend.devices.dto.SetupDeviceDto
 import io.kni.thingoo.backend.entities.Entity
+import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.EntityType
 import io.kni.thingoo.backend.entities.UnitType
 import io.kni.thingoo.backend.entities.dto.SetupEntityDto
@@ -70,4 +72,17 @@ private fun randomMACAddress(): String {
         sb.append(String.format("%02x", b))
     }
     return sb.toString()
+}
+
+fun saveDevice(deviceRepository: DeviceRepository, device: Device): Device {
+    return deviceRepository.save(device)
+}
+
+fun saveEntities(entityRepository: EntityRepository, device: Device, entities: List<Entity>): List<Entity> {
+    return entityRepository.saveAll(entities.map { getEntityForDevice(it, device) }).toList()
+}
+
+fun getEntityForDevice(entity: Entity, device: Device): Entity {
+    // copy entity object to prevent mutating reference
+    return Entity(entity.id, entity.key, entity.displayName, entity.type, entity.unitType, entity.unitDisplayName, null, device)
 }
