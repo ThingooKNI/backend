@@ -37,13 +37,13 @@ class CommandServiceTest {
     @Autowired
     private lateinit var entityRepository: EntityRepository
 
-    @Mock
     private lateinit var mqttService: MqttService
 
     private lateinit var commandService: CommandServiceImpl
 
     @BeforeAll
     fun setup() {
+        mqttService = Mockito.mock(MqttService::class.java)
         commandService = CommandServiceImpl(entityRepository, mqttService)
     }
 
