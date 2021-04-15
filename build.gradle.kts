@@ -43,11 +43,11 @@ dependencies {
     // persistence
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly("org.postgresql:postgresql:42.2.19")
-    implementation("org.flywaydb:flyway-core:7.7.1")
+    implementation("org.flywaydb:flyway-core:7.7.3")
 
     implementation("org.keycloak:keycloak-admin-client:12.0.2")
     implementation("io.zonky.test:embedded-database-spring-test:1.6.3")
-    implementation("io.zonky.test.postgres:embedded-postgres-binaries-bom:13.1.0-1")
+    implementation("io.zonky.test.postgres:embedded-postgres-binaries-bom:13.2.0")
 
     implementation("io.springfox:springfox-boot-starter:3.0.0")
     implementation("io.springfox:springfox-swagger-ui:3.0.0")
