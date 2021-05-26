@@ -45,7 +45,7 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql:42.2.19")
     implementation("org.flywaydb:flyway-core:7.9.0")
 
-    implementation("org.keycloak:keycloak-admin-client:12.0.2")
+    implementation("org.keycloak:keycloak-admin-client:13.0.1")
     implementation("io.zonky.test:embedded-database-spring-test:1.6.3")
     implementation("io.zonky.test.postgres:embedded-postgres-binaries-bom:13.2.0")
 
