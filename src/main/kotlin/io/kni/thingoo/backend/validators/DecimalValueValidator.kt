@@ -1,8 +1,8 @@
-package io.kni.thingoo.backend.readings.validators
+package io.kni.thingoo.backend.validators
 
 import io.kni.thingoo.backend.utils.StringUtils
 
-class DecimalReadingValueValidator : ReadingValueValidator {
+class DecimalValueValidator : ValueValidator {
     override fun isValid(value: String): Boolean {
         return StringUtils.isDecimal(value)
     }

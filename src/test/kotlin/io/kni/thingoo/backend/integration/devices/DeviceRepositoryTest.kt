@@ -5,7 +5,7 @@ import io.kni.thingoo.backend.devices.DeviceRepository
 import io.kni.thingoo.backend.entities.Entity
 import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.EntityType
-import io.kni.thingoo.backend.entities.UnitType
+import io.kni.thingoo.backend.entities.ValueType
 import io.kni.thingoo.backend.icons.MaterialIcon
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase
 import org.assertj.core.api.Assertions.assertThat
@@ -44,7 +44,7 @@ class DeviceRepositoryTest {
                 key = "temp",
                 displayName = "Temperature",
                 type = EntityType.SENSOR,
-                unitType = UnitType.DECIMAL,
+                valueType = ValueType.DECIMAL,
                 unitDisplayName = "C",
                 device = device,
                 icon = null
@@ -71,7 +71,7 @@ class DeviceRepositoryTest {
                 key = "temp",
                 displayName = "Temperature",
                 type = EntityType.SENSOR,
-                unitType = UnitType.DECIMAL,
+                valueType = ValueType.DECIMAL,
                 unitDisplayName = "C",
                 device = device,
                 icon = MaterialIcon.THERMOSTAT

@@ -37,8 +37,8 @@ class Entity(
     var type: EntityType,
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "unit_type", nullable = false)
-    var unitType: UnitType,
+    @Column(name = "value_type", nullable = false)
+    var valueType: ValueType,
 
     @Column(name = "unit_display_name", nullable = false)
     var unitDisplayName: String,
@@ -56,18 +56,18 @@ class Entity(
 ) : Serializable {
     fun toSetupEntityDto(): SetupEntityDto {
         return SetupEntityDto(
-            key, type, unitType, unitDisplayName
+            key, type, valueType, unitDisplayName
         )
     }
 
     fun toDto(): EntityDto {
         return EntityDto(
-            id, key, displayName, type, unitType, unitDisplayName, icon
+            id, key, displayName, type, valueType, unitDisplayName, icon
         )
     }
 
     override fun toString(): String {
-        return "Entity(id=$id, key='$key', displayName=$displayName, type=$type, unitType=$unitType, unitDisplayName='$unitDisplayName', device=$device)"
+        return "Entity(id=$id, key='$key', displayName=$displayName, type=$type, valueType=$valueType, unitDisplayName='$unitDisplayName', device=$device)"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -80,7 +80,7 @@ class Entity(
         if (key != other.key) return false
         if (displayName != other.displayName) return false
         if (type != other.type) return false
-        if (unitType != other.unitType) return false
+        if (valueType != other.valueType) return false
         if (unitDisplayName != other.unitDisplayName) return false
         if (device != other.device) return false
         if (readings != other.readings) return false
@@ -93,7 +93,7 @@ class Entity(
         result = 31 * result + key.hashCode()
         result = 31 * result + (displayName?.hashCode() ?: 0)
         result = 31 * result + type.hashCode()
-        result = 31 * result + unitType.hashCode()
+        result = 31 * result + valueType.hashCode()
         result = 31 * result + unitDisplayName.hashCode()
         result = 31 * result + (device?.hashCode() ?: 0)
         result = 31 * result + readings.hashCode()

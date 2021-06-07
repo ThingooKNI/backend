@@ -4,7 +4,7 @@ import io.kni.thingoo.backend.devices.Device
 import io.kni.thingoo.backend.devices.DeviceRepository
 import io.kni.thingoo.backend.entities.Entity
 import io.kni.thingoo.backend.entities.EntityRepository
-import io.kni.thingoo.backend.entities.UnitType
+import io.kni.thingoo.backend.entities.ValueType
 import io.kni.thingoo.backend.exceptions.ApiErrorCode
 import io.kni.thingoo.backend.readings.dto.ReadingDto
 import io.kni.thingoo.backend.readings.dto.SaveReadingDto
@@ -21,7 +21,7 @@ class ReadingServiceImpl(
         tryGetRelatedDevice(reading)
         val relatedEntity = tryGetRelatedEntity(reading)
 
-        validateReadingValue(reading, relatedEntity.unitType)
+        validateReadingValue(reading, relatedEntity.valueType)
 
         val savedReading = readingRepository.save(
             Reading(
@@ -63,8 +63,8 @@ class ReadingServiceImpl(
         return relatedEntityOptional.orElseThrow { ApiErrorCode.ENTITIES_002.throwException() }
     }
 
-    private fun validateReadingValue(reading: SaveReadingDto, valueType: UnitType) {
-        if (!valueType.getReadingValueValidator().isValid(reading.value)) {
+    private fun validateReadingValue(reading: SaveReadingDto, valueType: ValueType) {
+        if (!valueType.getValueValidator().isValid(reading.value)) {
             ApiErrorCode.READINGS_001.throwException()
         }
     }

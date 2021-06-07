@@ -1,22 +1,22 @@
 /* ktlint-disable max-line-length */
 package io.kni.thingoo.backend.integration.readings
 
-import io.kni.thingoo.backend.devices.Device
 import io.kni.thingoo.backend.devices.DeviceRepository
 import io.kni.thingoo.backend.devices.exceptions.DeviceNotFoundException
-import io.kni.thingoo.backend.entities.Entity
 import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.EntityType
-import io.kni.thingoo.backend.entities.UnitType
+import io.kni.thingoo.backend.entities.ValueType
 import io.kni.thingoo.backend.entities.exceptions.EntityNotFoundException
-import io.kni.thingoo.backend.integration.devices.createTestDevice
-import io.kni.thingoo.backend.integration.devices.createTestEntity
 import io.kni.thingoo.backend.readings.Reading
 import io.kni.thingoo.backend.readings.ReadingRepository
 import io.kni.thingoo.backend.readings.ReadingService
 import io.kni.thingoo.backend.readings.dto.SaveReadingDto
 import io.kni.thingoo.backend.readings.exceptions.NoReadingsException
-import io.kni.thingoo.backend.readings.exceptions.ReadingUnitTypeMismatchException
+import io.kni.thingoo.backend.readings.exceptions.ReadingValueTypeMismatchException
+import io.kni.thingoo.backend.utils.createTestDevice
+import io.kni.thingoo.backend.utils.createTestEntity
+import io.kni.thingoo.backend.utils.saveDevice
+import io.kni.thingoo.backend.utils.saveEntities
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
@@ -51,28 +51,28 @@ class ReadingServiceTest {
             key = "temp",
             name = "temperature",
             type = EntityType.SENSOR,
-            unitType = UnitType.DECIMAL,
+            valueType = ValueType.DECIMAL,
             unitDisplayName = "C"
         )
         private val TEST_ENTITY_2 = createTestEntity(
             key = "hum",
             name = "humidity",
             type = EntityType.SENSOR,
-            unitType = UnitType.INTEGER,
+            valueType = ValueType.INTEGER,
             unitDisplayName = "%"
         )
         private val TEST_ENTITY_3 = createTestEntity(
             key = "status",
             name = "status",
             type = EntityType.SENSOR,
-            unitType = UnitType.STRING,
+            valueType = ValueType.STRING,
             unitDisplayName = ""
         )
         private val TEST_ENTITY_4 = createTestEntity(
             key = "on",
             name = "on/off",
             type = EntityType.SENSOR,
-            unitType = UnitType.BOOLEAN,
+            valueType = ValueType.BOOLEAN,
             unitDisplayName = ""
         )
     }
@@ -87,8 +87,8 @@ class ReadingServiceTest {
     @Test
     fun `given device and entity, when saving new reading, will save one reading`() {
         // given
-        val device = saveDevice(TEST_DEVICE_1)
-        saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+        val device = saveDevice(deviceRepository, TEST_DEVICE_1)
+        saveEntities(entityRepository, device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
 
         // when
         val newReading = readingService.createReading(SaveReadingDto(value = "10.5", entityKey = TEST_ENTITY_1.key, deviceKey = TEST_DEVICE_1.key))
@@ -105,8 +105,8 @@ class ReadingServiceTest {
     @Test
     fun `given device and entity, when saving reading with not existing deviceKey, will throw DeviceNotFoundException`() {
         // given
-        val device = saveDevice(TEST_DEVICE_1)
-        saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+        val device = saveDevice(deviceRepository, TEST_DEVICE_1)
+        saveEntities(entityRepository, device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
 
         // when
         assertThrows<DeviceNotFoundException> {
@@ -117,8 +117,8 @@ class ReadingServiceTest {
     @Test
     fun `given device and entity, when saving reading with not existing entityKey, will throw EntityNotFoundException`() {
         // given
-        val device = saveDevice(TEST_DEVICE_1)
-        saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+        val device = saveDevice(deviceRepository, TEST_DEVICE_1)
+        saveEntities(entityRepository, device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
 
         // when
         assertThrows<EntityNotFoundException> {
@@ -127,45 +127,45 @@ class ReadingServiceTest {
     }
 
     @Test
-    fun `given device and entity, when saving reading with wrong value type, will throw ReadingUnitTypeMismatchException`() {
+    fun `given device and entity, when saving reading with wrong value type, will throw ReadingValueTypeMismatchException`() {
         // given
-        val device = saveDevice(TEST_DEVICE_1)
-        saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2, TEST_ENTITY_3, TEST_ENTITY_4))
+        val device = saveDevice(deviceRepository, TEST_DEVICE_1)
+        saveEntities(entityRepository, device, listOf(TEST_ENTITY_1, TEST_ENTITY_2, TEST_ENTITY_3, TEST_ENTITY_4))
 
         // when
-        assertThrows<ReadingUnitTypeMismatchException> {
+        assertThrows<ReadingValueTypeMismatchException> {
             readingService.createReading(SaveReadingDto(value = "true", entityKey = TEST_ENTITY_1.key, deviceKey = TEST_DEVICE_1.key))
         }
 
-        assertThrows<ReadingUnitTypeMismatchException> {
+        assertThrows<ReadingValueTypeMismatchException> {
             readingService.createReading(SaveReadingDto(value = "wrong value", entityKey = TEST_ENTITY_1.key, deviceKey = TEST_DEVICE_1.key))
         }
 
-        assertThrows<ReadingUnitTypeMismatchException> {
+        assertThrows<ReadingValueTypeMismatchException> {
             readingService.createReading(SaveReadingDto(value = "55", entityKey = TEST_ENTITY_1.key, deviceKey = TEST_DEVICE_1.key))
         }
 
-        assertThrows<ReadingUnitTypeMismatchException> {
+        assertThrows<ReadingValueTypeMismatchException> {
             readingService.createReading(SaveReadingDto(value = "false", entityKey = TEST_ENTITY_2.key, deviceKey = TEST_DEVICE_1.key))
         }
 
-        assertThrows<ReadingUnitTypeMismatchException> {
+        assertThrows<ReadingValueTypeMismatchException> {
             readingService.createReading(SaveReadingDto(value = "wrong value", entityKey = TEST_ENTITY_2.key, deviceKey = TEST_DEVICE_1.key))
         }
 
-        assertThrows<ReadingUnitTypeMismatchException> {
+        assertThrows<ReadingValueTypeMismatchException> {
             readingService.createReading(SaveReadingDto(value = "55.49", entityKey = TEST_ENTITY_2.key, deviceKey = TEST_DEVICE_1.key))
         }
 
-        assertThrows<ReadingUnitTypeMismatchException> {
+        assertThrows<ReadingValueTypeMismatchException> {
             readingService.createReading(SaveReadingDto(value = "55.49", entityKey = TEST_ENTITY_4.key, deviceKey = TEST_DEVICE_1.key))
         }
 
-        assertThrows<ReadingUnitTypeMismatchException> {
+        assertThrows<ReadingValueTypeMismatchException> {
             readingService.createReading(SaveReadingDto(value = "55", entityKey = TEST_ENTITY_4.key, deviceKey = TEST_DEVICE_1.key))
         }
 
-        assertThrows<ReadingUnitTypeMismatchException> {
+        assertThrows<ReadingValueTypeMismatchException> {
             readingService.createReading(SaveReadingDto(value = "wrong value", entityKey = TEST_ENTITY_4.key, deviceKey = TEST_DEVICE_1.key))
         }
 
@@ -177,11 +177,11 @@ class ReadingServiceTest {
     @Test
     fun `given multiple devices, when querying readings by entityID, will return appropriate readings`() {
         // given
-        val device = saveDevice(TEST_DEVICE_1)
-        val entities = saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+        val device = saveDevice(deviceRepository, TEST_DEVICE_1)
+        val entities = saveEntities(entityRepository, device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
 
-        val device2 = saveDevice(TEST_DEVICE_2)
-        val entities2 = saveEntities(device2, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+        val device2 = saveDevice(deviceRepository, TEST_DEVICE_2)
+        val entities2 = saveEntities(entityRepository, device2, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
 
         readingRepository.save(Reading(value = "55.49", entity = entities[0]))
         readingRepository.save(Reading(value = "55.51", entity = entities[0]))
@@ -203,11 +203,11 @@ class ReadingServiceTest {
     @Test
     fun `given multiple devices, when querying readings by deviceKey and entityKey, will return appropriate readings`() {
         // given
-        val device = saveDevice(TEST_DEVICE_1)
-        val entities = saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+        val device = saveDevice(deviceRepository, TEST_DEVICE_1)
+        val entities = saveEntities(entityRepository, device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
 
-        val device2 = saveDevice(TEST_DEVICE_2)
-        val entities2 = saveEntities(device2, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+        val device2 = saveDevice(deviceRepository, TEST_DEVICE_2)
+        val entities2 = saveEntities(entityRepository, device2, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
 
         readingRepository.save(Reading(value = "55.49", entity = entities[0]))
         readingRepository.save(Reading(value = "55.51", entity = entities[0]))
@@ -229,8 +229,8 @@ class ReadingServiceTest {
     @Test
     fun `given device with entities, when querying latest reading by deviceKey and entityKey, will return appropriate reading`() {
         // given
-        val device = saveDevice(TEST_DEVICE_1)
-        val entities = saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+        val device = saveDevice(deviceRepository, TEST_DEVICE_1)
+        val entities = saveEntities(entityRepository, device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
 
         readingRepository.save(Reading(value = "55.49", entity = entities[0]))
         readingRepository.save(Reading(value = "55.50", entity = entities[0]))
@@ -246,8 +246,8 @@ class ReadingServiceTest {
     @Test
     fun `given device with entities, when querying latest reading by entityId, will return appropriate reading`() {
         // given
-        val device = saveDevice(TEST_DEVICE_1)
-        val entities = saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+        val device = saveDevice(deviceRepository, TEST_DEVICE_1)
+        val entities = saveEntities(entityRepository, device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
 
         readingRepository.save(Reading(value = "55.49", entity = entities[0]))
         readingRepository.save(Reading(value = "55.50", entity = entities[0]))
@@ -263,8 +263,8 @@ class ReadingServiceTest {
     @Test
     fun `given entity with no readings, when querying latest reading by entityId, will throw NoReadingsException`() {
         // given
-        val device = saveDevice(TEST_DEVICE_1)
-        val entities = saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+        val device = saveDevice(deviceRepository, TEST_DEVICE_1)
+        val entities = saveEntities(entityRepository, device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
 
         // when
         assertThrows<NoReadingsException> {
@@ -277,8 +277,8 @@ class ReadingServiceTest {
     @Test
     fun `given entity with no readings, when querying latest reading by deviceKey and entityKey, will throw NoReadingsException`() {
         // given
-        val device = saveDevice(TEST_DEVICE_1)
-        saveEntities(device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
+        val device = saveDevice(deviceRepository, TEST_DEVICE_1)
+        saveEntities(entityRepository, device, listOf(TEST_ENTITY_1, TEST_ENTITY_2))
 
         // when
         assertThrows<NoReadingsException> {
@@ -286,18 +286,5 @@ class ReadingServiceTest {
         }
 
         // then
-    }
-
-    fun saveDevice(device: Device): Device {
-        return deviceRepository.save(device)
-    }
-
-    fun saveEntities(device: Device, entities: List<Entity>): List<Entity> {
-        return entityRepository.saveAll(entities.map { getEntityForDevice(it, device) }).toList()
-    }
-
-    fun getEntityForDevice(entity: Entity, device: Device): Entity {
-        // copy entity object to prevent mutating reference
-        return Entity(entity.id, entity.key, entity.displayName, entity.type, entity.unitType, entity.unitDisplayName, null, device)
     }
 }

@@ -2,12 +2,12 @@ package io.kni.thingoo.backend.entities.dto
 
 import io.kni.thingoo.backend.entities.Entity
 import io.kni.thingoo.backend.entities.EntityType
-import io.kni.thingoo.backend.entities.UnitType
+import io.kni.thingoo.backend.entities.ValueType
 
 data class SetupEntityDto(
     val key: String,
     val type: EntityType,
-    val unitType: UnitType,
+    val valueType: ValueType,
     val unitDisplayName: String
 ) {
     fun toEntity(): Entity {
@@ -16,7 +16,7 @@ data class SetupEntityDto(
             key,
             null,
             type,
-            unitType,
+            valueType,
             unitDisplayName,
             null
         )
