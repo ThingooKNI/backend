@@ -4,7 +4,7 @@ plugins {
     id("org.springframework.boot") version "2.4.5"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     kotlin("jvm") version "1.4.32"
-    kotlin("plugin.spring") version "1.4.32"
+    kotlin("plugin.spring") version "1.5.0"
     kotlin("plugin.jpa") version "1.4.32"
     jacoco
 }
@@ -43,7 +43,7 @@ dependencies {
     // persistence
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly("org.postgresql:postgresql:42.2.19")
-    implementation("org.flywaydb:flyway-core:7.8.1")
+    implementation("org.flywaydb:flyway-core:7.9.0")
 
     implementation("org.keycloak:keycloak-admin-client:12.0.2")
     implementation("io.zonky.test:embedded-database-spring-test:1.6.3")
