@@ -1,0 +1,1 @@
+ALTER TABLE entities RENAME COLUMN unit_type TO value_type;

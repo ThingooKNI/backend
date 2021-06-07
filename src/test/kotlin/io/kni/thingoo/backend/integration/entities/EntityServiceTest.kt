@@ -7,8 +7,8 @@ import io.kni.thingoo.backend.entities.dto.UpdateEntityDto
 import io.kni.thingoo.backend.entities.exceptions.EntityNotFoundException
 import io.kni.thingoo.backend.entities.exceptions.InvalidEntityPatchEntryValueException
 import io.kni.thingoo.backend.icons.MaterialIcon
-import io.kni.thingoo.backend.integration.devices.createTestDevice
-import io.kni.thingoo.backend.integration.devices.createTestEntity
+import io.kni.thingoo.backend.utils.createTestDevice
+import io.kni.thingoo.backend.utils.createTestEntity
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach

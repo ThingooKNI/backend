@@ -1,10 +1,12 @@
-package io.kni.thingoo.backend.integration.devices
+package io.kni.thingoo.backend.utils
 
 import io.kni.thingoo.backend.devices.Device
+import io.kni.thingoo.backend.devices.DeviceRepository
 import io.kni.thingoo.backend.devices.dto.SetupDeviceDto
 import io.kni.thingoo.backend.entities.Entity
+import io.kni.thingoo.backend.entities.EntityRepository
 import io.kni.thingoo.backend.entities.EntityType
-import io.kni.thingoo.backend.entities.UnitType
+import io.kni.thingoo.backend.entities.ValueType
 import io.kni.thingoo.backend.entities.dto.SetupEntityDto
 import java.util.Random
 import kotlin.experimental.and
@@ -17,7 +19,7 @@ fun createTestEntity(
     key: String = "temp",
     name: String = "Temperature",
     type: EntityType = EntityType.SENSOR,
-    unitType: UnitType = UnitType.DECIMAL,
+    valueType: ValueType = ValueType.DECIMAL,
     unitDisplayName: String = "C",
     device: Device? = null
 ): Entity {
@@ -25,7 +27,7 @@ fun createTestEntity(
         key = key,
         displayName = name,
         type = type,
-        unitType = unitType,
+        valueType = valueType,
         unitDisplayName = unitDisplayName,
         device = device,
         icon = null
@@ -47,13 +49,13 @@ fun createTestsSetupDeviceDto(
 fun createTestSetupEntityDto(
     key: String = "temp",
     type: EntityType = EntityType.SENSOR,
-    unitType: UnitType = UnitType.DECIMAL,
+    valueType: ValueType = ValueType.DECIMAL,
     unitDisplayName: String = "C"
 ): SetupEntityDto {
     return SetupEntityDto(
         key = key,
         type = type,
-        unitType = unitType,
+        valueType = valueType,
         unitDisplayName = unitDisplayName
     )
 }
@@ -70,4 +72,17 @@ private fun randomMACAddress(): String {
         sb.append(String.format("%02x", b))
     }
     return sb.toString()
+}
+
+fun saveDevice(deviceRepository: DeviceRepository, device: Device): Device {
+    return deviceRepository.save(device)
+}
+
+fun saveEntities(entityRepository: EntityRepository, device: Device, entities: List<Entity>): List<Entity> {
+    return entityRepository.saveAll(entities.map { getEntityForDevice(it, device) }).toList()
+}
+
+fun getEntityForDevice(entity: Entity, device: Device): Entity {
+    // copy entity object to prevent mutating reference
+    return Entity(entity.id, entity.key, entity.displayName, entity.type, entity.valueType, entity.unitDisplayName, null, device)
 }
