@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "2.4.5"
+    id("org.springframework.boot") version "2.5.1"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     kotlin("jvm") version "1.4.32"
     kotlin("plugin.spring") version "1.5.0"
@@ -43,7 +43,7 @@ dependencies {
     // persistence
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly("org.postgresql:postgresql:42.2.20")
-    implementation("org.flywaydb:flyway-core:7.9.0")
+    implementation("org.flywaydb:flyway-core:7.11.0")
 
     implementation("org.keycloak:keycloak-admin-client:12.0.2")
     implementation("io.zonky.test:embedded-database-spring-test:1.6.3")
