@@ -42,7 +42,7 @@ dependencies {
 
     // persistence
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    runtimeOnly("org.postgresql:postgresql:42.2.19")
+    runtimeOnly("org.postgresql:postgresql:42.2.23")
     implementation("org.flywaydb:flyway-core:7.11.0")
 
     implementation("org.keycloak:keycloak-admin-client:12.0.2")
